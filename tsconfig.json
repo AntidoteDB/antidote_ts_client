@@ -1,0 +1,14 @@
+{
+    "files": [
+        "src/main.ts",
+		"src/antidote.ts",
+		"src/*.ts"
+    ],
+    "compilerOptions": {
+		"declaration": true,
+		"module": "commonjs",
+        //"noImplicitAny": true,
+        "target": "es6",
+		"outDir": "dist"
+    }
+}

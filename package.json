@@ -1,0 +1,29 @@
+{
+  "name": "antidote_ts_client_test",
+  "version": "0.0.1",
+  "description": "An experimental Antidote client for nodejs, written in typescript",
+  "main": "./dist/main.js",
+  "scripts": {
+    "test": "gulp && node dist/main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "protobufjs": "5.0.1",
+    "async": "~2.0",
+    "backoff": "~2.5",
+    "bytebuffer": "~5.0",
+    "hashmap": "~2.0",
+    "joi": "~6.0",
+    "long": "~3.2",
+    "winston": "~2.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^3.0.2",
+    "gulp-util": "^3.0.7",
+    "typescript": "^2.0.3",
+    "watchify": "^3.7.0",
+    "proto2ts": "2.0.0"
+  }
+}
