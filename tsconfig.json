@@ -2,12 +2,13 @@
     "files": [
         "src/main.ts",
 		"src/antidote.ts",
-		"src/*.ts"
+        "src/antidote_proto.d.ts",
+        "src/antidoteConnection.ts"
     ],
     "compilerOptions": {
 		"declaration": true,
 		"module": "commonjs",
-        //"noImplicitAny": true,
+        "noImplicitAny": true,
         "target": "es6",
 		"outDir": "dist"
     }

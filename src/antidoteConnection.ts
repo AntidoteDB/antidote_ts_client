@@ -1,29 +1,28 @@
 ///<reference path="../typings/globals/node/index.d.ts" />
 /// <reference path="antidote_proto.d.ts" />
-/// <reference path="../typings/globals/protobufjs/index.d.ts" />
-// /// <reference path="../typings/globals/es6-promise/index.d.ts" />
+// /// <reference path="../typings/globals/protobufjs/index.d.ts" />
 
-"use strict"
+"use strict";
 
 import net = require("net")
 import {MessageCodes} from "./messageCodes"
-var ProtoBuf = require("protobufjs")
-var ByteBuffer = ProtoBuf.ByteBuffer
+import ProtoBuf = require("protobufjs")
+import ByteBuffer = require("bytebuffer")
 
 
 interface ApbRequest {
-	resolve: (any) => void,
-	reject: (any) => void,
+	resolve: (a: any) => void,
+	reject: (a: any) => void,
 }
 
 export class AntidoteConnection {
-	private socket: net.Socket
+	private socket: net.Socket;
 	private requests: ApbRequest[] = [];
 	private buffer: ByteBuffer = new ByteBuffer();
 
 	constructor(port: number, host: string) {
 		let socket = this.socket = net.createConnection(port, host);
-		socket.on("connect", () => this.onConnect())
+		socket.on("connect", () => this.onConnect());
 		socket.on("data", (data) => this.onData(data));
 		socket.on("close", (hasError) => this.onClose(hasError));
 		socket.on("timeout", () => this.onTimeout());
@@ -44,9 +43,9 @@ export class AntidoteConnection {
 	}
 
 	private readMessagesFromBuffer() {
-		let buffer = this.buffer
+		let buffer = this.buffer;
 		while (buffer.remaining() >= 4) {
-			buffer.mark()
+			buffer.mark();
 			var messageLength = buffer.readUint32();
 
 			// See if we have the complete message
@@ -58,9 +57,9 @@ export class AntidoteConnection {
 				// Our fun API does some creative things like ... returning only
 				// a code, with 0 bytes following. In those cases we want to set
 				// decoded to null.
-				var decoded = null;
+				var decoded: any = null;
 				if (messageLength > 1) {
-					var ResponseProto = MessageCodes.messageCodeToProto(code)
+					var ResponseProto = MessageCodes.messageCodeToProto(code);
 					// GH issue #45
 					// Must use 'true' as argument to force copy of data
 					// otherwise, subsequent fetches will clobber data
@@ -110,13 +109,13 @@ export class AntidoteConnection {
 		console.log("onTimeout")
 	}
 
-	public sendRequest(messageCode: number, encodedMessage: Buffer): Promise<any> {
+	public sendRequest(messageCode: number, encodedMessage: ArrayBuffer): Promise<any> {
 		return new Promise((resolve, reject) => {
 			let header = new Buffer(5);
-			header.writeInt32BE(encodedMessage.length + 1, 0);
+			header.writeInt32BE(encodedMessage.byteLength + 1, 0);
 			header.writeUInt8(messageCode, 4);
-			this.socket.write(header)
-			this.socket.write(encodedMessage)
+			this.socket.write(header);
+			this.socket.write(encodedMessage);
 
 			this.requests.push({
 				resolve: resolve,

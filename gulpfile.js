@@ -10,5 +10,5 @@ gulp.task("protobuf_defs", function() {
 gulp.task("default", function () {
     return tsProject.src()
         .pipe(tsProject())
-        .js.pipe(gulp.dest("dist"));
+        .pipe(gulp.dest("dist"));
 });

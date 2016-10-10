@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "An experimental Antidote client for nodejs, written in typescript",
   "main": "./dist/main.js",
+  "typings": "./dist/index",
   "scripts": {
     "test": "gulp && node dist/main.js"
   },

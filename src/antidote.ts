@@ -1,15 +1,14 @@
 /// <reference path="antidote_proto.d.ts" />
 /// <reference path="../typings/globals/protobufjs/index.d.ts" />
-/// <reference path="../node_modules/proto2ts/definitions/bytebuffer.d.ts" />
 
-"use strict"
+"use strict";
 
-var ProtoBuf = require("protobufjs")
-var ByteBuffer = ProtoBuf.ByteBuffer
+import ProtoBuf = require("protobufjs")
+import ByteBuffer = require("bytebuffer")
 import { AntidoteConnection } from "./antidoteConnection"
 import { MessageCodes } from "./messageCodes"
 
-export function connect(port, host): Connection {
+export function connect(port: number, host: string): Connection {
 	return new Connection(new AntidoteConnection(port, host))
 
 }
@@ -22,12 +21,12 @@ export function key(key: string, type: AntidotePB.CRDT_type, bucket: string): An
 	}
 }
 
-function encode(message: any): Buffer {
+function encode(message: {encode(): ByteBuffer}): ArrayBuffer {
 	return message.encode().toBuffer()
 }
 
 export class Connection {
-	private connection: AntidoteConnection
+	private connection: AntidoteConnection;
 
 	constructor(conn: AntidoteConnection) {
 		this.connection = conn;
@@ -35,10 +34,10 @@ export class Connection {
 
 	public startTransaction(): Promise<Transaction> {
 		let apbStartTransaction = MessageCodes.antidotePb.ApbStartTransaction;
-		let message: AntidotePB.ApbStartTransaction = new apbStartTransaction({
+		let message: AntidotePB.ApbStartTransactionMessage = new apbStartTransaction({
 			properties: {}
-		})
-		let tx = this.connection.sendRequest(MessageCodes.apbStartTransaction, encode(message))
+		});
+		let tx = this.connection.sendRequest(MessageCodes.apbStartTransaction, encode(message));
 		return tx.then((resp: AntidotePB.ApbStartTransactionResp) => {
 			if (resp.success) {
 				return new Transaction(this.connection, resp.transaction_descriptor);
@@ -57,7 +56,7 @@ export class Connection {
 
 
 export class Transaction {
-	private connection: AntidoteConnection
+	private connection: AntidoteConnection;
 	private txId: ByteBuffer;
 	constructor(conn: AntidoteConnection, txId: ByteBuffer) {
 		this.connection = conn;
@@ -69,12 +68,12 @@ export class Transaction {
 	}
 
 	public readValues(keys: [AntidotePB.ApbBoundObject]): Promise<[any]> {
-		let apb = MessageCodes.antidotePb.ApbReadObjects
+		let apb = MessageCodes.antidotePb.ApbReadObjects;
 		let message = new apb({
 			boundobjects: keys,
 			transaction_descriptor: this.txId
-		})
-		let r = this.connection.sendRequest(MessageCodes.apbReadObjects, encode(message))
+		});
+		let r = this.connection.sendRequest(MessageCodes.apbReadObjects, encode(message));
 		return r.then((resp: AntidotePB.ApbReadObjectsResp) => {
 			if (resp.success) {
 				return resp.objects.map(obj => {
@@ -90,12 +89,12 @@ export class Transaction {
 	}
 
 	public updateObject(key: AntidotePB.ApbBoundObject, operation: AntidotePB.ApbUpdateOperation) {
-		let apb = MessageCodes.antidotePb.ApbUpdateObjects
+		let apb = MessageCodes.antidotePb.ApbUpdateObjects;
 		let message = new apb({
 			updates: [{boundobject: key, operation: operation}],
 			transaction_descriptor: this.txId
-		})
-		let r = this.connection.sendRequest(MessageCodes.apbUpdateObjects, encode(message))
+		});
+		let r = this.connection.sendRequest(MessageCodes.apbUpdateObjects, encode(message));
 		return r.then((resp: AntidotePB.ApbOperationResp) => {
 			if (resp.success) {
 				return true;
@@ -106,10 +105,10 @@ export class Transaction {
 
 	public commit(): Promise<{ commitTime: ByteBuffer }> {
 		let apbCommitTransaction = MessageCodes.antidotePb.ApbCommitTransaction;
-		let message: AntidotePB.ApbStartTransaction = new apbCommitTransaction({
+		let message: AntidotePB.ApbCommitTransactionMessage = new apbCommitTransaction({
 			transaction_descriptor: this.txId
-		})
-		let r = this.connection.sendRequest(MessageCodes.apbCommitTransaction, encode(message))
+		});
+		let r = this.connection.sendRequest(MessageCodes.apbCommitTransaction, encode(message));
 		return r.then((resp: AntidotePB.ApbCommitResp) => {
 			if (resp.success) {
 				return {
