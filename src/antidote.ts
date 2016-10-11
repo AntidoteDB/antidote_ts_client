@@ -1,9 +1,6 @@
-/// <reference path="antidote_proto.d.ts" />
-/// <reference path="../typings/globals/protobufjs/index.d.ts" />
-
 "use strict";
 
-import ProtoBuf = require("protobufjs")
+import '../proto/antidote_proto'
 import ByteBuffer = require("bytebuffer")
 import { AntidoteConnection } from "./antidoteConnection"
 import { MessageCodes } from "./messageCodes"

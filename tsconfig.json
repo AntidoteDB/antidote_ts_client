@@ -4,7 +4,7 @@
     "sourceMap": true,
     "module": "commonjs",
     "noImplicitAny": true,
-    "target": "es6",
+    "target": "es5",
     "outDir": "dist",
     "rootDir": "src"
   }

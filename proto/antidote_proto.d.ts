@@ -1,6 +1,3 @@
-/// <reference path="../node_modules/proto2ts/definitions/bytebuffer.d.ts" />
-/// <reference path="../node_modules/proto2ts/definitions/long.d.ts" />
-///<reference path="../typings/globals/node/index.d.ts" />
 declare module AntidotePB {
 	
 	

@@ -1,7 +1,3 @@
-///<reference path="../typings/globals/node/index.d.ts" />
-/// <reference path="antidote_proto.d.ts" />
-// /// <reference path="../typings/globals/protobufjs/index.d.ts" />
-
 "use strict";
 
 import net = require("net")

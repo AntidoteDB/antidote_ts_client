@@ -1,5 +1,4 @@
-/// <reference path="antidote_proto.d.ts" />
-
+import '../proto/antidote_proto'
 import path  = require('path');
 
 export module MessageCodes {
@@ -27,7 +26,7 @@ export module MessageCodes {
 	export const apbStaticReadObjectsResp = 128;
 
 	export var ProtoBuf = require("protobufjs");
-	var antidoteProtoSrc = path.join(__dirname, 'antidote.proto');
+	var antidoteProtoSrc = path.join(__dirname, '..', 'proto', 'antidote.proto');
 	export var antidotePb: AntidotePB.ProtoBufBuilder = ProtoBuf.protoFromFile(antidoteProtoSrc).build("AntidotePB");
 
 	export function messageCodeToProto(code: number): any {
