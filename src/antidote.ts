@@ -250,6 +250,15 @@ export abstract class AntidoteObject {
 	abstract interpretReadResponse(readResponse: AntidotePB.ApbReadObjectResp): any;
 }
 
+export abstract class AntidoteObjectWithReset extends AntidoteObject {
+
+	public reset(): AntidotePB.ApbUpdateOp {
+		return this.makeUpdate({
+			resetop: {}
+		})
+	}
+
+}
 
 export class CrdtCounter extends AntidoteObject {
 
@@ -275,7 +284,7 @@ export class CrdtCounter extends AntidoteObject {
 
 }
 
-export class CrdtSet<T> extends AntidoteObject {
+export class CrdtSet<T> extends AntidoteObjectWithReset {
 	interpretReadResponse(readResponse: AntidotePB.ApbReadObjectResp): T[] {
 		let vals = readResponse.set!.value!;
 		return vals.map(bin => {

@@ -56,11 +56,23 @@ function friendshipExample(): Promise<any> {
 	let bob: User = {id: "B", name: "Bob"};
 	let charlie: User = {id: "C", name: "Charlie"};
 
+	// // TODO reset not yet supported by antidote
+	// connection.update([
+	// 	friendSet(alice.id).reset(),
+	// 	friendSet(bob.id).reset(),
+	// 	friendSet(charlie.id).reset()
+	// ])
 
-	return Promise.all([
+	//reset state
+	return Promise.all([alice, bob, charlie].map(user => {
+		let set = friendSet(user.id)
+		return set.read().then(vals => {
+			return connection.update(set.removeAll(vals))
+		})
+	})).then(_ => Promise.all([
 		makeFriends(alice, bob),
 		makeFriends(bob, charlie)
-	]).then(_ => {
+	])).then(_ => {
 		return connection.read([
 			friendSet(alice.id),
 			friendSet(bob.id),
