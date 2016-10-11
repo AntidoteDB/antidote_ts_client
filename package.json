@@ -8,8 +8,10 @@
   "license": "ISC",
   "dependencies": {
     "@types/es6-shim": "^0.31.32",
+    "@types/msgpack-lite": "^0.1.1",
     "@types/node": "^6.0.45",
     "@types/protobufjs": "^5.0.30",
+    "msgpack-lite": "^0.1.20",
     "protobufjs": "5.0.1"
   },
   "devDependencies": {

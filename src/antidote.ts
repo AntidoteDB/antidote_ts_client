@@ -5,6 +5,7 @@ import ByteBuffer = require("bytebuffer")
 import { AntidoteConnection } from "./antidoteConnection"
 import { MessageCodes } from "./messageCodes"
 import * as Long from "long";
+import msgpack = require("msgpack-lite")
 
 export function connect(port: number, host: string): Connection {
 	return new Connection(new AntidoteConnection(port, host))
@@ -40,6 +41,23 @@ export class Connection {
 
 	constructor(conn: AntidoteConnection) {
 		this.connection = conn;
+	}
+
+	/** Method to encode objects before they are written to the database */
+	public jsToBinary(obj: any): ByteBuffer {
+		// TODO there must be a better way to do this
+		let buffer: Buffer = msgpack.encode(obj);
+		let res = new ByteBuffer();
+		res.append(buffer);
+		res.flip();
+		return res;
+	}
+
+	/** Inverse of jsToBinary */
+	public binaryToJs(byteBuffer: ByteBuffer): any {
+		let buffer= new Buffer(byteBuffer.toArrayBuffer());
+		let decoded = msgpack.decode(buffer);
+		return decoded
 	}
 
 	public startTransaction(): Promise<Transaction> {
@@ -121,8 +139,14 @@ export class Connection {
 	}
 
 
-	counter(key: string): Counter {
-		return new Counter(this, key, this.defaultBucket, AntidotePB.CRDT_type.COUNTER);
+	/** returns a reference to a counter object */
+	public counter(key: string): CrdtCounter {
+		return new CrdtCounter(this, key, this.defaultBucket, AntidotePB.CRDT_type.COUNTER);
+	}
+
+	/** returns a reference to a counter object */
+	public set<T>(key: string): CrdtSet<T> {
+		return new CrdtSet<T>(this, key, this.defaultBucket, AntidotePB.CRDT_type.ORSET);
 	}
 }
 
@@ -227,7 +251,7 @@ export abstract class AntidoteObject {
 }
 
 
-export class Counter extends AntidoteObject {
+export class CrdtCounter extends AntidoteObject {
 
 
 	interpretReadResponse(readResponse: AntidotePB.ApbReadObjectResp): number {
@@ -251,3 +275,54 @@ export class Counter extends AntidoteObject {
 
 }
 
+export class CrdtSet<T> extends AntidoteObject {
+	interpretReadResponse(readResponse: AntidotePB.ApbReadObjectResp): T[] {
+		let vals = readResponse.set!.value!;
+		return vals.map(bin => {
+			return this.connection.binaryToJs(bin)
+		});
+	}
+
+	public read(): Promise<T[]> {
+		return this.connection.read([this]).then(r => {
+			return r.values[0]
+		})
+	}
+
+	public add(elem: T): AntidotePB.ApbUpdateOp {
+		return this.makeUpdate({
+			setop: {
+				optype: AntidotePB.ApbSetUpdate.SetOpType.ADD,
+				adds: [this.connection.jsToBinary(elem)]
+			}
+		})
+	}
+
+	public addAll(elems: T[]): AntidotePB.ApbUpdateOp {
+		return this.makeUpdate({
+			setop: {
+				optype: AntidotePB.ApbSetUpdate.SetOpType.ADD,
+				adds: elems.map(elem => this.connection.jsToBinary(elem))
+			}
+		})
+	}
+
+	public remove(elem: T): AntidotePB.ApbUpdateOp {
+		return this.makeUpdate({
+			setop: {
+				optype: AntidotePB.ApbSetUpdate.SetOpType.REMOVE,
+				rems: [this.connection.jsToBinary(elem)]
+			}
+		})
+	}
+
+	public removeAll(elems: T[]): AntidotePB.ApbUpdateOp {
+		return this.makeUpdate({
+			setop: {
+				optype: AntidotePB.ApbSetUpdate.SetOpType.REMOVE,
+				rems: elems.map(elem => this.connection.jsToBinary(elem))
+			}
+		})
+	}
+
+}
