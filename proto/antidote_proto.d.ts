@@ -18,6 +18,7 @@ declare module AntidotePB {
 	}
 	
 	export interface ProtoBufBuilder {
+		ApbErrorResp: ApbErrorRespBuilder;
 		ApbCounterUpdate: ApbCounterUpdateBuilder;
 		ApbGetCounterResp: ApbGetCounterRespBuilder;
 		ApbSetUpdate: ApbSetUpdateBuilder;
@@ -54,6 +55,51 @@ declare module AntidotePB {
 		
 }
 }
+
+declare module AntidotePB {
+	
+	export interface ApbErrorResp {
+	
+		
+
+errmsg?: ByteBuffer;
+		
+
+getErrmsg?() : ByteBuffer;
+		setErrmsg?(errmsg : ByteBuffer): void;
+		
+
+
+
+errcode?: number;
+		
+
+getErrcode?() : number;
+		setErrcode?(errcode : number): void;
+		
+
+
+
+}
+	
+	export interface ApbErrorRespMessage extends ApbErrorResp {
+	toArrayBuffer(): ArrayBuffer;
+	encode(): ByteBuffer;
+	encodeJSON(): string;
+	toBase64(): string;
+	toString(): string;
+}
+
+export interface ApbErrorRespBuilder {
+	new(data?: ApbErrorResp): ApbErrorRespMessage;
+	decode(buffer: ArrayBuffer) : ApbErrorRespMessage;
+	decode(buffer: ByteBuffer) : ApbErrorRespMessage;
+	decode64(buffer: string) : ApbErrorRespMessage;
+	
+}
+	
+}
+
 
 declare module AntidotePB {
 	

@@ -15,6 +15,12 @@ enum CRDT_type {
     RWSET = 10;
 }
 
+// Riak Error response
+message ApbErrorResp {
+    required bytes errmsg = 1;
+    required uint32 errcode = 2;
+}
+
 
 //------------------
 // Counter

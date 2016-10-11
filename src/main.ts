@@ -21,7 +21,18 @@ function testAntidote(): Promise<any> {
 	})
 }
 
-let test = testAntidote();
+function testAntidote2(): Promise<any> {
+	let counter = connection.counter("testKey");
+	return connection.update(counter.increment(1)).then(r => {
+		return counter.read();
+	}).then(counterValue => {
+		console.log(`counter value = ${counterValue}.`);
+	})
+
+
+}
+
+let test = testAntidote2();
 
 test.catch((err) => {
 	console.log(`Error: ${err}`)

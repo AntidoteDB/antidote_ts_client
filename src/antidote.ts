@@ -4,6 +4,7 @@ import '../proto/antidote_proto'
 import ByteBuffer = require("bytebuffer")
 import { AntidoteConnection } from "./antidoteConnection"
 import { MessageCodes } from "./messageCodes"
+import * as Long from "long";
 
 export function connect(port: number, host: string): Connection {
 	return new Connection(new AntidoteConnection(port, host))
@@ -23,7 +24,19 @@ function encode(message: {encode(): ByteBuffer}): ArrayBuffer {
 }
 
 export class Connection {
-	private connection: AntidoteConnection;
+	readonly connection: AntidoteConnection;
+	/**
+	 * stores the last commit time.
+	 * This will be used when starting a new transaction in order to guarantee
+	 * session guarantees like monotonic reads and read-your-writes
+	 */
+	public lastCommitTimestamp: ByteBuffer|undefined = undefined;
+
+	/**
+	 * the default bucket used for newly created keys
+	 */
+	public defaultBucket = "default-bucket";
+
 
 	constructor(conn: AntidoteConnection) {
 		this.connection = conn;
@@ -31,16 +44,76 @@ export class Connection {
 
 	public startTransaction(): Promise<Transaction> {
 		let apbStartTransaction = MessageCodes.antidotePb.ApbStartTransaction;
-		let message: AntidotePB.ApbStartTransactionMessage = new apbStartTransaction({
-			properties: {}
-		});
+		let message: AntidotePB.ApbStartTransactionMessage = new apbStartTransaction(this.startTransactionPb());
 		let tx = this.connection.sendRequest(MessageCodes.apbStartTransaction, encode(message));
 		return tx.then((resp: AntidotePB.ApbStartTransactionResp) => {
 			if (resp.success) {
-				return new Transaction(this.connection, resp.transaction_descriptor);
+				return new Transaction(this, resp.transaction_descriptor!);
 			}
 			return Promise.reject<any>(resp.errorcode);
 		})
+	}
+
+	/**
+	 * creates a startTransaction message with the last timestamp
+	 * and default transaction properties
+	 */
+	private startTransactionPb(): AntidotePB.ApbStartTransaction {
+		return {
+			timestamp: this.lastCommitTimestamp,
+			properties: {}
+		};
+	}
+
+	public read(objects: AntidoteObject[]): Promise<StaticReadResponse> {
+		let messageType = MessageCodes.antidotePb.ApbStaticReadObjects;
+		let message: AntidotePB.ApbStaticReadObjectsMessage = new messageType({
+			transaction: this.startTransactionPb(),
+			objects: objects.map(o => o.key)
+		});
+		let r = this.connection.sendRequest(MessageCodes.apbStaticReadObjects, encode(message));
+		return r.then((resp: AntidotePB.ApbStaticReadObjectsResp) => {
+			return this.completeTransaction(resp.committime!).then(cr => {
+				let readResp = resp.objects!;
+				if (readResp.success) {
+					let resVals: any[] = [];
+
+					for (let i in objects) {
+						var obj = objects[i];
+						resVals.push(obj.interpretReadResponse(readResp.objects![i]))
+					}
+					return {
+						commitTime: cr.commitTime,
+						values: resVals
+					}
+				} else {
+					return Promise.reject<StaticReadResponse>(readResp.errorcode)
+				}
+			})
+		})
+	}
+
+	public update(updates: AntidotePB.ApbUpdateOp[]|AntidotePB.ApbUpdateOp) {
+		let messageType = MessageCodes.antidotePb.ApbStaticUpdateObjects;
+		let updatesAr: AntidotePB.ApbUpdateOp[] = (updates instanceof Array) ? updates : [updates];
+		let message: AntidotePB.ApbStaticReadObjectsMessage = new messageType({
+			transaction: this.startTransactionPb(),
+			updates: updatesAr
+		});
+		let r = this.connection.sendRequest(MessageCodes.apbStaticUpdateObjects, encode(message));
+		return r.then(resp => this.completeTransaction(resp))
+	}
+
+	completeTransaction(resp: AntidotePB.ApbCommitResp): Promise<CommitResponse> {
+		if (resp.commit_time) {
+			this.lastCommitTimestamp = resp.commit_time;
+		}
+		if (resp.success) {
+			return Promise.resolve({
+				commitTime: resp.commit_time
+			});
+		}
+		return Promise.reject<any>(resp.errorcode);
 	}
 
 	public close() {
@@ -48,15 +121,29 @@ export class Connection {
 	}
 
 
+	counter(key: string): Counter {
+		return new Counter(this, key, this.defaultBucket, AntidotePB.CRDT_type.COUNTER);
+	}
+}
 
+export interface CommitResponse {
+	commitTime: ByteBuffer
+}
+
+export interface StaticReadResponse {
+	commitTime: ByteBuffer,
+	values: any[]
 }
 
 
+
 export class Transaction {
-	private connection: AntidoteConnection;
+	private connection: Connection;
+	private antidoteConnection: AntidoteConnection;
 	private txId: ByteBuffer;
-	constructor(conn: AntidoteConnection, txId: ByteBuffer) {
+	constructor(conn: Connection, txId: ByteBuffer) {
 		this.connection = conn;
+		this.antidoteConnection = conn.connection;
 		this.txId = txId;
 	}
 
@@ -70,10 +157,10 @@ export class Transaction {
 			boundobjects: keys,
 			transaction_descriptor: this.txId
 		});
-		let r = this.connection.sendRequest(MessageCodes.apbReadObjects, encode(message));
+		let r = this.antidoteConnection.sendRequest(MessageCodes.apbReadObjects, encode(message));
 		return r.then((resp: AntidotePB.ApbReadObjectsResp) => {
 			if (resp.success) {
-				return resp.objects.map(obj => {
+				return resp.objects!.map(obj => {
 					if (obj.counter) {
 						return obj.counter.value;
 					} else {
@@ -91,7 +178,7 @@ export class Transaction {
 			updates: [{boundobject: key, operation: operation}],
 			transaction_descriptor: this.txId
 		});
-		let r = this.connection.sendRequest(MessageCodes.apbUpdateObjects, encode(message));
+		let r = this.antidoteConnection.sendRequest(MessageCodes.apbUpdateObjects, encode(message));
 		return r.then((resp: AntidotePB.ApbOperationResp) => {
 			if (resp.success) {
 				return true;
@@ -100,23 +187,67 @@ export class Transaction {
 		})
 	}
 
-	public commit(): Promise<{ commitTime: ByteBuffer }> {
+	public commit(): Promise<CommitResponse> {
 		let apbCommitTransaction = MessageCodes.antidotePb.ApbCommitTransaction;
 		let message: AntidotePB.ApbCommitTransactionMessage = new apbCommitTransaction({
 			transaction_descriptor: this.txId
 		});
-		let r = this.connection.sendRequest(MessageCodes.apbCommitTransaction, encode(message));
-		return r.then((resp: AntidotePB.ApbCommitResp) => {
-			if (resp.success) {
-				return {
-					commitTime: resp.commit_time
-				}
-			}
-			return Promise.reject<{ commitTime: ByteBuffer }>(resp.errorcode)
-		});
+		let r = this.antidoteConnection.sendRequest(MessageCodes.apbCommitTransaction, encode(message));
+		return r.then(resp => this.connection.completeTransaction(resp))
 	}
 
 	public toString(): string {
 		return `Transaction ${this.txId.toBinary()}`
 	}
 }
+
+
+export abstract class AntidoteObject {
+	readonly connection: Connection;
+	readonly key: AntidotePB.ApbBoundObject;
+
+	constructor(conn: Connection,  key: string, bucket: string, type: AntidotePB.CRDT_type) {
+		this.connection = conn;
+		this.key = {
+			key: ByteBuffer.fromUTF8(key),
+			bucket: ByteBuffer.fromUTF8(bucket),
+			type: type
+		}
+	}
+
+	makeUpdate(operation: AntidotePB.ApbUpdateOperation): AntidotePB.ApbUpdateOp {
+		var op = {
+			boundobject: this.key,
+			operation: operation
+		};
+		return op;
+	}
+
+	abstract interpretReadResponse(readResponse: AntidotePB.ApbReadObjectResp): any;
+}
+
+
+export class Counter extends AntidoteObject {
+
+
+	interpretReadResponse(readResponse: AntidotePB.ApbReadObjectResp): number {
+		return readResponse.counter!.value!;
+	}
+
+	public increment(amount: number|Long): AntidotePB.ApbUpdateOp {
+		let amountL = (amount instanceof Long) ? amount : new Long(amount);
+		return this.makeUpdate({
+			counterop: {
+				inc: amountL
+			}
+		})
+	}
+
+	public read(): Promise<number> {
+		return this.connection.read([this]).then(r => {
+			return r.values[0]
+		})
+	}
+
+}
+

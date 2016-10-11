@@ -42,42 +42,51 @@ export class AntidoteConnection {
 		let buffer = this.buffer;
 		while (buffer.remaining() >= 4) {
 			buffer.mark();
-			var messageLength = buffer.readUint32();
+			let messageLength = buffer.readUint32();
 
 			// See if we have the complete message
-			if (buffer.remaining() >= messageLength) {
-				// We have a complete message from riak
-				var slice = buffer.slice(undefined, buffer.offset + messageLength);
-				var code = slice.readUint8();
+			if (buffer.remaining() < messageLength) {
+				// rewind the offset
+				buffer.reset();
+				break;
+			}
+			// We have a complete message from riak
+			let slice = buffer.slice(undefined, buffer.offset + messageLength);
+			let code = slice.readUint8();
+			if (code != 0) {
 
 				// Our fun API does some creative things like ... returning only
 				// a code, with 0 bytes following. In those cases we want to set
 				// decoded to null.
-				var decoded: any = null;
+				let decoded: any = null;
 				if (messageLength > 1) {
-					var ResponseProto = MessageCodes.messageCodeToProto(code);
+					let ResponseProto = MessageCodes.messageCodeToProto(code);
 					// GH issue #45
 					// Must use 'true' as argument to force copy of data
 					// otherwise, subsequent fetches will clobber data
 					decoded = ResponseProto.decode(slice.toBuffer(true));
 				}
-
 				this.handleResponse(code, decoded);
-				// protobufArray[protobufArray.length] = { msgCode: code, protobuf: decoded };
-				// skip past message in buffer
-				buffer.skip(messageLength);
-				// recursively call this until we are out of messages
 			} else {
-				// rewind the offset
-				buffer.reset();
-				break;
+				let errorProto: AntidotePB.ApbErrorRespMessage = MessageCodes.antidotePb.ApbErrorResp.decode(slice.toBuffer(true));
+				let errorCode = errorProto.errcode!;
+				let errorMsg: ByteBuffer = errorProto.errmsg!;
+				this.handleError(errorCode, errorMsg.toUTF8());
 			}
+
+
+
+			// skip past message in buffer
+			buffer.skip(messageLength);
+			// repeat until we are out of messages
 		}
+
+
 		// ByteBuffer's 'flip()' effectively clears the buffer which we don't
 		// want. We want to flip while preserving anything in the buffer and
 		// compact if necessary.
 
-		var newOffset = buffer.remaining();
+		let newOffset = buffer.remaining();
 		// Compact if necessary
 		if (newOffset > 0 && buffer.offset !== 0) {
 			buffer.copyTo(buffer, 0);
@@ -88,7 +97,20 @@ export class AntidoteConnection {
 
 	private handleResponse(code: number, decoded: any) {
 		let request = this.requests.shift();
-		request.resolve(decoded)
+		if (request) {
+			request.resolve(decoded)
+		} else {
+			console.log(`Unexpected response with code ${code} and value ${JSON.stringify(decoded)}`)
+		}
+	}
+
+	private handleError(errorCode: number, errorMsg: string) {
+		let request = this.requests.shift();
+		if (request) {
+			request.reject(new Error(`Antidote-PB Error code ${errorCode}:\n${errorMsg}`))
+		} else {
+			console.log(`Unexpected error response with code ${errorCode} and message:\n ${errorMsg}`)
+		}
 	}
 
 

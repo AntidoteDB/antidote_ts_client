@@ -76,7 +76,7 @@ export module MessageCodes {
 			case apbStaticReadObjectsResp:
 				return antidotePb.ApbStaticReadObjectsResp
 		}
-		throw "invalid code: ${code}";
+		throw new Error(`invalid code: ${code}`);
 	} 
 
 }

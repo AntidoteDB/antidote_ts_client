@@ -6,6 +6,23 @@
     },
     "messages": [
         {
+            "name": "ApbErrorResp",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "bytes",
+                    "name": "errmsg",
+                    "id": 1
+                },
+                {
+                    "rule": "required",
+                    "type": "uint32",
+                    "name": "errcode",
+                    "id": 2
+                }
+            ]
+        },
+        {
             "name": "ApbCounterUpdate",
             "fields": [
                 {
