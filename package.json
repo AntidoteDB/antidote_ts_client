@@ -2,8 +2,8 @@
   "name": "antidote_ts_client_test",
   "version": "0.0.1",
   "description": "An experimental Antidote client for nodejs, written in typescript",
-  "main": "./dist/main.js",
-  "typings": "./dist/index",
+  "main": "./dist/antidote.js",
+  "typings": "./dist/antidote",
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -16,13 +16,13 @@
   },
   "scripts": {
     "compile": "tsc",
-    "prebuild": "npm run compile",
     "postinstall": "typings install",
-    "postcompile": "cp src/antidote_proto.d.ts lib/ && ts-npm-lint --fix-typings",
-    "pretest": "npm compile",
+    "postcompile": "cp src/antidote_proto.d.ts dist/ && cp src/antidote.proto dist/ && ts-npm-lint --fix-typings",
+    "pretest": "npm run compile",
     "test": "node dist/main.js",
     "clean": "rimraf lib/*",
     "watch": "tsc --watch",
-    "lint": "tslint --project tsconfig.json"
+    "lint": "tslint --project tsconfig.json",
+    "prepublish": "npm run compile"
   }
 }

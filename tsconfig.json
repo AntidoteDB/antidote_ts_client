@@ -5,7 +5,7 @@
     "module": "commonjs",
     "noImplicitAny": true,
     "target": "es6",
-    "outDir": "lib",
+    "outDir": "dist",
     "rootDir": "src"
   }
 }
