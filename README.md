@@ -3,8 +3,7 @@
 ### Build
   
     npm install
-    typings install
-    gulp
+    npm run compile
    
 ### Run
  

@@ -1,15 +1,11 @@
 {
-    "files": [
-        "src/main.ts",
-		"src/antidote.ts",
-        "src/antidote_proto.d.ts",
-        "src/antidoteConnection.ts"
-    ],
-    "compilerOptions": {
-		"declaration": true,
-		"module": "commonjs",
-        "noImplicitAny": true,
-        "target": "es6",
-		"outDir": "dist"
-    }
+  "compilerOptions": {
+    "declaration": true,
+    "sourceMap": true,
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "target": "es6",
+    "outDir": "lib",
+    "rootDir": "src"
+  }
 }
