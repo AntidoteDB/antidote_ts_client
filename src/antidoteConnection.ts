@@ -116,15 +116,24 @@ export class AntidoteConnection {
 
 
 	private onClose(hasError: boolean) {
-		// TODO console.log(`onClose ${hasError}`)
+		this.rejectPending(new Error("Connection closed"));
 	}
 
 	private onError(err: Error) {
-		console.log(`onError ${err}`)
+		this.rejectPending(err);
 	}
 
 	private onTimeout() {
-		console.log("onTimeout")
+		this.rejectPending(new Error("Connection timed out"));
+	}
+
+	/** rejects all requests, which are still open */
+	private rejectPending(err: Error) {
+		let reqs = this.requests;
+		for (let req of reqs) {
+			req.reject(err);
+		}
+		this.requests = [];
 	}
 
 	public sendRequest(messageCode: number, encodedMessage: ArrayBuffer): Promise<any> {
