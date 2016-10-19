@@ -7,11 +7,13 @@ import { MessageCodes } from "./messageCodes"
 import * as Long from "long";
 import msgpack = require("msgpack-lite")
 
+/** Connects to antidote on the given port and hostname */
 export function connect(port: number, host: string): Connection {
 	return new Connection(new AntidoteConnection(port, host))
 
 }
 
+/** Creates a BoundObject, wich Antidote uses as key for data */
 export function key(key: string, type: AntidotePB.CRDT_type, bucket: string): AntidotePB.ApbBoundObject {
 	return {
 		key: ByteBuffer.fromUTF8(key),
@@ -20,10 +22,22 @@ export function key(key: string, type: AntidotePB.CRDT_type, bucket: string): An
 	}
 }
 
+/** takes a message with an encode method and converts it into an ArrayBuffer */
 function encode(message: {encode(): ByteBuffer}): ArrayBuffer {
 	return message.encode().toBuffer()
 }
 
+/** A connection to AntidoteDB with methods for reading, updating and starting transactions
+ * 
+ * By default each operation takes the snapshot time from the last successful operation. 
+ * Set the lastCommitTimestamp to override this behavior for the following operation.
+ * 
+ * The bucket can be configured via the property `defaultBucket`, it defaults to "default-bucket".
+ * 
+ * Javascript objects stored in sets and registers are encoded using MessagePack (http://msgpack.org) by default.
+ * You can override the jsToBinary and binaryToJs methods to customize this behavior.
+ * 
+ */
 export class Connection {
 	readonly connection: AntidoteConnection;
 	/**
@@ -60,6 +74,7 @@ export class Connection {
 		return decoded
 	}
 
+	/** Starts a new transaction */
 	public startTransaction(): Promise<Transaction> {
 		let apbStartTransaction = MessageCodes.antidotePb.ApbStartTransaction;
 		let message: AntidotePB.ApbStartTransactionMessage = new apbStartTransaction(this.startTransactionPb());
@@ -83,6 +98,10 @@ export class Connection {
 		};
 	}
 
+	/** 
+	 * Reads several objects at once.
+	 * To read a single object, use the read method on that object.
+	 */
 	public read(objects: AntidoteObject[]): Promise<StaticReadResponse> {
 		let messageType = MessageCodes.antidotePb.ApbStaticReadObjects;
 		let message: AntidotePB.ApbStaticReadObjectsMessage = new messageType({
@@ -111,7 +130,10 @@ export class Connection {
 		})
 	}
 
-	public update(updates: AntidotePB.ApbUpdateOp[]|AntidotePB.ApbUpdateOp) {
+	/**
+	 * Sends a single update operation or an array of update operations to Antidote.
+	 */
+	public update(updates: AntidotePB.ApbUpdateOp[]|AntidotePB.ApbUpdateOp): Promise<CommitResponse> {
 		let messageType = MessageCodes.antidotePb.ApbStaticUpdateObjects;
 		let updatesAr: AntidotePB.ApbUpdateOp[] = (updates instanceof Array) ? updates : [updates];
 		let message: AntidotePB.ApbStaticReadObjectsMessage = new messageType({
@@ -134,6 +156,9 @@ export class Connection {
 		return Promise.reject<any>(resp.errorcode);
 	}
 
+	/**
+	 * Closes the connection to Antidote
+	 */
 	public close() {
 		this.connection.close();
 	}
@@ -144,7 +169,7 @@ export class Connection {
 		return new CrdtCounter(this, key, this.defaultBucket, AntidotePB.CRDT_type.COUNTER);
 	}
 
-	/** returns a reference to a counter object */
+	/** returns a reference to a add-wins set object */
 	public set<T>(key: string): CrdtSet<T> {
 		return new CrdtSet<T>(this, key, this.defaultBucket, AntidotePB.CRDT_type.ORSET);
 	}
@@ -267,6 +292,9 @@ export class CrdtCounter extends AntidoteObject {
 		return readResponse.counter!.value!;
 	}
 
+	/** Creates an operation to increment the counter.
+	 * Negative numbers will decrement the value. 
+	 * Use Connection.update to send the update to the database. */
 	public increment(amount: number|Long): AntidotePB.ApbUpdateOp {
 		let amountL = (amount instanceof Long) ? amount : new Long(amount);
 		return this.makeUpdate({
@@ -298,6 +326,9 @@ export class CrdtSet<T> extends AntidoteObjectWithReset {
 		})
 	}
 
+	/** 
+	 * Creates an operation, which adds an element to the set. 
+	 * Use Connection.update to send the update to the database. */
 	public add(elem: T): AntidotePB.ApbUpdateOp {
 		return this.makeUpdate({
 			setop: {
@@ -307,6 +338,9 @@ export class CrdtSet<T> extends AntidoteObjectWithReset {
 		})
 	}
 
+	/** 
+	 * Creates an operation, which adds several elements to the set. 
+	 * Use Connection.update to send the update to the database. */
 	public addAll(elems: T[]): AntidotePB.ApbUpdateOp {
 		return this.makeUpdate({
 			setop: {
@@ -316,6 +350,9 @@ export class CrdtSet<T> extends AntidoteObjectWithReset {
 		})
 	}
 
+	/** 
+	 * Creates an operation, which removes an element from the set. 
+	 * Use Connection.update to send the update to the database. */
 	public remove(elem: T): AntidotePB.ApbUpdateOp {
 		return this.makeUpdate({
 			setop: {
@@ -325,6 +362,9 @@ export class CrdtSet<T> extends AntidoteObjectWithReset {
 		})
 	}
 
+	/** 
+	 * Creates an operation, which removes several elements from the set. 
+	 * Use Connection.update to send the update to the database. */
 	public removeAll(elems: T[]): AntidotePB.ApbUpdateOp {
 		return this.makeUpdate({
 			setop: {

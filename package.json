@@ -1,11 +1,16 @@
 {
-  "name": "antidote_ts_client_test",
+  "name": "antidote_ts_client",
   "version": "0.0.1",
   "description": "An experimental Antidote client for nodejs, written in typescript",
+  "homepage": "https://github.com/peterzeller/antidote_ts_client_test",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/peterzeller/antidote_ts_client_test.git"
+  },
   "main": "./dist/antidote.js",
   "typings": "./dist/antidote",
-  "author": "",
-  "license": "ISC",
+  "author": "Peter Zeller <p_zeller@cs.uni-kl.de>",
+  "license": "Apache-2.0",
   "dependencies": {
     "@types/es6-shim": "^0.31.32",
     "@types/msgpack-lite": "^0.1.1",
