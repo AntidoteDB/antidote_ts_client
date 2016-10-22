@@ -27,6 +27,84 @@ function encode(message: {encode(): ByteBuffer}): ArrayBuffer {
 	return message.encode().toBuffer()
 }
 
+
+export abstract class CrdtFactory {
+
+
+	abstract getBucket(): string;
+
+	public abstract read(objects: AntidoteObject[]): Promise<StaticReadResponse>;
+
+	public abstract jsToBinary(obj: any): ByteBuffer;
+
+	public abstract binaryToJs(byteBuffer: ByteBuffer): any;
+
+	/** returns a reference to a counter object */
+	public counter(key: string): CrdtCounter {
+		return new CrdtCounter(this, key, this.getBucket(), AntidotePB.CRDT_type.COUNTER);
+	}
+
+	/** returns a reference to a last-writer-wins register */
+	public register<T>(key: string): CrdtRegister<T> {
+		return new CrdtRegister<T>(this, key, this.getBucket(), AntidotePB.CRDT_type.LWWREG);
+	}
+
+	/** returns a reference to a multi-value register */
+	public multiValueRegister<T>(key: string): CrdtMultiValueRegister<T> {
+		return new CrdtMultiValueRegister<T>(this, key, this.getBucket(), AntidotePB.CRDT_type.MVREG);
+	}
+
+	/** returns a reference to an integer object */
+	public integer(key: string): CrdtInteger {
+		return new CrdtInteger(this, key, this.getBucket(), AntidotePB.CRDT_type.INTEGER);
+	}
+
+	/** returns a reference to a add-wins set object */
+	public set<T>(key: string): CrdtSet<T> {
+		return new CrdtSet<T>(this, key, this.getBucket(), AntidotePB.CRDT_type.ORSET);
+	}
+
+	/** returns a reference to a remove-wins set object */
+	public set_removeWins<T>(key: string): CrdtSet<T> {
+		return new CrdtSet<T>(this, key, this.getBucket(), AntidotePB.CRDT_type.RWSET);
+	}
+
+	/** returns a reference to an add-wins map */
+	public map(key: string): CrdtMap {
+		return new CrdtMap(this, key, this.getBucket(), AntidotePB.CRDT_type.AWMAP);
+	}
+
+	/** returns a reference to a grow-only map */
+	public gmap(key: string): CrdtMap {
+		return new CrdtMap(this, key, this.getBucket(), AntidotePB.CRDT_type.GMAP);
+	}
+
+
+	abstract childUpdate(key: AntidotePB.ApbBoundObject, operation: AntidotePB.ApbUpdateOperation): AntidotePB.ApbUpdateOp;
+
+	readResponseToValue(type: AntidotePB.CRDT_type, response: AntidotePB.ApbReadObjectResp): any {
+		switch (type) {
+		case AntidotePB.CRDT_type.COUNTER:
+			return this.counter("").interpretReadResponse(response);
+		case AntidotePB.CRDT_type.ORSET:
+			return this.set("").interpretReadResponse(response);
+		case AntidotePB.CRDT_type.LWWREG:
+			return this.register("").interpretReadResponse(response);
+		case AntidotePB.CRDT_type.MVREG:
+			return this.multiValueRegister("").interpretReadResponse(response);
+		case AntidotePB.CRDT_type.INTEGER:
+			return this.integer("").interpretReadResponse(response);
+		case AntidotePB.CRDT_type.GMAP:
+			return this.gmap("").interpretReadResponse(response);
+		case AntidotePB.CRDT_type.AWMAP:
+			return this.map("").interpretReadResponse(response);
+		case AntidotePB.CRDT_type.RWSET:
+			return this.set_removeWins("").interpretReadResponse(response);
+		}
+	}
+}
+
+
 /** A connection to AntidoteDB with methods for reading, updating and starting transactions
  * 
  * By default each operation takes the snapshot time from the last successful operation. 
@@ -38,7 +116,7 @@ function encode(message: {encode(): ByteBuffer}): ArrayBuffer {
  * You can override the jsToBinary and binaryToJs methods to customize this behavior.
  * 
  */
-export class Connection {
+export class Connection extends CrdtFactory {
 	readonly connection: AntidoteConnection;
 	/**
 	 * stores the last commit time.
@@ -54,8 +132,22 @@ export class Connection {
 
 
 	constructor(conn: AntidoteConnection) {
+		super();
 		this.connection = conn;
 	}
+
+	public getBucket(): string {
+		return this.defaultBucket;
+	}
+
+	childUpdate(key: AntidotePB.ApbBoundObject, operation: AntidotePB.ApbUpdateOperation): AntidotePB.ApbUpdateOp {
+		var op = {
+			boundobject: key,
+			operation: operation
+		};
+		return op;
+	}
+
 
 	/** Method to encode objects before they are written to the database */
 	public jsToBinary(obj: any): ByteBuffer {
@@ -164,67 +256,9 @@ export class Connection {
 	}
 
 
-	readResponseToValue(type: AntidotePB.CRDT_type, response: AntidotePB.ApbReadObjectResp): any {
-		switch (type) {
-		case AntidotePB.CRDT_type.COUNTER:
-			return this.counter("").interpretReadResponse(response);
-		case AntidotePB.CRDT_type.ORSET:
-			return this.set("").interpretReadResponse(response);
-		case AntidotePB.CRDT_type.LWWREG:
-			return this.register("").interpretReadResponse(response);
-		case AntidotePB.CRDT_type.MVREG:
-			return this.multiValueRegister("").interpretReadResponse(response);
-		case AntidotePB.CRDT_type.INTEGER:
-			return this.integer("").interpretReadResponse(response);
-		case AntidotePB.CRDT_type.GMAP:
-			return this.gmap("").interpretReadResponse(response);
-		case AntidotePB.CRDT_type.AWMAP:
-			return this.map("").interpretReadResponse(response);
-		case AntidotePB.CRDT_type.RWSET:
-			return this.set_removeWins("").interpretReadResponse(response);
-		}
-	}
-
-	/** returns a reference to a counter object */
-	public counter(key: string): CrdtCounter {
-		return new CrdtCounter(this, key, this.defaultBucket, AntidotePB.CRDT_type.COUNTER);
-	}
-
-	/** returns a reference to a last-writer-wins register */
-	public register<T>(key: string): CrdtRegister<T> {
-		return new CrdtRegister<T>(this, key, this.defaultBucket, AntidotePB.CRDT_type.LWWREG);
-	}
-
-	/** returns a reference to a multi-value register */
-	public multiValueRegister<T>(key: string): CrdtMultiValueRegister<T> {
-		return new CrdtMultiValueRegister<T>(this, key, this.defaultBucket, AntidotePB.CRDT_type.MVREG);
-	}
-
-	/** returns a reference to an integer object */
-	public integer(key: string): CrdtInteger {
-		return new CrdtInteger(this, key, this.defaultBucket, AntidotePB.CRDT_type.INTEGER);
-	}
-
-	/** returns a reference to a add-wins set object */
-	public set<T>(key: string): CrdtSet<T> {
-		return new CrdtSet<T>(this, key, this.defaultBucket, AntidotePB.CRDT_type.ORSET);
-	}
-
-	/** returns a reference to a remove-wins set object */
-	public set_removeWins<T>(key: string): CrdtSet<T> {
-		return new CrdtSet<T>(this, key, this.defaultBucket, AntidotePB.CRDT_type.RWSET);
-	}
-
-	/** returns a reference to an add-wins map */
-	public map(key: string): CrdtMap {
-		return new CrdtMap(this, key, this.defaultBucket, AntidotePB.CRDT_type.AWMAP);
-	}
-
-	/** returns a reference to a grow-only map */
-	public gmap(key: string): CrdtMap {
-		return new CrdtMap(this, key, this.defaultBucket, AntidotePB.CRDT_type.GMAP);
-	}
 }
+
+
 
 export interface CommitResponse {
 	commitTime: ByteBuffer
@@ -303,11 +337,11 @@ export class Transaction {
 
 
 export abstract class AntidoteObject {
-	readonly connection: Connection;
+	readonly parent: CrdtFactory;
 	readonly key: AntidotePB.ApbBoundObject;
 
-	constructor(conn: Connection,  key: string, bucket: string, type: AntidotePB.CRDT_type) {
-		this.connection = conn;
+	constructor(conn: CrdtFactory,  key: string, bucket: string, type: AntidotePB.CRDT_type) {
+		this.parent = conn;
 		this.key = {
 			key: ByteBuffer.fromUTF8(key),
 			bucket: ByteBuffer.fromUTF8(bucket),
@@ -316,11 +350,7 @@ export abstract class AntidoteObject {
 	}
 
 	makeUpdate(operation: AntidotePB.ApbUpdateOperation): AntidotePB.ApbUpdateOp {
-		var op = {
-			boundobject: this.key,
-			operation: operation
-		};
-		return op;
+		return this.parent.childUpdate(this.key, operation);
 	}
 
 	abstract interpretReadResponse(readResponse: AntidotePB.ApbReadObjectResp): any;
@@ -356,7 +386,7 @@ export class CrdtCounter extends AntidoteObject {
 	}
 
 	public read(): Promise<number> {
-		return this.connection.read([this]).then(r => {
+		return this.parent.read([this]).then(r => {
 			return r.values[0]
 		})
 	}
@@ -395,7 +425,7 @@ export class CrdtInteger extends AntidoteObject {
 	}
 
 	public read(): Promise<number> {
-		return this.connection.read([this]).then(r => {
+		return this.parent.read([this]).then(r => {
 			return r.values[0]
 		})
 	}
@@ -410,14 +440,14 @@ export class CrdtRegister<T> extends AntidoteObject {
 
 	interpretReadResponse(readResponse: AntidotePB.ApbReadObjectResp): T {
 		let bin = readResponse.reg!.value!;
-		return this.connection.binaryToJs(bin);
+		return this.parent.binaryToJs(bin);
 	}
 
 	/** Creates an operation, which sets the register to the provided value.
 	 * Negative numbers will decrement the value. 
 	 * Use Connection.update to send the update to the database. */
 	public set(value: T): AntidotePB.ApbUpdateOp {
-		let bin = this.connection.jsToBinary(value);
+		let bin = this.parent.jsToBinary(value);
 		return this.makeUpdate({
 			regop: {
 				value: bin
@@ -426,7 +456,7 @@ export class CrdtRegister<T> extends AntidoteObject {
 	}
 
 	public read(): Promise<T> {
-		return this.connection.read([this]).then(r => {
+		return this.parent.read([this]).then(r => {
 			return r.values[0]
 		})
 	}
@@ -438,7 +468,7 @@ export class CrdtMultiValueRegister<T> extends AntidoteObject {
 
 	interpretReadResponse(readResponse: AntidotePB.ApbReadObjectResp): T[] {
 		let bins = readResponse.mvreg!.values!;
-		let res: any = bins.map(bin => this.connection.binaryToJs(bin));
+		let res: any = bins.map(bin => this.parent.binaryToJs(bin));
 		return res;
 	}
 
@@ -446,7 +476,7 @@ export class CrdtMultiValueRegister<T> extends AntidoteObject {
 	 * Negative numbers will decrement the value. 
 	 * Use Connection.update to send the update to the database. */
 	public set(value: T): AntidotePB.ApbUpdateOp {
-		let bin = this.connection.jsToBinary(value);
+		let bin = this.parent.jsToBinary(value);
 		return this.makeUpdate({
 			regop: {
 				value: bin
@@ -455,7 +485,7 @@ export class CrdtMultiValueRegister<T> extends AntidoteObject {
 	}
 
 	public read(): Promise<T[]> {
-		return this.connection.read([this]).then(r => {
+		return this.parent.read([this]).then(r => {
 			return r.values[0]
 		})
 	}
@@ -466,12 +496,12 @@ export class CrdtSet<T> extends AntidoteObjectWithReset {
 	interpretReadResponse(readResponse: AntidotePB.ApbReadObjectResp): T[] {
 		let vals = readResponse.set!.value!;
 		return vals.map(bin => {
-			return this.connection.binaryToJs(bin)
+			return this.parent.binaryToJs(bin)
 		});
 	}
 
 	public read(): Promise<T[]> {
-		return this.connection.read([this]).then(r => {
+		return this.parent.read([this]).then(r => {
 			return r.values[0]
 		})
 	}
@@ -483,7 +513,7 @@ export class CrdtSet<T> extends AntidoteObjectWithReset {
 		return this.makeUpdate({
 			setop: {
 				optype: AntidotePB.ApbSetUpdate.SetOpType.ADD,
-				adds: [this.connection.jsToBinary(elem)]
+				adds: [this.parent.jsToBinary(elem)]
 			}
 		})
 	}
@@ -495,7 +525,7 @@ export class CrdtSet<T> extends AntidoteObjectWithReset {
 		return this.makeUpdate({
 			setop: {
 				optype: AntidotePB.ApbSetUpdate.SetOpType.ADD,
-				adds: elems.map(elem => this.connection.jsToBinary(elem))
+				adds: elems.map(elem => this.parent.jsToBinary(elem))
 			}
 		})
 	}
@@ -507,7 +537,7 @@ export class CrdtSet<T> extends AntidoteObjectWithReset {
 		return this.makeUpdate({
 			setop: {
 				optype: AntidotePB.ApbSetUpdate.SetOpType.REMOVE,
-				rems: [this.connection.jsToBinary(elem)]
+				rems: [this.parent.jsToBinary(elem)]
 			}
 		})
 	}
@@ -519,53 +549,53 @@ export class CrdtSet<T> extends AntidoteObjectWithReset {
 		return this.makeUpdate({
 			setop: {
 				optype: AntidotePB.ApbSetUpdate.SetOpType.REMOVE,
-				rems: elems.map(elem => this.connection.jsToBinary(elem))
+				rems: elems.map(elem => this.parent.jsToBinary(elem))
 			}
 		})
 	}
 }
 
 export class CrdtMapValue {
-	private connection: Connection;
+	private factory: CrdtFactory;
 	private entries: AntidotePB.ApbMapEntry[];
 
-	constructor(connection: Connection, entries: AntidotePB.ApbMapEntry[]) {
-		this.connection = connection;
+	constructor(factory: CrdtFactory, entries: AntidotePB.ApbMapEntry[]) {
+		this.factory = factory;
 		this.entries = entries;
 	}
 
-	public get(key: String, type: AntidotePB.CRDT_type): any {
+	public get(key: string, type: AntidotePB.CRDT_type): any {
 		for (let entry of this.entries) {
-			let key = entry.key!;
-			if (key.type === type && key.key!.toUTF8() === key) {
-				return this.connection.readResponseToValue(type, entry.value!);
+			let entryKey = entry.key!;
+			if (entryKey.type === type && entryKey.key!.toUTF8() === key) {
+				return this.factory.readResponseToValue(type, entry.value!);
 			}
 		}
 		return undefined;
 	}
 
-	public counterValue(key: String): number | undefined {
+	public counterValue(key: string): number | undefined {
 		return this.get(key, AntidotePB.CRDT_type.COUNTER)
 	}
-	public setValue(key: String): any[] | undefined {
+	public setValue(key: string): any[] | undefined {
 		return this.get(key, AntidotePB.CRDT_type.ORSET)
 	}
-	public registerValue(key: String): any {
+	public registerValue(key: string): any {
 		return this.get(key, AntidotePB.CRDT_type.LWWREG)
 	}
-	public mvRegisterValue(key: String): any[] | undefined {
+	public mvRegisterValue(key: string): any[] | undefined {
 		return this.get(key, AntidotePB.CRDT_type.MVREG)
 	}
-	public integerValue(key: String): number | undefined {
+	public integerValue(key: string): number | undefined {
 		return this.get(key, AntidotePB.CRDT_type.INTEGER)
 	}
-	public gmapValue(key: String): CrdtMapValue | undefined {
+	public gmapValue(key: string): CrdtMapValue | undefined {
 		return this.get(key, AntidotePB.CRDT_type.GMAP)
 	}
-	public awmapValue(key: String): CrdtMapValue | undefined {
+	public awmapValue(key: string): CrdtMapValue | undefined {
 		return this.get(key, AntidotePB.CRDT_type.AWMAP)
 	}
-	public rwsetValue(key: String): any[] | undefined {
+	public rwsetValue(key: string): any[] | undefined {
 		return this.get(key, AntidotePB.CRDT_type.RWSET)
 	}
 	
@@ -573,7 +603,7 @@ export class CrdtMapValue {
 		let res: any = {};
 		for (let entry of this.entries) {
 			let type = entry.key!.type!;
-			let value = this.connection.readResponseToValue(type, entry.value!);
+			let value = this.factory.readResponseToValue(type, entry.value!);
 			if (value instanceof CrdtMapValue) {
 				value = value.toJsObject();
 			}
@@ -583,19 +613,95 @@ export class CrdtMapValue {
 	} 
 }
 
-export class CrdtMap extends AntidoteObjectWithReset {
-	interpretReadResponse(readResponse: AntidotePB.ApbReadObjectResp): any {
-		let vals = readResponse.map!.entries!;
-		return new CrdtMapValue(this.connection, vals);
+export class CrdtMap extends CrdtFactory implements AntidoteObject {
+	readonly parent: CrdtFactory;
+	readonly key: AntidotePB.ApbBoundObject;
+
+	constructor(conn: CrdtFactory,  key: string, bucket: string, type: AntidotePB.CRDT_type) {
+		super();
+		this.parent = conn;
+		this.key = {
+			key: ByteBuffer.fromUTF8(key),
+			bucket: ByteBuffer.fromUTF8(bucket),
+			type: type
+		}
 	}
 
-	public read(): Promise<CrdtMapValue> {
-		return this.connection.read([this]).then(r => {
+	childUpdate(key: AntidotePB.ApbBoundObject, operation: AntidotePB.ApbUpdateOperation): AntidotePB.ApbUpdateOp {
+		return {
+			boundobject: this.key,
+			operation: {
+				mapop: {
+					updates: [{
+						key: key,
+						//key: 1,
+						update: operation
+					}]
+				}
+			}
+		};
+	}
+
+	makeUpdate(operation: AntidotePB.ApbUpdateOperation): AntidotePB.ApbUpdateOp {
+		return this.parent.childUpdate(this.key, operation);
+	}
+
+	interpretReadResponse(readResponse: AntidotePB.ApbReadObjectResp): any {
+		let vals = readResponse.map!.entries!;
+		return new CrdtMapValue(this.parent, vals);
+	}
+
+	public readAsObject(): Promise<CrdtMapValue> {
+		return this.parent.read([this]).then(r => {
 			return r.values[0]
 		})
 	}
 
-	// TODO methods to access nested objects
-	// TODO methods to remove keys
+	getBucket(): string {
+		return "";
+	}
+
+	public read(objects: AntidoteObject[]): Promise<StaticReadResponse> {
+		return this.parent.read([this]).then(r => {
+			let map: CrdtMapValue = r.values[0];
+			let values: any[] = [];
+			// filter out the actual keys
+			for (let obj of objects) {
+				values.push(map.get(obj.key.key!.toUTF8(), obj.key.type!));
+			}
+			let res: StaticReadResponse = {
+				commitTime: r.commitTime,
+				values: values 
+			}
+			return res;
+		})
+	}
+
+	public jsToBinary(obj: any): ByteBuffer {
+		return this.parent.jsToBinary(obj);
+	}
+
+	public binaryToJs(byteBuffer: ByteBuffer): any {
+		return this.parent.binaryToJs(byteBuffer);
+	}
+
+
+	public remove(object: AntidoteObject): AntidotePB.ApbUpdateOperation {
+		return this.removeAll([object]);
+	}
+
+	public removeAll(objects: AntidoteObject[]): AntidotePB.ApbUpdateOperation {
+		let removedKeys: AntidotePB.ApbMapKey[] = objects.map(obj => {
+			return {
+				key: obj.key.key,
+				type: obj.key.type
+			};
+		});
+		return this.makeUpdate({
+			mapop: {
+				removedKeys: removedKeys
+			}
+		})
+	}
 
 }

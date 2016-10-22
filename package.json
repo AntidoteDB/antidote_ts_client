@@ -13,6 +13,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@types/es6-shim": "^0.31.32",
+    "@types/mocha": "^2.2.32",
     "@types/msgpack-lite": "^0.1.1",
     "@types/node": "^6.0.45",
     "@types/protobufjs": "^5.0.30",
@@ -20,6 +21,7 @@
     "protobufjs": "5.0.1"
   },
   "devDependencies": {
+    "mocha": "^3.1.2",
     "proto2ts": "2.0.0",
     "rimraf": "^2.5.4",
     "typescript": "^2.0.3"
@@ -27,7 +29,7 @@
   "scripts": {
     "compile": "tsc",
     "pretest": "npm run compile",
-    "test": "node dist/main.js",
+    "test": "mocha -R spec \"dist/**/*test.js\"",
     "clean": "rimraf dist/*",
     "watch": "tsc --watch",
     "lint": "tslint --project tsconfig.json",
