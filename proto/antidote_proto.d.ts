@@ -8,7 +8,7 @@ declare module AntidotePB {
 	
 	interface ProtoBufMap<KeyType, ValueType> {
 		clear(): void;
-		delete(key: KeyType): void;
+		delete(key: KeyType): boolean;
 		get(key: KeyType): ValueType;
 		has(key: KeyType): boolean;
 		set(key: KeyType, value: ValueType): void;
@@ -57,174 +57,233 @@ declare module AntidotePB {
 }
 
 declare module AntidotePB {
-	
+
 	export interface ApbErrorResp {
-	
+
 		
 
-errmsg?: ByteBuffer;
-		
-
-getErrmsg?() : ByteBuffer;
-		setErrmsg?(errmsg : ByteBuffer): void;
+errmsg: ByteBuffer;
 		
 
 
 
-errcode?: number;
+
+errcode: number;
 		
 
-getErrcode?() : number;
-		setErrcode?(errcode : number): void;
-		
 
 
 
 }
-	
+
 	export interface ApbErrorRespMessage extends ApbErrorResp {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbErrorRespMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbErrorRespMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbErrorRespBuilder {
 	new(data?: ApbErrorResp): ApbErrorRespMessage;
-	decode(buffer: ArrayBuffer) : ApbErrorRespMessage;
-	decode(buffer: ByteBuffer) : ApbErrorRespMessage;
-	decode64(buffer: string) : ApbErrorRespMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbErrorRespMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbErrorRespMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbErrorRespMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbErrorRespMessage;
+	decode64(str: string) : ApbErrorRespMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbErrorRespMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbErrorRespMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbErrorRespMessage;
+	decodeDelimited(buffer: string, enc: string): ApbErrorRespMessage;
+	decodeHex(str: string): ApbErrorRespMessage;
+	decodeJSON(str: string): ApbErrorRespMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbCounterUpdate {
-	
+
 		
 
 inc?: Long;
 		
 
-getInc?() : Long;
-		setInc?(inc : Long): void;
-		
 
 
 
 }
-	
+
 	export interface ApbCounterUpdateMessage extends ApbCounterUpdate {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbCounterUpdateMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbCounterUpdateMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbCounterUpdateBuilder {
 	new(data?: ApbCounterUpdate): ApbCounterUpdateMessage;
-	decode(buffer: ArrayBuffer) : ApbCounterUpdateMessage;
-	decode(buffer: ByteBuffer) : ApbCounterUpdateMessage;
-	decode64(buffer: string) : ApbCounterUpdateMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbCounterUpdateMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbCounterUpdateMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbCounterUpdateMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbCounterUpdateMessage;
+	decode64(str: string) : ApbCounterUpdateMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbCounterUpdateMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbCounterUpdateMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbCounterUpdateMessage;
+	decodeDelimited(buffer: string, enc: string): ApbCounterUpdateMessage;
+	decodeHex(str: string): ApbCounterUpdateMessage;
+	decodeJSON(str: string): ApbCounterUpdateMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbGetCounterResp {
-	
+
 		
 
-value?: number;
+value: number;
 		
 
-getValue?() : number;
-		setValue?(value : number): void;
-		
 
 
 
 }
-	
+
 	export interface ApbGetCounterRespMessage extends ApbGetCounterResp {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbGetCounterRespMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbGetCounterRespMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbGetCounterRespBuilder {
 	new(data?: ApbGetCounterResp): ApbGetCounterRespMessage;
-	decode(buffer: ArrayBuffer) : ApbGetCounterRespMessage;
-	decode(buffer: ByteBuffer) : ApbGetCounterRespMessage;
-	decode64(buffer: string) : ApbGetCounterRespMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbGetCounterRespMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbGetCounterRespMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbGetCounterRespMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbGetCounterRespMessage;
+	decode64(str: string) : ApbGetCounterRespMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbGetCounterRespMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbGetCounterRespMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbGetCounterRespMessage;
+	decodeDelimited(buffer: string, enc: string): ApbGetCounterRespMessage;
+	decodeHex(str: string): ApbGetCounterRespMessage;
+	decodeJSON(str: string): ApbGetCounterRespMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbSetUpdate {
-	
+
 		
 
-optype?: ApbSetUpdate.SetOpType;
-		
-
-getOptype?() : ApbSetUpdate.SetOpType;
-		setOptype?(optype : ApbSetUpdate.SetOpType): void;
+optype: ApbSetUpdate.SetOpType;
 		
 
 
 
-adds?: ByteBuffer[];
-		
 
-getAdds?() : ByteBuffer[];
-		setAdds?(adds : ByteBuffer[]): void;
+adds: ByteBuffer[];
 		
 
 
 
-rems?: ByteBuffer[];
+
+rems: ByteBuffer[];
 		
 
-getRems?() : ByteBuffer[];
-		setRems?(rems : ByteBuffer[]): void;
-		
 
 
 
 }
-	
+
 	export interface ApbSetUpdateMessage extends ApbSetUpdate {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbSetUpdateMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbSetUpdateMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbSetUpdateBuilder {
 	new(data?: ApbSetUpdate): ApbSetUpdateMessage;
-	decode(buffer: ArrayBuffer) : ApbSetUpdateMessage;
-	decode(buffer: ByteBuffer) : ApbSetUpdateMessage;
-	decode64(buffer: string) : ApbSetUpdateMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbSetUpdateMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbSetUpdateMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbSetUpdateMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbSetUpdateMessage;
+	decode64(str: string) : ApbSetUpdateMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbSetUpdateMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbSetUpdateMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbSetUpdateMessage;
+	decodeDelimited(buffer: string, enc: string): ApbSetUpdateMessage;
+	decodeHex(str: string): ApbSetUpdateMessage;
+	decodeJSON(str: string): ApbSetUpdateMessage;
 	SetOpType: ApbSetUpdate.SetOpType;
 	
 }
-	
+
 }
 
 declare module AntidotePB.ApbSetUpdate {
@@ -237,1325 +296,1725 @@ declare module AntidotePB.ApbSetUpdate {
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbGetSetResp {
-	
+
 		
 
-value?: ByteBuffer[];
+value: ByteBuffer[];
 		
 
-getValue?() : ByteBuffer[];
-		setValue?(value : ByteBuffer[]): void;
-		
 
 
 
 }
-	
+
 	export interface ApbGetSetRespMessage extends ApbGetSetResp {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbGetSetRespMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbGetSetRespMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbGetSetRespBuilder {
 	new(data?: ApbGetSetResp): ApbGetSetRespMessage;
-	decode(buffer: ArrayBuffer) : ApbGetSetRespMessage;
-	decode(buffer: ByteBuffer) : ApbGetSetRespMessage;
-	decode64(buffer: string) : ApbGetSetRespMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbGetSetRespMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbGetSetRespMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbGetSetRespMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbGetSetRespMessage;
+	decode64(str: string) : ApbGetSetRespMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbGetSetRespMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbGetSetRespMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbGetSetRespMessage;
+	decodeDelimited(buffer: string, enc: string): ApbGetSetRespMessage;
+	decodeHex(str: string): ApbGetSetRespMessage;
+	decodeJSON(str: string): ApbGetSetRespMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbRegUpdate {
-	
+
 		
 
-value?: ByteBuffer;
+value: ByteBuffer;
 		
 
-getValue?() : ByteBuffer;
-		setValue?(value : ByteBuffer): void;
-		
 
 
 
 }
-	
+
 	export interface ApbRegUpdateMessage extends ApbRegUpdate {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbRegUpdateMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbRegUpdateMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbRegUpdateBuilder {
 	new(data?: ApbRegUpdate): ApbRegUpdateMessage;
-	decode(buffer: ArrayBuffer) : ApbRegUpdateMessage;
-	decode(buffer: ByteBuffer) : ApbRegUpdateMessage;
-	decode64(buffer: string) : ApbRegUpdateMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbRegUpdateMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbRegUpdateMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbRegUpdateMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbRegUpdateMessage;
+	decode64(str: string) : ApbRegUpdateMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbRegUpdateMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbRegUpdateMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbRegUpdateMessage;
+	decodeDelimited(buffer: string, enc: string): ApbRegUpdateMessage;
+	decodeHex(str: string): ApbRegUpdateMessage;
+	decodeJSON(str: string): ApbRegUpdateMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbGetRegResp {
-	
+
 		
 
-value?: ByteBuffer;
+value: ByteBuffer;
 		
 
-getValue?() : ByteBuffer;
-		setValue?(value : ByteBuffer): void;
-		
 
 
 
 }
-	
+
 	export interface ApbGetRegRespMessage extends ApbGetRegResp {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbGetRegRespMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbGetRegRespMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbGetRegRespBuilder {
 	new(data?: ApbGetRegResp): ApbGetRegRespMessage;
-	decode(buffer: ArrayBuffer) : ApbGetRegRespMessage;
-	decode(buffer: ByteBuffer) : ApbGetRegRespMessage;
-	decode64(buffer: string) : ApbGetRegRespMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbGetRegRespMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbGetRegRespMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbGetRegRespMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbGetRegRespMessage;
+	decode64(str: string) : ApbGetRegRespMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbGetRegRespMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbGetRegRespMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbGetRegRespMessage;
+	decodeDelimited(buffer: string, enc: string): ApbGetRegRespMessage;
+	decodeHex(str: string): ApbGetRegRespMessage;
+	decodeJSON(str: string): ApbGetRegRespMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbGetMVRegResp {
-	
+
 		
 
-values?: ByteBuffer[];
+values: ByteBuffer[];
 		
 
-getValues?() : ByteBuffer[];
-		setValues?(values : ByteBuffer[]): void;
-		
 
 
 
 }
-	
+
 	export interface ApbGetMVRegRespMessage extends ApbGetMVRegResp {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbGetMVRegRespMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbGetMVRegRespMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbGetMVRegRespBuilder {
 	new(data?: ApbGetMVRegResp): ApbGetMVRegRespMessage;
-	decode(buffer: ArrayBuffer) : ApbGetMVRegRespMessage;
-	decode(buffer: ByteBuffer) : ApbGetMVRegRespMessage;
-	decode64(buffer: string) : ApbGetMVRegRespMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbGetMVRegRespMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbGetMVRegRespMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbGetMVRegRespMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbGetMVRegRespMessage;
+	decode64(str: string) : ApbGetMVRegRespMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbGetMVRegRespMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbGetMVRegRespMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbGetMVRegRespMessage;
+	decodeDelimited(buffer: string, enc: string): ApbGetMVRegRespMessage;
+	decodeHex(str: string): ApbGetMVRegRespMessage;
+	decodeJSON(str: string): ApbGetMVRegRespMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbIntegerUpdate {
-	
+
 		
 
 inc?: Long;
 		
 
-getInc?() : Long;
-		setInc?(inc : Long): void;
-		
 
 
 
 set?: Long;
 		
 
-getSet?() : Long;
-		setSet?(set : Long): void;
-		
 
 
 
 }
-	
+
 	export interface ApbIntegerUpdateMessage extends ApbIntegerUpdate {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbIntegerUpdateMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	//set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbIntegerUpdateMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbIntegerUpdateBuilder {
 	new(data?: ApbIntegerUpdate): ApbIntegerUpdateMessage;
-	decode(buffer: ArrayBuffer) : ApbIntegerUpdateMessage;
-	decode(buffer: ByteBuffer) : ApbIntegerUpdateMessage;
-	decode64(buffer: string) : ApbIntegerUpdateMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbIntegerUpdateMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbIntegerUpdateMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbIntegerUpdateMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbIntegerUpdateMessage;
+	decode64(str: string) : ApbIntegerUpdateMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbIntegerUpdateMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbIntegerUpdateMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbIntegerUpdateMessage;
+	decodeDelimited(buffer: string, enc: string): ApbIntegerUpdateMessage;
+	decodeHex(str: string): ApbIntegerUpdateMessage;
+	decodeJSON(str: string): ApbIntegerUpdateMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbGetIntegerResp {
-	
+
 		
 
-value?: Long;
+value: Long;
 		
 
-getValue?() : Long;
-		setValue?(value : Long): void;
-		
 
 
 
 }
-	
+
 	export interface ApbGetIntegerRespMessage extends ApbGetIntegerResp {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbGetIntegerRespMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbGetIntegerRespMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbGetIntegerRespBuilder {
 	new(data?: ApbGetIntegerResp): ApbGetIntegerRespMessage;
-	decode(buffer: ArrayBuffer) : ApbGetIntegerRespMessage;
-	decode(buffer: ByteBuffer) : ApbGetIntegerRespMessage;
-	decode64(buffer: string) : ApbGetIntegerRespMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbGetIntegerRespMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbGetIntegerRespMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbGetIntegerRespMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbGetIntegerRespMessage;
+	decode64(str: string) : ApbGetIntegerRespMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbGetIntegerRespMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbGetIntegerRespMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbGetIntegerRespMessage;
+	decodeDelimited(buffer: string, enc: string): ApbGetIntegerRespMessage;
+	decodeHex(str: string): ApbGetIntegerRespMessage;
+	decodeJSON(str: string): ApbGetIntegerRespMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbMapKey {
-	
+
 		
 
-key?: ByteBuffer;
-		
-
-getKey?() : ByteBuffer;
-		setKey?(key : ByteBuffer): void;
+key: ByteBuffer;
 		
 
 
 
-type?: CRDT_type;
+
+type: CRDT_type;
 		
 
-getType?() : CRDT_type;
-		setType?(type : CRDT_type): void;
-		
 
 
 
 }
-	
+
 	export interface ApbMapKeyMessage extends ApbMapKey {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbMapKeyMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbMapKeyMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbMapKeyBuilder {
 	new(data?: ApbMapKey): ApbMapKeyMessage;
-	decode(buffer: ArrayBuffer) : ApbMapKeyMessage;
-	decode(buffer: ByteBuffer) : ApbMapKeyMessage;
-	decode64(buffer: string) : ApbMapKeyMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbMapKeyMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbMapKeyMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbMapKeyMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbMapKeyMessage;
+	decode64(str: string) : ApbMapKeyMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbMapKeyMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbMapKeyMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbMapKeyMessage;
+	decodeDelimited(buffer: string, enc: string): ApbMapKeyMessage;
+	decodeHex(str: string): ApbMapKeyMessage;
+	decodeJSON(str: string): ApbMapKeyMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbMapUpdate {
-	
+
 		
 
-updates?: ApbMapNestedUpdate[];
-		
-
-getUpdates?() : ApbMapNestedUpdate[];
-		setUpdates?(updates : ApbMapNestedUpdate[]): void;
+updates: ApbMapNestedUpdate[];
 		
 
 
 
-removedKeys?: ApbMapKey[];
+
+removedKeys: ApbMapKey[];
 		
 
-getRemovedKeys?() : ApbMapKey[];
-		setRemovedKeys?(removedKeys : ApbMapKey[]): void;
-		
 
 
 
 }
-	
+
 	export interface ApbMapUpdateMessage extends ApbMapUpdate {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbMapUpdateMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbMapUpdateMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbMapUpdateBuilder {
 	new(data?: ApbMapUpdate): ApbMapUpdateMessage;
-	decode(buffer: ArrayBuffer) : ApbMapUpdateMessage;
-	decode(buffer: ByteBuffer) : ApbMapUpdateMessage;
-	decode64(buffer: string) : ApbMapUpdateMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbMapUpdateMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbMapUpdateMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbMapUpdateMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbMapUpdateMessage;
+	decode64(str: string) : ApbMapUpdateMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbMapUpdateMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbMapUpdateMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbMapUpdateMessage;
+	decodeDelimited(buffer: string, enc: string): ApbMapUpdateMessage;
+	decodeHex(str: string): ApbMapUpdateMessage;
+	decodeJSON(str: string): ApbMapUpdateMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbMapNestedUpdate {
-	
+
 		
 
-key?: ApbMapKey;
-		
-
-getKey?() : ApbMapKey;
-		setKey?(key : ApbMapKey): void;
+key: ApbMapKey;
 		
 
 
 
-update?: ApbUpdateOperation;
+
+update: ApbUpdateOperation;
 		
 
-getUpdate?() : ApbUpdateOperation;
-		setUpdate?(update : ApbUpdateOperation): void;
-		
 
 
 
 }
-	
+
 	export interface ApbMapNestedUpdateMessage extends ApbMapNestedUpdate {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbMapNestedUpdateMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbMapNestedUpdateMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbMapNestedUpdateBuilder {
 	new(data?: ApbMapNestedUpdate): ApbMapNestedUpdateMessage;
-	decode(buffer: ArrayBuffer) : ApbMapNestedUpdateMessage;
-	decode(buffer: ByteBuffer) : ApbMapNestedUpdateMessage;
-	decode64(buffer: string) : ApbMapNestedUpdateMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbMapNestedUpdateMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbMapNestedUpdateMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbMapNestedUpdateMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbMapNestedUpdateMessage;
+	decode64(str: string) : ApbMapNestedUpdateMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbMapNestedUpdateMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbMapNestedUpdateMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbMapNestedUpdateMessage;
+	decodeDelimited(buffer: string, enc: string): ApbMapNestedUpdateMessage;
+	decodeHex(str: string): ApbMapNestedUpdateMessage;
+	decodeJSON(str: string): ApbMapNestedUpdateMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbGetMapResp {
-	
+
 		
 
-entries?: ApbMapEntry[];
+entries: ApbMapEntry[];
 		
 
-getEntries?() : ApbMapEntry[];
-		setEntries?(entries : ApbMapEntry[]): void;
-		
 
 
 
 }
-	
+
 	export interface ApbGetMapRespMessage extends ApbGetMapResp {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbGetMapRespMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbGetMapRespMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbGetMapRespBuilder {
 	new(data?: ApbGetMapResp): ApbGetMapRespMessage;
-	decode(buffer: ArrayBuffer) : ApbGetMapRespMessage;
-	decode(buffer: ByteBuffer) : ApbGetMapRespMessage;
-	decode64(buffer: string) : ApbGetMapRespMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbGetMapRespMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbGetMapRespMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbGetMapRespMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbGetMapRespMessage;
+	decode64(str: string) : ApbGetMapRespMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbGetMapRespMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbGetMapRespMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbGetMapRespMessage;
+	decodeDelimited(buffer: string, enc: string): ApbGetMapRespMessage;
+	decodeHex(str: string): ApbGetMapRespMessage;
+	decodeJSON(str: string): ApbGetMapRespMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbMapEntry {
-	
+
 		
 
-key?: ApbMapKey;
-		
-
-getKey?() : ApbMapKey;
-		setKey?(key : ApbMapKey): void;
+key: ApbMapKey;
 		
 
 
 
-value?: ApbReadObjectResp;
+
+value: ApbReadObjectResp;
 		
 
-getValue?() : ApbReadObjectResp;
-		setValue?(value : ApbReadObjectResp): void;
-		
 
 
 
 }
-	
+
 	export interface ApbMapEntryMessage extends ApbMapEntry {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbMapEntryMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbMapEntryMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbMapEntryBuilder {
 	new(data?: ApbMapEntry): ApbMapEntryMessage;
-	decode(buffer: ArrayBuffer) : ApbMapEntryMessage;
-	decode(buffer: ByteBuffer) : ApbMapEntryMessage;
-	decode64(buffer: string) : ApbMapEntryMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbMapEntryMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbMapEntryMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbMapEntryMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbMapEntryMessage;
+	decode64(str: string) : ApbMapEntryMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbMapEntryMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbMapEntryMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbMapEntryMessage;
+	decodeDelimited(buffer: string, enc: string): ApbMapEntryMessage;
+	decodeHex(str: string): ApbMapEntryMessage;
+	decodeJSON(str: string): ApbMapEntryMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbCrdtReset {
-	
+
 		
 
 }
-	
+
 	export interface ApbCrdtResetMessage extends ApbCrdtReset {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbCrdtResetMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbCrdtResetMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbCrdtResetBuilder {
 	new(data?: ApbCrdtReset): ApbCrdtResetMessage;
-	decode(buffer: ArrayBuffer) : ApbCrdtResetMessage;
-	decode(buffer: ByteBuffer) : ApbCrdtResetMessage;
-	decode64(buffer: string) : ApbCrdtResetMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbCrdtResetMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbCrdtResetMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbCrdtResetMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbCrdtResetMessage;
+	decode64(str: string) : ApbCrdtResetMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbCrdtResetMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbCrdtResetMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbCrdtResetMessage;
+	decodeDelimited(buffer: string, enc: string): ApbCrdtResetMessage;
+	decodeHex(str: string): ApbCrdtResetMessage;
+	decodeJSON(str: string): ApbCrdtResetMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbOperationResp {
-	
+
 		
 
-success?: boolean;
+success: boolean;
 		
 
-getSuccess?() : boolean;
-		setSuccess?(success : boolean): void;
-		
 
 
 
 errorcode?: number;
 		
 
-getErrorcode?() : number;
-		setErrorcode?(errorcode : number): void;
-		
 
 
 
 }
-	
+
 	export interface ApbOperationRespMessage extends ApbOperationResp {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbOperationRespMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbOperationRespMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbOperationRespBuilder {
 	new(data?: ApbOperationResp): ApbOperationRespMessage;
-	decode(buffer: ArrayBuffer) : ApbOperationRespMessage;
-	decode(buffer: ByteBuffer) : ApbOperationRespMessage;
-	decode64(buffer: string) : ApbOperationRespMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbOperationRespMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbOperationRespMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbOperationRespMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbOperationRespMessage;
+	decode64(str: string) : ApbOperationRespMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbOperationRespMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbOperationRespMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbOperationRespMessage;
+	decodeDelimited(buffer: string, enc: string): ApbOperationRespMessage;
+	decodeHex(str: string): ApbOperationRespMessage;
+	decodeJSON(str: string): ApbOperationRespMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbTxnProperties {
-	
+
 		
 
 read_write?: number;
 		
 
-getReadWrite?() : number;
-		setReadWrite?(readWrite : number): void;
-		
 
 
 
 red_blue?: number;
 		
 
-getRedBlue?() : number;
-		setRedBlue?(redBlue : number): void;
-		
 
 
 
 }
-	
+
 	export interface ApbTxnPropertiesMessage extends ApbTxnProperties {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbTxnPropertiesMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbTxnPropertiesMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbTxnPropertiesBuilder {
 	new(data?: ApbTxnProperties): ApbTxnPropertiesMessage;
-	decode(buffer: ArrayBuffer) : ApbTxnPropertiesMessage;
-	decode(buffer: ByteBuffer) : ApbTxnPropertiesMessage;
-	decode64(buffer: string) : ApbTxnPropertiesMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbTxnPropertiesMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbTxnPropertiesMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbTxnPropertiesMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbTxnPropertiesMessage;
+	decode64(str: string) : ApbTxnPropertiesMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbTxnPropertiesMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbTxnPropertiesMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbTxnPropertiesMessage;
+	decodeDelimited(buffer: string, enc: string): ApbTxnPropertiesMessage;
+	decodeHex(str: string): ApbTxnPropertiesMessage;
+	decodeJSON(str: string): ApbTxnPropertiesMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbBoundObject {
-	
+
 		
 
-key?: ByteBuffer;
-		
-
-getKey?() : ByteBuffer;
-		setKey?(key : ByteBuffer): void;
+key: ByteBuffer;
 		
 
 
 
-type?: CRDT_type;
-		
 
-getType?() : CRDT_type;
-		setType?(type : CRDT_type): void;
+type: CRDT_type;
 		
 
 
 
-bucket?: ByteBuffer;
+
+bucket: ByteBuffer;
 		
 
-getBucket?() : ByteBuffer;
-		setBucket?(bucket : ByteBuffer): void;
-		
 
 
 
 }
-	
+
 	export interface ApbBoundObjectMessage extends ApbBoundObject {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbBoundObjectMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbBoundObjectMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbBoundObjectBuilder {
 	new(data?: ApbBoundObject): ApbBoundObjectMessage;
-	decode(buffer: ArrayBuffer) : ApbBoundObjectMessage;
-	decode(buffer: ByteBuffer) : ApbBoundObjectMessage;
-	decode64(buffer: string) : ApbBoundObjectMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbBoundObjectMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbBoundObjectMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbBoundObjectMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbBoundObjectMessage;
+	decode64(str: string) : ApbBoundObjectMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbBoundObjectMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbBoundObjectMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbBoundObjectMessage;
+	decodeDelimited(buffer: string, enc: string): ApbBoundObjectMessage;
+	decodeHex(str: string): ApbBoundObjectMessage;
+	decodeJSON(str: string): ApbBoundObjectMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbReadObjects {
-	
+
 		
 
-boundobjects?: ApbBoundObject[];
-		
-
-getBoundobjects?() : ApbBoundObject[];
-		setBoundobjects?(boundobjects : ApbBoundObject[]): void;
+boundobjects: ApbBoundObject[];
 		
 
 
 
-transaction_descriptor?: ByteBuffer;
+
+transaction_descriptor: ByteBuffer;
 		
 
-getTransactionDescriptor?() : ByteBuffer;
-		setTransactionDescriptor?(transactionDescriptor : ByteBuffer): void;
-		
 
 
 
 }
-	
+
 	export interface ApbReadObjectsMessage extends ApbReadObjects {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbReadObjectsMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbReadObjectsMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbReadObjectsBuilder {
 	new(data?: ApbReadObjects): ApbReadObjectsMessage;
-	decode(buffer: ArrayBuffer) : ApbReadObjectsMessage;
-	decode(buffer: ByteBuffer) : ApbReadObjectsMessage;
-	decode64(buffer: string) : ApbReadObjectsMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbReadObjectsMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbReadObjectsMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbReadObjectsMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbReadObjectsMessage;
+	decode64(str: string) : ApbReadObjectsMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbReadObjectsMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbReadObjectsMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbReadObjectsMessage;
+	decodeDelimited(buffer: string, enc: string): ApbReadObjectsMessage;
+	decodeHex(str: string): ApbReadObjectsMessage;
+	decodeJSON(str: string): ApbReadObjectsMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbUpdateOp {
-	
+
 		
 
-boundobject?: ApbBoundObject;
-		
-
-getBoundobject?() : ApbBoundObject;
-		setBoundobject?(boundobject : ApbBoundObject): void;
+boundobject: ApbBoundObject;
 		
 
 
 
-operation?: ApbUpdateOperation;
+
+operation: ApbUpdateOperation;
 		
 
-getOperation?() : ApbUpdateOperation;
-		setOperation?(operation : ApbUpdateOperation): void;
-		
 
 
 
 }
-	
+
 	export interface ApbUpdateOpMessage extends ApbUpdateOp {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbUpdateOpMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbUpdateOpMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbUpdateOpBuilder {
 	new(data?: ApbUpdateOp): ApbUpdateOpMessage;
-	decode(buffer: ArrayBuffer) : ApbUpdateOpMessage;
-	decode(buffer: ByteBuffer) : ApbUpdateOpMessage;
-	decode64(buffer: string) : ApbUpdateOpMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbUpdateOpMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbUpdateOpMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbUpdateOpMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbUpdateOpMessage;
+	decode64(str: string) : ApbUpdateOpMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbUpdateOpMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbUpdateOpMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbUpdateOpMessage;
+	decodeDelimited(buffer: string, enc: string): ApbUpdateOpMessage;
+	decodeHex(str: string): ApbUpdateOpMessage;
+	decodeJSON(str: string): ApbUpdateOpMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbUpdateOperation {
-	
+
 		
 
 counterop?: ApbCounterUpdate;
 		
 
-getCounterop?() : ApbCounterUpdate;
-		setCounterop?(counterop : ApbCounterUpdate): void;
-		
 
 
 
 setop?: ApbSetUpdate;
 		
 
-getSetop?() : ApbSetUpdate;
-		setSetop?(setop : ApbSetUpdate): void;
-		
 
 
 
 regop?: ApbRegUpdate;
 		
 
-getRegop?() : ApbRegUpdate;
-		setRegop?(regop : ApbRegUpdate): void;
-		
 
 
 
 integerop?: ApbIntegerUpdate;
 		
 
-getIntegerop?() : ApbIntegerUpdate;
-		setIntegerop?(integerop : ApbIntegerUpdate): void;
-		
 
 
 
 mapop?: ApbMapUpdate;
 		
 
-getMapop?() : ApbMapUpdate;
-		setMapop?(mapop : ApbMapUpdate): void;
-		
 
 
 
 resetop?: ApbCrdtReset;
 		
 
-getResetop?() : ApbCrdtReset;
-		setResetop?(resetop : ApbCrdtReset): void;
-		
 
 
 
 }
-	
+
 	export interface ApbUpdateOperationMessage extends ApbUpdateOperation {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbUpdateOperationMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbUpdateOperationMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbUpdateOperationBuilder {
 	new(data?: ApbUpdateOperation): ApbUpdateOperationMessage;
-	decode(buffer: ArrayBuffer) : ApbUpdateOperationMessage;
-	decode(buffer: ByteBuffer) : ApbUpdateOperationMessage;
-	decode64(buffer: string) : ApbUpdateOperationMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbUpdateOperationMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbUpdateOperationMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbUpdateOperationMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbUpdateOperationMessage;
+	decode64(str: string) : ApbUpdateOperationMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbUpdateOperationMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbUpdateOperationMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbUpdateOperationMessage;
+	decodeDelimited(buffer: string, enc: string): ApbUpdateOperationMessage;
+	decodeHex(str: string): ApbUpdateOperationMessage;
+	decodeJSON(str: string): ApbUpdateOperationMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbUpdateObjects {
-	
+
 		
 
-updates?: ApbUpdateOp[];
-		
-
-getUpdates?() : ApbUpdateOp[];
-		setUpdates?(updates : ApbUpdateOp[]): void;
+updates: ApbUpdateOp[];
 		
 
 
 
-transaction_descriptor?: ByteBuffer;
+
+transaction_descriptor: ByteBuffer;
 		
 
-getTransactionDescriptor?() : ByteBuffer;
-		setTransactionDescriptor?(transactionDescriptor : ByteBuffer): void;
-		
 
 
 
 }
-	
+
 	export interface ApbUpdateObjectsMessage extends ApbUpdateObjects {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbUpdateObjectsMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbUpdateObjectsMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbUpdateObjectsBuilder {
 	new(data?: ApbUpdateObjects): ApbUpdateObjectsMessage;
-	decode(buffer: ArrayBuffer) : ApbUpdateObjectsMessage;
-	decode(buffer: ByteBuffer) : ApbUpdateObjectsMessage;
-	decode64(buffer: string) : ApbUpdateObjectsMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbUpdateObjectsMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbUpdateObjectsMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbUpdateObjectsMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbUpdateObjectsMessage;
+	decode64(str: string) : ApbUpdateObjectsMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbUpdateObjectsMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbUpdateObjectsMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbUpdateObjectsMessage;
+	decodeDelimited(buffer: string, enc: string): ApbUpdateObjectsMessage;
+	decodeHex(str: string): ApbUpdateObjectsMessage;
+	decodeJSON(str: string): ApbUpdateObjectsMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbStartTransaction {
-	
+
 		
 
 timestamp?: ByteBuffer;
 		
 
-getTimestamp?() : ByteBuffer;
-		setTimestamp?(timestamp : ByteBuffer): void;
-		
 
 
 
 properties?: ApbTxnProperties;
 		
 
-getProperties?() : ApbTxnProperties;
-		setProperties?(properties : ApbTxnProperties): void;
-		
 
 
 
 }
-	
+
 	export interface ApbStartTransactionMessage extends ApbStartTransaction {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbStartTransactionMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbStartTransactionMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbStartTransactionBuilder {
 	new(data?: ApbStartTransaction): ApbStartTransactionMessage;
-	decode(buffer: ArrayBuffer) : ApbStartTransactionMessage;
-	decode(buffer: ByteBuffer) : ApbStartTransactionMessage;
-	decode64(buffer: string) : ApbStartTransactionMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbStartTransactionMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbStartTransactionMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbStartTransactionMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbStartTransactionMessage;
+	decode64(str: string) : ApbStartTransactionMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbStartTransactionMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbStartTransactionMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbStartTransactionMessage;
+	decodeDelimited(buffer: string, enc: string): ApbStartTransactionMessage;
+	decodeHex(str: string): ApbStartTransactionMessage;
+	decodeJSON(str: string): ApbStartTransactionMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbAbortTransaction {
-	
+
 		
 
-transaction_descriptor?: ByteBuffer;
+transaction_descriptor: ByteBuffer;
 		
 
-getTransactionDescriptor?() : ByteBuffer;
-		setTransactionDescriptor?(transactionDescriptor : ByteBuffer): void;
-		
 
 
 
 }
-	
+
 	export interface ApbAbortTransactionMessage extends ApbAbortTransaction {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbAbortTransactionMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbAbortTransactionMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbAbortTransactionBuilder {
 	new(data?: ApbAbortTransaction): ApbAbortTransactionMessage;
-	decode(buffer: ArrayBuffer) : ApbAbortTransactionMessage;
-	decode(buffer: ByteBuffer) : ApbAbortTransactionMessage;
-	decode64(buffer: string) : ApbAbortTransactionMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbAbortTransactionMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbAbortTransactionMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbAbortTransactionMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbAbortTransactionMessage;
+	decode64(str: string) : ApbAbortTransactionMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbAbortTransactionMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbAbortTransactionMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbAbortTransactionMessage;
+	decodeDelimited(buffer: string, enc: string): ApbAbortTransactionMessage;
+	decodeHex(str: string): ApbAbortTransactionMessage;
+	decodeJSON(str: string): ApbAbortTransactionMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbCommitTransaction {
-	
+
 		
 
-transaction_descriptor?: ByteBuffer;
+transaction_descriptor: ByteBuffer;
 		
 
-getTransactionDescriptor?() : ByteBuffer;
-		setTransactionDescriptor?(transactionDescriptor : ByteBuffer): void;
-		
 
 
 
 }
-	
+
 	export interface ApbCommitTransactionMessage extends ApbCommitTransaction {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbCommitTransactionMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbCommitTransactionMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbCommitTransactionBuilder {
 	new(data?: ApbCommitTransaction): ApbCommitTransactionMessage;
-	decode(buffer: ArrayBuffer) : ApbCommitTransactionMessage;
-	decode(buffer: ByteBuffer) : ApbCommitTransactionMessage;
-	decode64(buffer: string) : ApbCommitTransactionMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbCommitTransactionMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbCommitTransactionMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbCommitTransactionMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbCommitTransactionMessage;
+	decode64(str: string) : ApbCommitTransactionMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbCommitTransactionMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbCommitTransactionMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbCommitTransactionMessage;
+	decodeDelimited(buffer: string, enc: string): ApbCommitTransactionMessage;
+	decodeHex(str: string): ApbCommitTransactionMessage;
+	decodeJSON(str: string): ApbCommitTransactionMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbStaticUpdateObjects {
-	
+
 		
 
-transaction?: ApbStartTransaction;
-		
-
-getTransaction?() : ApbStartTransaction;
-		setTransaction?(transaction : ApbStartTransaction): void;
+transaction: ApbStartTransaction;
 		
 
 
 
-updates?: ApbUpdateOp[];
+
+updates: ApbUpdateOp[];
 		
 
-getUpdates?() : ApbUpdateOp[];
-		setUpdates?(updates : ApbUpdateOp[]): void;
-		
 
 
 
 }
-	
+
 	export interface ApbStaticUpdateObjectsMessage extends ApbStaticUpdateObjects {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbStaticUpdateObjectsMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbStaticUpdateObjectsMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbStaticUpdateObjectsBuilder {
 	new(data?: ApbStaticUpdateObjects): ApbStaticUpdateObjectsMessage;
-	decode(buffer: ArrayBuffer) : ApbStaticUpdateObjectsMessage;
-	decode(buffer: ByteBuffer) : ApbStaticUpdateObjectsMessage;
-	decode64(buffer: string) : ApbStaticUpdateObjectsMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbStaticUpdateObjectsMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbStaticUpdateObjectsMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbStaticUpdateObjectsMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbStaticUpdateObjectsMessage;
+	decode64(str: string) : ApbStaticUpdateObjectsMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbStaticUpdateObjectsMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbStaticUpdateObjectsMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbStaticUpdateObjectsMessage;
+	decodeDelimited(buffer: string, enc: string): ApbStaticUpdateObjectsMessage;
+	decodeHex(str: string): ApbStaticUpdateObjectsMessage;
+	decodeJSON(str: string): ApbStaticUpdateObjectsMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbStaticReadObjects {
-	
+
 		
 
-transaction?: ApbStartTransaction;
-		
-
-getTransaction?() : ApbStartTransaction;
-		setTransaction?(transaction : ApbStartTransaction): void;
+transaction: ApbStartTransaction;
 		
 
 
 
-objects?: ApbBoundObject[];
+
+objects: ApbBoundObject[];
 		
 
-getObjects?() : ApbBoundObject[];
-		setObjects?(objects : ApbBoundObject[]): void;
-		
 
 
 
 }
-	
+
 	export interface ApbStaticReadObjectsMessage extends ApbStaticReadObjects {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbStaticReadObjectsMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbStaticReadObjectsMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbStaticReadObjectsBuilder {
 	new(data?: ApbStaticReadObjects): ApbStaticReadObjectsMessage;
-	decode(buffer: ArrayBuffer) : ApbStaticReadObjectsMessage;
-	decode(buffer: ByteBuffer) : ApbStaticReadObjectsMessage;
-	decode64(buffer: string) : ApbStaticReadObjectsMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbStaticReadObjectsMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbStaticReadObjectsMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbStaticReadObjectsMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbStaticReadObjectsMessage;
+	decode64(str: string) : ApbStaticReadObjectsMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbStaticReadObjectsMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbStaticReadObjectsMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbStaticReadObjectsMessage;
+	decodeDelimited(buffer: string, enc: string): ApbStaticReadObjectsMessage;
+	decodeHex(str: string): ApbStaticReadObjectsMessage;
+	decodeJSON(str: string): ApbStaticReadObjectsMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbStartTransactionResp {
-	
+
 		
 
-success?: boolean;
+success: boolean;
 		
 
-getSuccess?() : boolean;
-		setSuccess?(success : boolean): void;
-		
 
 
 
 transaction_descriptor?: ByteBuffer;
 		
 
-getTransactionDescriptor?() : ByteBuffer;
-		setTransactionDescriptor?(transactionDescriptor : ByteBuffer): void;
-		
 
 
 
 errorcode?: number;
 		
 
-getErrorcode?() : number;
-		setErrorcode?(errorcode : number): void;
-		
 
 
 
 }
-	
+
 	export interface ApbStartTransactionRespMessage extends ApbStartTransactionResp {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbStartTransactionRespMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbStartTransactionRespMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbStartTransactionRespBuilder {
 	new(data?: ApbStartTransactionResp): ApbStartTransactionRespMessage;
-	decode(buffer: ArrayBuffer) : ApbStartTransactionRespMessage;
-	decode(buffer: ByteBuffer) : ApbStartTransactionRespMessage;
-	decode64(buffer: string) : ApbStartTransactionRespMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbStartTransactionRespMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbStartTransactionRespMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbStartTransactionRespMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbStartTransactionRespMessage;
+	decode64(str: string) : ApbStartTransactionRespMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbStartTransactionRespMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbStartTransactionRespMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbStartTransactionRespMessage;
+	decodeDelimited(buffer: string, enc: string): ApbStartTransactionRespMessage;
+	decodeHex(str: string): ApbStartTransactionRespMessage;
+	decodeJSON(str: string): ApbStartTransactionRespMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbReadObjectResp {
-	
+
 		
 
 counter?: ApbGetCounterResp;
 		
 
-getCounter?() : ApbGetCounterResp;
-		setCounter?(counter : ApbGetCounterResp): void;
-		
 
 
 
 set?: ApbGetSetResp;
 		
 
-getSet?() : ApbGetSetResp;
-		setSet?(set : ApbGetSetResp): void;
-		
 
 
 
 reg?: ApbGetRegResp;
 		
 
-getReg?() : ApbGetRegResp;
-		setReg?(reg : ApbGetRegResp): void;
-		
 
 
 
 mvreg?: ApbGetMVRegResp;
 		
 
-getMvreg?() : ApbGetMVRegResp;
-		setMvreg?(mvreg : ApbGetMVRegResp): void;
-		
 
 
 
 int?: ApbGetIntegerResp;
 		
 
-getInt?() : ApbGetIntegerResp;
-		setInt?(int : ApbGetIntegerResp): void;
-		
 
 
 
 map?: ApbGetMapResp;
 		
 
-getMap?() : ApbGetMapResp;
-		setMap?(map : ApbGetMapResp): void;
-		
 
 
 
 }
-	
+
 	export interface ApbReadObjectRespMessage extends ApbReadObjectResp {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbReadObjectRespMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	//set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbReadObjectRespMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbReadObjectRespBuilder {
 	new(data?: ApbReadObjectResp): ApbReadObjectRespMessage;
-	decode(buffer: ArrayBuffer) : ApbReadObjectRespMessage;
-	decode(buffer: ByteBuffer) : ApbReadObjectRespMessage;
-	decode64(buffer: string) : ApbReadObjectRespMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbReadObjectRespMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbReadObjectRespMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbReadObjectRespMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbReadObjectRespMessage;
+	decode64(str: string) : ApbReadObjectRespMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbReadObjectRespMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbReadObjectRespMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbReadObjectRespMessage;
+	decodeDelimited(buffer: string, enc: string): ApbReadObjectRespMessage;
+	decodeHex(str: string): ApbReadObjectRespMessage;
+	decodeJSON(str: string): ApbReadObjectRespMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbReadObjectsResp {
-	
+
 		
 
-success?: boolean;
-		
-
-getSuccess?() : boolean;
-		setSuccess?(success : boolean): void;
+success: boolean;
 		
 
 
 
-objects?: ApbReadObjectResp[];
+
+objects: ApbReadObjectResp[];
 		
 
-getObjects?() : ApbReadObjectResp[];
-		setObjects?(objects : ApbReadObjectResp[]): void;
-		
 
 
 
 errorcode?: number;
 		
 
-getErrorcode?() : number;
-		setErrorcode?(errorcode : number): void;
-		
 
 
 
 }
-	
+
 	export interface ApbReadObjectsRespMessage extends ApbReadObjectsResp {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbReadObjectsRespMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbReadObjectsRespMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbReadObjectsRespBuilder {
 	new(data?: ApbReadObjectsResp): ApbReadObjectsRespMessage;
-	decode(buffer: ArrayBuffer) : ApbReadObjectsRespMessage;
-	decode(buffer: ByteBuffer) : ApbReadObjectsRespMessage;
-	decode64(buffer: string) : ApbReadObjectsRespMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbReadObjectsRespMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbReadObjectsRespMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbReadObjectsRespMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbReadObjectsRespMessage;
+	decode64(str: string) : ApbReadObjectsRespMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbReadObjectsRespMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbReadObjectsRespMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbReadObjectsRespMessage;
+	decodeDelimited(buffer: string, enc: string): ApbReadObjectsRespMessage;
+	decodeHex(str: string): ApbReadObjectsRespMessage;
+	decodeJSON(str: string): ApbReadObjectsRespMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbCommitResp {
-	
+
 		
 
-success?: boolean;
+success: boolean;
 		
 
-getSuccess?() : boolean;
-		setSuccess?(success : boolean): void;
-		
 
 
 
 commit_time?: ByteBuffer;
 		
 
-getCommitTime?() : ByteBuffer;
-		setCommitTime?(commitTime : ByteBuffer): void;
-		
 
 
 
 errorcode?: number;
 		
 
-getErrorcode?() : number;
-		setErrorcode?(errorcode : number): void;
-		
 
 
 
 }
-	
+
 	export interface ApbCommitRespMessage extends ApbCommitResp {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbCommitRespMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbCommitRespMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbCommitRespBuilder {
 	new(data?: ApbCommitResp): ApbCommitRespMessage;
-	decode(buffer: ArrayBuffer) : ApbCommitRespMessage;
-	decode(buffer: ByteBuffer) : ApbCommitRespMessage;
-	decode64(buffer: string) : ApbCommitRespMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbCommitRespMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbCommitRespMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbCommitRespMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbCommitRespMessage;
+	decode64(str: string) : ApbCommitRespMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbCommitRespMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbCommitRespMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbCommitRespMessage;
+	decodeDelimited(buffer: string, enc: string): ApbCommitRespMessage;
+	decodeHex(str: string): ApbCommitRespMessage;
+	decodeJSON(str: string): ApbCommitRespMessage;
 	
 }
-	
+
 }
 
 
 declare module AntidotePB {
-	
+
 	export interface ApbStaticReadObjectsResp {
-	
+
 		
 
-objects?: ApbReadObjectsResp;
-		
-
-getObjects?() : ApbReadObjectsResp;
-		setObjects?(objects : ApbReadObjectsResp): void;
+objects: ApbReadObjectsResp;
 		
 
 
 
-committime?: ApbCommitResp;
+
+committime: ApbCommitResp;
 		
 
-getCommittime?() : ApbCommitResp;
-		setCommittime?(committime : ApbCommitResp): void;
-		
 
 
 
 }
-	
+
 	export interface ApbStaticReadObjectsRespMessage extends ApbStaticReadObjectsResp {
-	toArrayBuffer(): ArrayBuffer;
-	encode(): ByteBuffer;
+	add(key: string, value: any, noAssert?: boolean): ApbStaticReadObjectsRespMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
 	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbStaticReadObjectsRespMessage;
+	toArrayBuffer(): ArrayBuffer;
 	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
 	toString(): string;
 }
 
 export interface ApbStaticReadObjectsRespBuilder {
 	new(data?: ApbStaticReadObjectsResp): ApbStaticReadObjectsRespMessage;
-	decode(buffer: ArrayBuffer) : ApbStaticReadObjectsRespMessage;
-	decode(buffer: ByteBuffer) : ApbStaticReadObjectsRespMessage;
-	decode64(buffer: string) : ApbStaticReadObjectsRespMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbStaticReadObjectsRespMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbStaticReadObjectsRespMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbStaticReadObjectsRespMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbStaticReadObjectsRespMessage;
+	decode64(str: string) : ApbStaticReadObjectsRespMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbStaticReadObjectsRespMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbStaticReadObjectsRespMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbStaticReadObjectsRespMessage;
+	decodeDelimited(buffer: string, enc: string): ApbStaticReadObjectsRespMessage;
+	decodeHex(str: string): ApbStaticReadObjectsRespMessage;
+	decodeJSON(str: string): ApbStaticReadObjectsRespMessage;
 	
 }
-	
+
 }
 
 
