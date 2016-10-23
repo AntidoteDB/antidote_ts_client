@@ -115,6 +115,61 @@ describe("antidote client", () => {
 		});
 	}
 
+	describe('grow-only map', () => {
+
+		it('should be possible to store things', () => {
+			let map = connection.gmap("my-gmap");
+			return connection.update([
+				map.register("a").set("x"),
+				map.counter("b").increment(5)
+			]).then(() => {
+				return map.readMapValue();
+			}).then(val => {
+				let obj = val.toJsObject();
+				assert.deepEqual(obj, {a: "x", b: 5});
+			})
+
+		});
+	});
+
+	describe('add-wins map', () => {
+
+		it('should be possible to store things', () => {
+			let map = connection.map("my-map1");
+			return connection.update([
+				map.register("a").set("x"),
+				map.counter("b").increment(5)
+			]).then(() => {
+				return map.readMapValue();
+			}).then(val => {
+				let obj = val.toJsObject();
+				assert.deepEqual(obj, {a: "x", b: 5});
+			})
+
+		});
+
+		it('should be possible to store and then remove things', () => {
+			let map = connection.map("my-map2");
+			return connection.update([
+				map.register("a").set("x"),
+				map.register("b").set("x"),
+				map.register("c").set("x"),
+				map.register("d").set("x"),
+				map.set("e").addAll([1,2,3,4]),
+				map.counter("f").increment(5)
+			]).then(() => connection.update([
+				map.remove(map.register("a")),
+				map.removeAll([map.register("b"), map.register("c")])
+			])).then(() => {
+				return map.readMapValue();
+			}).then(val => {
+				let obj = val.toJsObject();
+				assert.deepEqual(obj, {d: "x", e: [1,2,3,4], f: 5});
+			})
+
+		});
+	});
+
 
 
 });

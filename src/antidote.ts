@@ -23,8 +23,19 @@ export function key(key: string, type: AntidotePB.CRDT_type, bucket: string): An
 }
 
 /** takes a message with an encode method and converts it into an ArrayBuffer */
-function encode(message: {encode(): ByteBuffer}): ArrayBuffer {
+function encode(message: {encode(): ByteBuffer}|any): ArrayBuffer {
 	return message.encode().toBuffer()
+}
+
+function _debugPrint(obj: any):string {
+	return JSON.stringify(obj, (key, val) => {
+		if (val instanceof ByteBuffer) {
+			return val.toUTF8();
+		} else if (val instanceof Long) {
+			return val.toNumber();
+		}
+		return val;
+	});
 }
 
 
@@ -228,7 +239,7 @@ export class Connection extends CrdtFactory {
 	public update(updates: AntidotePB.ApbUpdateOp[]|AntidotePB.ApbUpdateOp): Promise<CommitResponse> {
 		let messageType = MessageCodes.antidotePb.ApbStaticUpdateObjects;
 		let updatesAr: AntidotePB.ApbUpdateOp[] = (updates instanceof Array) ? updates : [updates];
-		let message: AntidotePB.ApbStaticReadObjectsMessage = new messageType({
+		let message: AntidotePB.ApbStaticUpdateObjectsMessage = new messageType({
 			transaction: this.startTransactionPb(),
 			updates: updatesAr
 		});
@@ -513,7 +524,8 @@ export class CrdtSet<T> extends AntidoteObjectWithReset {
 		return this.makeUpdate({
 			setop: {
 				optype: AntidotePB.ApbSetUpdate.SetOpType.ADD,
-				adds: [this.parent.jsToBinary(elem)]
+				adds: [this.parent.jsToBinary(elem)],
+				rems: []
 			}
 		})
 	}
@@ -525,7 +537,8 @@ export class CrdtSet<T> extends AntidoteObjectWithReset {
 		return this.makeUpdate({
 			setop: {
 				optype: AntidotePB.ApbSetUpdate.SetOpType.ADD,
-				adds: elems.map(elem => this.parent.jsToBinary(elem))
+				adds: elems.map(elem => this.parent.jsToBinary(elem)),
+				rems: []
 			}
 		})
 	}
@@ -537,6 +550,7 @@ export class CrdtSet<T> extends AntidoteObjectWithReset {
 		return this.makeUpdate({
 			setop: {
 				optype: AntidotePB.ApbSetUpdate.SetOpType.REMOVE,
+				adds: [],
 				rems: [this.parent.jsToBinary(elem)]
 			}
 		})
@@ -549,6 +563,7 @@ export class CrdtSet<T> extends AntidoteObjectWithReset {
 		return this.makeUpdate({
 			setop: {
 				optype: AntidotePB.ApbSetUpdate.SetOpType.REMOVE,
+				adds: [],
 				rems: elems.map(elem => this.parent.jsToBinary(elem))
 			}
 		})
@@ -628,18 +643,18 @@ export class CrdtMap extends CrdtFactory implements AntidoteObject {
 	}
 
 	childUpdate(key: AntidotePB.ApbBoundObject, operation: AntidotePB.ApbUpdateOperation): AntidotePB.ApbUpdateOp {
-		return {
-			boundobject: this.key,
-			operation: {
-				mapop: {
-					updates: [{
-						key: key,
-						//key: 1,
-						update: operation
-					}]
-				}
+		return this.makeUpdate({
+			mapop: {
+				updates: [{
+					key: {
+						key: key.key,
+						type: key.type
+					},
+					update: operation
+				}],
+				removedKeys: []
 			}
-		};
+		});
 	}
 
 	makeUpdate(operation: AntidotePB.ApbUpdateOperation): AntidotePB.ApbUpdateOp {
@@ -651,7 +666,7 @@ export class CrdtMap extends CrdtFactory implements AntidoteObject {
 		return new CrdtMapValue(this.parent, vals);
 	}
 
-	public readAsObject(): Promise<CrdtMapValue> {
+	public readMapValue(): Promise<CrdtMapValue> {
 		return this.parent.read([this]).then(r => {
 			return r.values[0]
 		})
@@ -686,11 +701,11 @@ export class CrdtMap extends CrdtFactory implements AntidoteObject {
 	}
 
 
-	public remove(object: AntidoteObject): AntidotePB.ApbUpdateOperation {
+	public remove(object: AntidoteObject): AntidotePB.ApbUpdateOp {
 		return this.removeAll([object]);
 	}
 
-	public removeAll(objects: AntidoteObject[]): AntidotePB.ApbUpdateOperation {
+	public removeAll(objects: AntidoteObject[]): AntidotePB.ApbUpdateOp {
 		let removedKeys: AntidotePB.ApbMapKey[] = objects.map(obj => {
 			return {
 				key: obj.key.key,
@@ -699,6 +714,7 @@ export class CrdtMap extends CrdtFactory implements AntidoteObject {
 		});
 		return this.makeUpdate({
 			mapop: {
+				updates: [],
 				removedKeys: removedKeys
 			}
 		})
