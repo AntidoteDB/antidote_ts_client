@@ -15,16 +15,30 @@ export class AntidoteConnection {
 	private socket: net.Socket;
 	private requests: ApbRequest[] = [];
 	private buffer: ByteBuffer = new ByteBuffer();
+	private port: number;
+	private host: string|undefined;
 
 	constructor(port: number, host: string) {
-		let socket = this.socket = net.createConnection(port, host);
-		socket.on("connect", () => this.onConnect());
-		socket.on("data", (data) => this.onData(data));
-		socket.on("close", (hasError) => this.onClose(hasError));
-		socket.on("timeout", () => this.onTimeout());
+		this.port = port;
+		this.host = host;
+		this.connect();
+	}
+
+	private connect() {
+		if (this.socket) {
+			this.socket.destroy()
+		}
+		if (this.host) {
+			let socket = this.socket = net.createConnection(this.port, this.host);
+			socket.on("connect", () => this.onConnect());
+			socket.on("data", (data) => this.onData(data));
+			socket.on("close", (hasError) => this.onClose(hasError));
+			socket.on("timeout", () => this.onTimeout());
+		}
 	}
 
 	public close() {
+		this.host = undefined;
 		this.socket.destroy()
 	}
 
@@ -117,6 +131,8 @@ export class AntidoteConnection {
 
 	private onClose(hasError: boolean) {
 		this.rejectPending(new Error("Connection closed"));
+		// reconnect
+		this.connect();
 	}
 
 	private onError(err: Error) {
