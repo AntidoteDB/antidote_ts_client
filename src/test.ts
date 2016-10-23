@@ -32,6 +32,49 @@ describe("antidote client", () => {
 		});
 	});
 
+	describe('integers', () => {
+		it('can be incremented and assigned to', () => {
+			let num = connection.integer("myint")
+			return connection.update(
+				num.set(40)
+			).then(() => connection.update(
+				num.increment(2)
+			)).then(() => {
+				return num.read();
+			}).then(val => {
+				assert.equal(val, 42);
+			});
+		});
+	});
+
+	
+	describe('last-writer-wins register', () => {
+		it('can be used to store and read values', () => {
+			let reg = connection.register<string[]>("mylwwreg")
+			return connection.update(
+				reg.set(["a", "b"])
+			).then(() => {
+				return reg.read();
+			}).then(val => {
+				assert.deepEqual(val, ["a", "b"]);
+			});
+		});
+	});
+
+	describe('multi-value register', () => {
+		it('can be used to store and read values', () => {
+			let reg = connection.multiValueRegister<number>("mymvreg")
+			return connection.update(
+				reg.set(15)
+			).then(() => {
+				return reg.read();
+			}).then(val => {
+				assert.deepEqual(val, [15]);
+			});
+		});
+	});
+
+
 	let setTypes = [
 		{
 			name: 'add-wins', 
