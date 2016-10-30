@@ -9,7 +9,7 @@ import fs = require('fs');
 var Long = require("long");
 
 
-describe("antidote client", () => {
+describe("antidote client", function() {
 	// 60 second timeout, because travis sometimes needs longer
 	this.timeout(60000)
 	let connection: Connection;
