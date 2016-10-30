@@ -11,10 +11,10 @@ let connection = connect(8087, "localhost");
 
 function testAntidote(): Promise<any> {
 	let txPromise = connection.startTransaction();
-	let testKey: AntidotePB.ApbBoundObject = key("testKey", AntidotePB.CRDT_type.COUNTER, "myBucket");
 	return txPromise.then(tx => {
-		tx.updateObject(testKey, {counterop: {inc: new Long(1)}});
-		return tx.readValue(testKey).then(counterValue => {
+		let testKey = tx.counter("testKey");
+		tx.update(testKey.increment(1));
+		return testKey.read().then(counterValue => {
 			console.log(`counter value = ${counterValue}.`);
 			return tx.commit()
 		});
@@ -79,9 +79,9 @@ function friendshipExample(): Promise<any> {
 			friendSet(charlie.id)
 		])
 	}).then(resp => {
-		console.log(`Alice is friends with ${JSON.stringify(resp.values[0])}`)
-		console.log(`Bob is friends with ${JSON.stringify(resp.values[1])}`)
-		console.log(`Charlie is friends with ${JSON.stringify(resp.values[2])}`)
+		console.log(`Alice is friends with ${JSON.stringify(resp[0])}`)
+		console.log(`Bob is friends with ${JSON.stringify(resp[1])}`)
+		console.log(`Charlie is friends with ${JSON.stringify(resp[2])}`)
 		return 0;
 	})
 }

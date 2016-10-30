@@ -170,7 +170,32 @@ describe("antidote client", () => {
 		});
 	});
 
-
+	describe('transactions', () => {
+		it('can read and update', () => {
+			 
+			return connection.startTransaction().then(tx => {
+				let reg = tx.multiValueRegister<number>("tr-reg");
+				return reg.read().then((vals: number[]) => {
+					let max = 0
+					for (let n of vals) {
+						if (n > max) {
+							max = n;
+						}
+					}
+					return max;
+				}).then(n => tx.update(
+					reg.set(n + 1)
+				)).then(_ => 
+					tx.commit()
+				)
+			}).then(_ => {
+				let reg = connection.multiValueRegister<number>("tr-reg");
+				return reg.read()
+			}).then(vals => {
+				assert.deepEqual(vals, [1]);
+			})
+		})
+	});
 
 });
 
