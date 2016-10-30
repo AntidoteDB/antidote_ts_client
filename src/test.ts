@@ -10,6 +10,8 @@ var Long = require("long");
 
 
 describe("antidote client", () => {
+	// 60 second timeout, because travis sometimes needs longer
+	this.timeout(60000)
 	let connection: Connection;
 
 	before(() => {
