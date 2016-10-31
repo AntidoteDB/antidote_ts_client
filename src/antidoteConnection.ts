@@ -28,27 +28,17 @@ export class AntidoteConnection {
 
 	private connect() {
 		if (this.socket) {
-			console.log("clear state")
-			try {
-				this.requests = [];
-				this.buffer.clear();
-				this.socket.destroy()
-			} catch (e) {
-				console.log("Could not destroy connection", e);
-			}
+			this.requests = [];
+			this.buffer.clear();
+			this.socket.destroy()
 		}
 		if (this.host) {
-			try {
-				console.log("Start new socket")
-				let socket = this.socket = net.createConnection(this.port, this.host);
-				socket.on("connect", () => this.onConnect());
-				socket.on("data", (data) => this.onData(data));
-				socket.on("close", (hasError) => this.onClose(hasError));
-				socket.on("timeout", () => this.onTimeout());
-				socket.on("error", err => this.onError(err));
-			} catch (e) {
-				console.log("Could not connect to Antidote");
-			}
+			let socket = this.socket = net.createConnection(this.port, this.host);
+			socket.on("connect", () => this.onConnect());
+			socket.on("data", (data) => this.onData(data));
+			socket.on("close", (hasError) => this.onClose(hasError));
+			socket.on("timeout", () => this.onTimeout());
+			socket.on("error", err => this.onError(err));
 		}
 	}
 
