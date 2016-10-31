@@ -177,6 +177,11 @@ export class Connection extends CrdtFactory {
 		return decoded
 	}
 
+	/** Sets the timout for requests */
+	public setTimeout(ms: number) {
+		this.connection.requestTimeoutMs = ms;
+	}
+
 	/** Starts a new transaction */
 	public startTransaction(): Promise<Transaction> {
 		let apbStartTransaction = MessageCodes.antidotePb.ApbStartTransaction;

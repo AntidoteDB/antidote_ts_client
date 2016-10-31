@@ -11,13 +11,15 @@ var Long = require("long");
 
 describe("antidote client", function() {
 	// 60 second timeout, because travis sometimes needs longer
-	this.timeout(60000)
+	let timeout = 60000
+	this.timeout(timeout)
 	let connection: Connection;
 
 	before(() => {
 		connection = connect(8087, "localhost");
 		// use random buckets, so that we can rerun the tests without cleaning and restarting antidote
 		connection.defaultBucket = "testbucket" + Math.random();
+		connection.setTimeout(timeout);
 	});
 
 

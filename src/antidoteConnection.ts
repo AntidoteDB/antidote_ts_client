@@ -7,8 +7,9 @@ import ByteBuffer = require("bytebuffer")
 
 
 interface ApbRequest {
-	resolve: (a: any) => void,
-	reject: (a: any) => void,
+	resolve: (a: any) => void;
+	reject: (a: any) => void;
+	timer: NodeJS.Timer;
 }
 
 export class AntidoteConnection {
@@ -17,6 +18,7 @@ export class AntidoteConnection {
 	private buffer: ByteBuffer = new ByteBuffer();
 	private port: number;
 	private host: string|undefined;
+	public requestTimeoutMs: number = 1000;
 
 	constructor(port: number, host: string) {
 		this.port = port;
@@ -26,14 +28,27 @@ export class AntidoteConnection {
 
 	private connect() {
 		if (this.socket) {
-			this.socket.destroy()
+			console.log("clear state")
+			try {
+				this.requests = [];
+				this.buffer.clear();
+				this.socket.destroy()
+			} catch (e) {
+				console.log("Could not destroy connection", e);
+			}
 		}
 		if (this.host) {
-			let socket = this.socket = net.createConnection(this.port, this.host);
-			socket.on("connect", () => this.onConnect());
-			socket.on("data", (data) => this.onData(data));
-			socket.on("close", (hasError) => this.onClose(hasError));
-			socket.on("timeout", () => this.onTimeout());
+			try {
+				console.log("Start new socket")
+				let socket = this.socket = net.createConnection(this.port, this.host);
+				socket.on("connect", () => this.onConnect());
+				socket.on("data", (data) => this.onData(data));
+				socket.on("close", (hasError) => this.onClose(hasError));
+				socket.on("timeout", () => this.onTimeout());
+				socket.on("error", err => this.onError(err));
+			} catch (e) {
+				console.log("Could not connect to Antidote");
+			}
 		}
 	}
 
@@ -112,7 +127,7 @@ export class AntidoteConnection {
 	private handleResponse(code: number, decoded: any) {
 		let request = this.requests.shift();
 		if (request) {
-			request.resolve(decoded)
+			this.resolve(request, decoded);
 		} else {
 			console.log(`Unexpected response with code ${code} and value ${JSON.stringify(decoded)}`)
 		}
@@ -121,7 +136,7 @@ export class AntidoteConnection {
 	private handleError(errorCode: number, errorMsg: string) {
 		let request = this.requests.shift();
 		if (request) {
-			request.reject(new Error(`Antidote-PB Error code ${errorCode}:\n${errorMsg}`))
+			this.reject(request, new Error(`Antidote-PB Error code ${errorCode}:\n${errorMsg}`))
 		} else {
 			console.log(`Unexpected error response with code ${errorCode} and message:\n ${errorMsg}`)
 		}
@@ -132,6 +147,7 @@ export class AntidoteConnection {
 	private onClose(hasError: boolean) {
 		this.rejectPending(new Error("Connection closed"));
 		// reconnect
+		this.socket = undefined!;
 		this.connect();
 	}
 
@@ -143,13 +159,29 @@ export class AntidoteConnection {
 		this.rejectPending(new Error("Connection timed out"));
 	}
 
+	private onRequestTimeout() {
+		this.rejectPending(new Error("Request timed out"));
+		// try to reconnect
+		this.connect();
+	}
+
 	/** rejects all requests, which are still open */
 	private rejectPending(err: Error) {
 		let reqs = this.requests;
 		for (let req of reqs) {
-			req.reject(err);
+			this.reject(req, err);
 		}
 		this.requests = [];
+	}
+
+	private reject(req: ApbRequest, err: Error) {
+		req.reject(err);
+		clearTimeout(req.timer);
+	}
+
+	private resolve(req: ApbRequest, response: any) {
+		req.resolve(response);
+		clearTimeout(req.timer);
 	}
 
 	public sendRequest(messageCode: number, encodedMessage: ArrayBuffer): Promise<any> {
@@ -162,7 +194,8 @@ export class AntidoteConnection {
 
 			this.requests.push({
 				resolve: resolve,
-				reject: reject
+				reject: reject,
+				timer: setTimeout(_ => this.onRequestTimeout(), this.requestTimeoutMs)
 			})
 		})
 	}
