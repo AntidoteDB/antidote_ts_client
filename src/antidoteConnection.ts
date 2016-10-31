@@ -13,7 +13,7 @@ interface ApbRequest {
 }
 
 export class AntidoteConnection {
-	private socket: net.Socket;
+	private socket: net.Socket|undefined;
 	private requests: ApbRequest[] = [];
 	private buffer: ByteBuffer = new ByteBuffer();
 	private port: number;
@@ -28,9 +28,7 @@ export class AntidoteConnection {
 
 	private connect() {
 		if (this.socket) {
-			this.requests = [];
-			this.buffer.clear();
-			this.socket.destroy()
+			this.invalidateSocket(new Error("Reconnecting ..."));
 		}
 		if (this.host) {
 			let socket = this.socket = net.createConnection(this.port, this.host);
@@ -44,7 +42,10 @@ export class AntidoteConnection {
 
 	public close() {
 		this.host = undefined;
-		this.socket.destroy()
+		if (this.socket) {
+			this.socket.destroy();
+			this.socket = undefined;
+		}
 	}
 
 	private onConnect() {
@@ -135,10 +136,7 @@ export class AntidoteConnection {
 
 
 	private onClose(hasError: boolean) {
-		this.rejectPending(new Error("Connection closed"));
-		// reconnect
-		this.socket = undefined!;
-		this.connect();
+		this.invalidateSocket(new Error("Connection closed"));
 	}
 
 	private onError(err: Error) {
@@ -150,9 +148,16 @@ export class AntidoteConnection {
 	}
 
 	private onRequestTimeout() {
-		this.rejectPending(new Error("Request timed out"));
-		// try to reconnect
-		this.connect();
+		this.invalidateSocket(new Error("Request timed out"));
+	}
+
+	private invalidateSocket(err: Error) {
+		this.rejectPending(err);
+		this.buffer.clear();
+		if (this.socket) {
+			this.socket.destroy()
+		}
+		this.socket = undefined;
 	}
 
 	/** rejects all requests, which are still open */
@@ -176,6 +181,14 @@ export class AntidoteConnection {
 
 	public sendRequest(messageCode: number, encodedMessage: ArrayBuffer): Promise<any> {
 		return new Promise((resolve, reject) => {
+			if (!this.socket) {
+				// try to reconnect:
+				this.connect();
+			}
+			if (!this.socket) {
+				return Promise.reject("Could not connect to server.");
+			}
+
 			let header = new Buffer(5);
 			header.writeInt32BE(encodedMessage.byteLength + 1, 0);
 			header.writeUInt8(messageCode, 4);

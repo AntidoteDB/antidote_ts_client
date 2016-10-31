@@ -131,10 +131,22 @@ export class Connection extends CrdtFactory {
 	readonly connection: AntidoteConnection;
 	/**
 	 * stores the last commit time.
-	 * This will be used when starting a new transaction in order to guarantee
-	 * session guarantees like monotonic reads and read-your-writes
 	 */
-	public lastCommitTimestamp: ByteBuffer|undefined = undefined;
+	private lastCommitTimestamp: ByteBuffer|undefined = undefined;
+
+	/**
+	 * The minimum snapshot version to use for new transactions.
+	 * This will be used when starting a new transaction in order to guarantee
+	 * session guarantees like monotonic reads and read-your-writes */
+	public minSnapshotTime: ByteBuffer|undefined = undefined;
+
+
+	/**
+	 * Option, which determines if snapshots should be monotonic.
+	 * If set to `true`, this will update minSnapshotTime whenever 
+	 * lastCommitTimestamp is updated
+	 */
+	public monotonicSnapshots: boolean = false;
 
 	/**
 	 * the default bucket used for newly created keys
@@ -195,13 +207,29 @@ export class Connection extends CrdtFactory {
 		})
 	}
 
+
+	/**
+	 * returns the timestamp for the last commited transaction
+	 */
+	public getLastCommitTimestamp(): ByteBuffer|undefined {
+		return this.lastCommitTimestamp;
+	}
+
+
+	private setLastCommitTimestamp(lastCommitTimestamp: ByteBuffer|undefined) {
+		this.lastCommitTimestamp = lastCommitTimestamp;
+		if (this.monotonicSnapshots) {
+			this.minSnapshotTime = lastCommitTimestamp;
+		}
+	}
+
 	/**
 	 * creates a startTransaction message with the last timestamp
 	 * and default transaction properties
 	 */
 	private startTransactionPb(): AntidotePB.ApbStartTransaction {
 		return {
-			timestamp: this.lastCommitTimestamp,
+			timestamp: this.minSnapshotTime,
 			properties: {}
 		};
 	}
