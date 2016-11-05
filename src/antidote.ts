@@ -23,11 +23,11 @@ export function key(key: string, type: AntidotePB.CRDT_type, bucket: string): An
 }
 
 /** takes a message with an encode method and converts it into an ArrayBuffer */
-function encode(message: {encode(): ByteBuffer}|any): ArrayBuffer {
+function encode(message: { encode(): ByteBuffer } | any): ArrayBuffer {
 	return message.encode().toBuffer()
 }
 
-function _debugPrint(obj: any):string {
+function _debugPrint(obj: any): string {
 	return JSON.stringify(obj, (key, val) => {
 		if (val instanceof ByteBuffer) {
 			return val.toUTF8();
@@ -95,22 +95,22 @@ export abstract class CrdtFactory {
 
 	readResponseToValue(type: AntidotePB.CRDT_type, response: AntidotePB.ApbReadObjectResp): any {
 		switch (type) {
-		case AntidotePB.CRDT_type.COUNTER:
-			return this.counter("").interpretReadResponse(response);
-		case AntidotePB.CRDT_type.ORSET:
-			return this.set("").interpretReadResponse(response);
-		case AntidotePB.CRDT_type.LWWREG:
-			return this.register("").interpretReadResponse(response);
-		case AntidotePB.CRDT_type.MVREG:
-			return this.multiValueRegister("").interpretReadResponse(response);
-		case AntidotePB.CRDT_type.INTEGER:
-			return this.integer("").interpretReadResponse(response);
-		case AntidotePB.CRDT_type.GMAP:
-			return this.gmap("").interpretReadResponse(response);
-		case AntidotePB.CRDT_type.AWMAP:
-			return this.map("").interpretReadResponse(response);
-		case AntidotePB.CRDT_type.RWSET:
-			return this.set_removeWins("").interpretReadResponse(response);
+			case AntidotePB.CRDT_type.COUNTER:
+				return this.counter("").interpretReadResponse(response);
+			case AntidotePB.CRDT_type.ORSET:
+				return this.set("").interpretReadResponse(response);
+			case AntidotePB.CRDT_type.LWWREG:
+				return this.register("").interpretReadResponse(response);
+			case AntidotePB.CRDT_type.MVREG:
+				return this.multiValueRegister("").interpretReadResponse(response);
+			case AntidotePB.CRDT_type.INTEGER:
+				return this.integer("").interpretReadResponse(response);
+			case AntidotePB.CRDT_type.GMAP:
+				return this.gmap("").interpretReadResponse(response);
+			case AntidotePB.CRDT_type.AWMAP:
+				return this.map("").interpretReadResponse(response);
+			case AntidotePB.CRDT_type.RWSET:
+				return this.set_removeWins("").interpretReadResponse(response);
 		}
 	}
 }
@@ -132,13 +132,13 @@ export class Connection extends CrdtFactory {
 	/**
 	 * stores the last commit time.
 	 */
-	private lastCommitTimestamp: ByteBuffer|undefined = undefined;
+	private lastCommitTimestamp: ByteBuffer | undefined = undefined;
 
 	/**
 	 * The minimum snapshot version to use for new transactions.
 	 * This will be used when starting a new transaction in order to guarantee
 	 * session guarantees like monotonic reads and read-your-writes */
-	public minSnapshotTime: ByteBuffer|undefined = undefined;
+	public minSnapshotTime: ByteBuffer | undefined = undefined;
 
 
 	/**
@@ -184,7 +184,7 @@ export class Connection extends CrdtFactory {
 
 	/** Inverse of jsToBinary */
 	public binaryToJs(byteBuffer: ByteBuffer): any {
-		let buffer= new Buffer(byteBuffer.toArrayBuffer());
+		let buffer = new Buffer(byteBuffer.toArrayBuffer());
 		let decoded = msgpack.decode(buffer);
 		return decoded
 	}
@@ -209,12 +209,12 @@ export class Connection extends CrdtFactory {
 	/**
 	 * returns the timestamp for the last commited transaction
 	 */
-	public getLastCommitTimestamp(): ByteBuffer|undefined {
+	public getLastCommitTimestamp(): ByteBuffer | undefined {
 		return this.lastCommitTimestamp;
 	}
 
 
-	private setLastCommitTimestamp(lastCommitTimestamp: ByteBuffer|undefined) {
+	private setLastCommitTimestamp(lastCommitTimestamp: ByteBuffer | undefined) {
 		this.lastCommitTimestamp = lastCommitTimestamp;
 		if (this.monotonicSnapshots) {
 			this.minSnapshotTime = lastCommitTimestamp;
@@ -263,7 +263,7 @@ export class Connection extends CrdtFactory {
 	/**
 	 * Sends a single update operation or an array of update operations to Antidote.
 	 */
-	public async update(updates: AntidotePB.ApbUpdateOp[]|AntidotePB.ApbUpdateOp): Promise<CommitResponse> {
+	public async update(updates: AntidotePB.ApbUpdateOp[] | AntidotePB.ApbUpdateOp): Promise<CommitResponse> {
 		let messageType = MessageCodes.antidotePb.ApbStaticUpdateObjects;
 		let updatesAr: AntidotePB.ApbUpdateOp[] = (updates instanceof Array) ? updates : [updates];
 		let message: AntidotePB.ApbStaticUpdateObjectsMessage = new messageType({
@@ -333,7 +333,7 @@ export class Transaction extends CrdtFactory {
 	}
 
 	childUpdate(key: AntidotePB.ApbBoundObject, operation: AntidotePB.ApbUpdateOperation): AntidotePB.ApbUpdateOp {
-		return this.connection.childUpdate(key, operation);	
+		return this.connection.childUpdate(key, operation);
 	}
 
 	/** 
@@ -361,7 +361,7 @@ export class Transaction extends CrdtFactory {
 	/**
 	 * Sends a single update operation or an array of update operations to Antidote.
 	 */
-	public async update(updates: AntidotePB.ApbUpdateOp[]|AntidotePB.ApbUpdateOp): Promise<void> {
+	public async update(updates: AntidotePB.ApbUpdateOp[] | AntidotePB.ApbUpdateOp): Promise<void> {
 		let messageType = MessageCodes.antidotePb.ApbUpdateObjects;
 		let updatesAr: AntidotePB.ApbUpdateOp[] = (updates instanceof Array) ? updates : [updates];
 		let message = new messageType({
@@ -390,7 +390,7 @@ export abstract class AntidoteObject {
 	readonly parent: CrdtFactory;
 	readonly key: AntidotePB.ApbBoundObject;
 
-	constructor(conn: CrdtFactory,  key: string, bucket: string, type: AntidotePB.CRDT_type) {
+	constructor(conn: CrdtFactory, key: string, bucket: string, type: AntidotePB.CRDT_type) {
 		this.parent = conn;
 		this.key = {
 			key: ByteBuffer.fromUTF8(key),
@@ -426,7 +426,7 @@ export class CrdtCounter extends AntidoteObject {
 	/** Creates an operation to increment the counter.
 	 * Negative numbers will decrement the value. 
 	 * Use Connection.update to send the update to the database. */
-	public increment(amount: number|Long): AntidotePB.ApbUpdateOp {
+	public increment(amount: number | Long): AntidotePB.ApbUpdateOp {
 		let amountL = (amount instanceof Long) ? amount : new Long(amount);
 		return this.makeUpdate({
 			counterop: {
@@ -453,7 +453,7 @@ export class CrdtInteger extends AntidoteObject {
 	/** Creates an operation to increment the integer.
 	 * Negative numbers will decrement the value. 
 	 * Use Connection.update to send the update to the database. */
-	public increment(amount: number|Long): AntidotePB.ApbUpdateOp {
+	public increment(amount: number | Long): AntidotePB.ApbUpdateOp {
 		let amountL = (amount instanceof Long) ? amount : new Long(amount);
 		return this.makeUpdate({
 			integerop: {
@@ -464,7 +464,7 @@ export class CrdtInteger extends AntidoteObject {
 
 	/** Creates an operation to set the intgeger to a specific value.
 	 * Use Connection.update to send the update to the database. */
-	public set(value: number|Long): AntidotePB.ApbUpdateOp {
+	public set(value: number | Long): AntidotePB.ApbUpdateOp {
 		let valueL = (value instanceof Long) ? value : new Long(value);
 		return this.makeUpdate({
 			integerop: {
@@ -647,7 +647,7 @@ export class CrdtMapValue {
 	public rwsetValue(key: string): any[] | undefined {
 		return this.get(key, AntidotePB.CRDT_type.RWSET)
 	}
-	
+
 	public toJsObject(): any {
 		let res: any = {};
 		for (let entry of this.entries) {
@@ -659,14 +659,14 @@ export class CrdtMapValue {
 			res[entry.key!.key!.toUTF8()] = value;
 		}
 		return res;
-	} 
+	}
 }
 
 export class CrdtMap extends CrdtFactory implements AntidoteObject {
 	readonly parent: CrdtFactory;
 	readonly key: AntidotePB.ApbBoundObject;
 
-	constructor(conn: CrdtFactory,  key: string, bucket: string, type: AntidotePB.CRDT_type) {
+	constructor(conn: CrdtFactory, key: string, bucket: string, type: AntidotePB.CRDT_type) {
 		super();
 		this.parent = conn;
 		this.key = {
@@ -717,7 +717,7 @@ export class CrdtMap extends CrdtFactory implements AntidoteObject {
 		for (let obj of objects) {
 			values.push(map.get(obj.key.key!.toUTF8(), obj.key.type!));
 		}
-		return values; 
+		return values;
 	}
 
 	public jsToBinary(obj: any): ByteBuffer {

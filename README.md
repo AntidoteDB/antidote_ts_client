@@ -45,6 +45,22 @@ These update operations can be commited to the database, using the `update` meth
         // stored successfully
     )
 
+Note that `userSet.add(username)` just creates the operation, but does **not** execute it.
+It is only executed when passed to the `antidote.update` method.
+
+## Use with async-await
+
+All operations are asynchronous and return Promises.
+With recent versions of JavaScript, or with compilation using Babel or TypeScript it is possible to use the API with `async` and `await` to make it more readable.
+
+    let users = await userSet.read()
+    // do something with the list of users
+    await antidote.update(
+        userSet.add(username)
+    )
+    // stored successfully
+
+
 
 ## Buckets
 
@@ -69,15 +85,34 @@ To ensure session guarantees like "read your writes" Antidote uses vector clocks
 Each operation returns a vector clock indicating the time after the operation.
 At each request to Antidote a vector clock can be given to force a minimum time for the snapshot used in the request.
 
-This library always stores the latest returned vector clock in the `lastCommitTimestamp` field of the connection and automatically passes the value stored in this field with every request made. 
+This library always stores the latest returned vector clock in the `lastCommitTimestamp` field of the connection.
+
+When a transaction or operation is started the vector clock in the `minSnapshotTime` field is used as the minimum snapshot time.
+When `monotonicSnapshots` is set to `true`, the clock of `minSnapshotTime` will automatically be updated if `lastCommitTimestamp` is updated.
+
 
 
 ## Transactions
 
 
 A transaction can be started with the `startTransaction` method on the connection object.
-This gives a transaction object, which has methods to read objects, update objects, and to commit the transaction.
+This gives a transaction object, which provides a similar interface to the main `antidote` connction object.
+In addition there is a `commit` method to commit the transaction.
 
+
+    let tx = await antidote.startTransaction()
+    // create object reference bound to the transaction:
+    let reg = tx.multiValueRegister<number>("some-key");
+    
+    // read the register in the transaction:
+    let vals = await reg.read();
+    
+    // update the register based on current values 
+    let newval = f(vals) 
+    await tx.update(
+        reg.set(newval)
+    )
+    await tx.commit()
 
 
 # Develop

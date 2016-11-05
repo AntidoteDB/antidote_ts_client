@@ -1,7 +1,7 @@
 "use strict";
 
 import net = require("net")
-import {MessageCodes} from "./messageCodes"
+import { MessageCodes } from "./messageCodes"
 import ProtoBuf = require("protobufjs")
 import ByteBuffer = require("bytebuffer")
 
@@ -13,11 +13,11 @@ interface ApbRequest {
 }
 
 export class AntidoteConnection {
-	private socket: net.Socket|undefined;
+	private socket: net.Socket | undefined;
 	private requests: ApbRequest[] = [];
 	private buffer: ByteBuffer = new ByteBuffer();
 	private port: number;
-	private host: string|undefined;
+	private host: string | undefined;
 	public requestTimeoutMs: number = 1000;
 
 	constructor(port: number, host: string) {

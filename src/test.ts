@@ -9,7 +9,7 @@ import fs = require('fs');
 var Long = require("long");
 
 
-describe("antidote client", function() {
+describe("antidote client", function () {
 	// 60 second timeout, because travis sometimes needs longer
 	let timeout = 60000
 	this.timeout(timeout)
@@ -48,7 +48,7 @@ describe("antidote client", function() {
 		});
 	});
 
-	
+
 	describe('last-writer-wins register', () => {
 		it('can be used to store and read values', async () => {
 			let reg = connection.register<string[]>("mylwwreg")
@@ -74,11 +74,11 @@ describe("antidote client", function() {
 
 	let setTypes = [
 		{
-			name: 'add-wins', 
+			name: 'add-wins',
 			create: <T>(name: string) => connection.set<T>(name)
 		},
 		{
-			name: 'remove-wins', 
+			name: 'remove-wins',
 			create: <T>(name: string) => connection.set_removeWins<T>(name)
 		}
 	]
@@ -91,7 +91,7 @@ describe("antidote client", function() {
 					set.addAll(["y", [1, 2, 3]])
 				])
 				let val = await set.read();
-				assert.deepEqual(val, [[1,2,3], "x", "y"]);
+				assert.deepEqual(val, [[1, 2, 3], "x", "y"]);
 			});
 
 			it('should work with add and remove', async () => {
@@ -119,7 +119,7 @@ describe("antidote client", function() {
 			])
 			let val = await map.readMapValue();
 			let obj = val.toJsObject();
-			assert.deepEqual(obj, {a: "x", b: 5});
+			assert.deepEqual(obj, { a: "x", b: 5 });
 		});
 	});
 
@@ -133,7 +133,7 @@ describe("antidote client", function() {
 			])
 			let val = await map.readMapValue();
 			let obj = val.toJsObject();
-			assert.deepEqual(obj, {a: "x", b: 5});
+			assert.deepEqual(obj, { a: "x", b: 5 });
 		});
 
 		it('should be possible to store and then remove things', async () => {
@@ -143,7 +143,7 @@ describe("antidote client", function() {
 				map.register("b").set("x"),
 				map.register("c").set("x"),
 				map.register("d").set("x"),
-				map.set("e").addAll([1,2,3,4]),
+				map.set("e").addAll([1, 2, 3, 4]),
 				map.counter("f").increment(5)
 			])
 			await connection.update([
@@ -152,7 +152,7 @@ describe("antidote client", function() {
 			])
 			let val = await map.readMapValue();
 			let obj = val.toJsObject();
-			assert.deepEqual(obj, {d: "x", e: [1,2,3,4], f: 5});
+			assert.deepEqual(obj, { d: "x", e: [1, 2, 3, 4], f: 5 });
 		});
 	});
 
@@ -161,12 +161,12 @@ describe("antidote client", function() {
 			let tx = await connection.startTransaction()
 			let reg = tx.multiValueRegister<number>("tr-reg");
 			let vals = await reg.read();
-				let max = 0
-				for (let n of vals) {
-					if (n > max) {
-						max = n;
-					}
+			let max = 0
+			for (let n of vals) {
+				if (n > max) {
+					max = n;
 				}
+			}
 			await tx.update(
 				reg.set(max + 1)
 			)

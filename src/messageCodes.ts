@@ -1,5 +1,5 @@
 import '../proto/antidote_proto'
-import path  = require('path');
+import path = require('path');
 
 export module MessageCodes {
 	export const apbRegUpdate = 107;
@@ -77,6 +77,6 @@ export module MessageCodes {
 				return antidotePb.ApbStaticReadObjectsResp
 		}
 		throw new Error(`invalid code: ${code}`);
-	} 
+	}
 
 }
