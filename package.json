@@ -12,7 +12,6 @@
   "author": "Peter Zeller <p_zeller@cs.uni-kl.de>",
   "license": "Apache-2.0",
   "dependencies": {
-    "@types/es6-shim": "^0.31.32",
     "@types/mocha": "^2.2.32",
     "@types/msgpack-lite": "^0.1.1",
     "@types/node": "^6.0.45",

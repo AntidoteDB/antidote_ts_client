@@ -24,57 +24,50 @@ describe("antidote client", function() {
 
 
 	describe('counters', () => {
-		it('should count', () => {
+		it('should count', async () => {
 			let counter = connection.counter("myCounter")
-			return connection.update(
+			await connection.update(
 				counter.increment(3)
-			).then(() => {
-				return counter.read();
-			}).then(val => {
-				assert.equal(val, 3);
-			});
+			)
+			let val = await counter.read();
+			assert.equal(val, 3);
 		});
 	});
 
 	describe('integers', () => {
-		it('can be incremented and assigned to', () => {
+		it('can be incremented and assigned to', async () => {
 			let num = connection.integer("myint")
-			return connection.update(
+			await connection.update(
 				num.set(40)
-			).then(() => connection.update(
+			)
+			await connection.update(
 				num.increment(2)
-			)).then(() => {
-				return num.read();
-			}).then(val => {
-				assert.equal(val, 42);
-			});
+			)
+			let val = await num.read();
+			assert.equal(val, 42);
 		});
 	});
 
 	
 	describe('last-writer-wins register', () => {
-		it('can be used to store and read values', () => {
+		it('can be used to store and read values', async () => {
 			let reg = connection.register<string[]>("mylwwreg")
-			return connection.update(
+			await connection.update(
 				reg.set(["a", "b"])
-			).then(() => {
-				return reg.read();
-			}).then(val => {
-				assert.deepEqual(val, ["a", "b"]);
-			});
+			)
+			let val = await reg.read();
+			assert.deepEqual(val, ["a", "b"]);
 		});
 	});
 
-	describe('multi-value register', () => {
-		it('can be used to store and read values', () => {
+	describe('multi-value register', async () => {
+		it('can be used to store and read values', async () => {
 			let reg = connection.multiValueRegister<number>("mymvreg")
-			return connection.update(
+			await connection.update(
 				reg.set(15)
-			).then(() => {
-				return reg.read();
-			}).then(val => {
-				assert.deepEqual(val, [15]);
-			});
+			)
+			let val = await reg.read();
+			assert.deepEqual(val, [15]);
 		});
 	});
 
@@ -91,113 +84,97 @@ describe("antidote client", function() {
 	]
 	for (let setType of setTypes) {
 		describe(`${setType.name}-sets`, () => {
-			it('can be used to add elements', () => {
+			it('can be used to add elements', async () => {
 				let set = setType.create(`${setType.name}-set1`)
-				return connection.update([
+				await connection.update([
 					set.add("x"),
 					set.addAll(["y", [1, 2, 3]])
-				]).then(() => {
-					return set.read();
-				}).then(val => {
-					assert.deepEqual(val, [[1,2,3], "x", "y"]);
-				});
+				])
+				let val = await set.read();
+				assert.deepEqual(val, [[1,2,3], "x", "y"]);
 			});
 
-			it('should work with add and remove', () => {
+			it('should work with add and remove', async () => {
 				let set = setType.create<string>(`${setType.name}-set2`)
-				return connection.update(
+				await connection.update(
 					set.addAll(["a", "b", "c", "d", "e"])
-				).then(() => connection.update([
+				)
+				await connection.update([
 					set.remove("a"),
 					set.removeAll(["b", "c"])
-				])).then(() => {
-					return set.read();
-				}).then(val => {
-					assert.deepEqual(val, ["d", "e"]);
-				});
+				])
+				let val = await set.read();
+				assert.deepEqual(val, ["d", "e"]);
 			});
 		});
 	}
 
 	describe('grow-only map', () => {
 
-		it('should be possible to store things', () => {
+		it('should be possible to store things', async () => {
 			let map = connection.gmap("my-gmap");
-			return connection.update([
+			await connection.update([
 				map.register("a").set("x"),
 				map.counter("b").increment(5)
-			]).then(() => {
-				return map.readMapValue();
-			}).then(val => {
-				let obj = val.toJsObject();
-				assert.deepEqual(obj, {a: "x", b: 5});
-			})
-
+			])
+			let val = await map.readMapValue();
+			let obj = val.toJsObject();
+			assert.deepEqual(obj, {a: "x", b: 5});
 		});
 	});
 
 	describe('add-wins map', () => {
 
-		it('should be possible to store things', () => {
+		it('should be possible to store things', async () => {
 			let map = connection.map("my-map1");
-			return connection.update([
+			await connection.update([
 				map.register("a").set("x"),
 				map.counter("b").increment(5)
-			]).then(() => {
-				return map.readMapValue();
-			}).then(val => {
-				let obj = val.toJsObject();
-				assert.deepEqual(obj, {a: "x", b: 5});
-			})
-
+			])
+			let val = await map.readMapValue();
+			let obj = val.toJsObject();
+			assert.deepEqual(obj, {a: "x", b: 5});
 		});
 
-		it('should be possible to store and then remove things', () => {
+		it('should be possible to store and then remove things', async () => {
 			let map = connection.map("my-map2");
-			return connection.update([
+			await connection.update([
 				map.register("a").set("x"),
 				map.register("b").set("x"),
 				map.register("c").set("x"),
 				map.register("d").set("x"),
 				map.set("e").addAll([1,2,3,4]),
 				map.counter("f").increment(5)
-			]).then(() => connection.update([
+			])
+			await connection.update([
 				map.remove(map.register("a")),
 				map.removeAll([map.register("b"), map.register("c")])
-			])).then(() => {
-				return map.readMapValue();
-			}).then(val => {
-				let obj = val.toJsObject();
-				assert.deepEqual(obj, {d: "x", e: [1,2,3,4], f: 5});
-			})
-
+			])
+			let val = await map.readMapValue();
+			let obj = val.toJsObject();
+			assert.deepEqual(obj, {d: "x", e: [1,2,3,4], f: 5});
 		});
 	});
 
 	describe('transactions', () => {
-		it('can read and update', () => {
-			 
-			return connection.startTransaction().then(tx => {
-				let reg = tx.multiValueRegister<number>("tr-reg");
-				return reg.read().then((vals: number[]) => {
-					let max = 0
-					for (let n of vals) {
-						if (n > max) {
-							max = n;
-						}
+		it('can read and update', async () => {
+			let tx = await connection.startTransaction()
+			let reg = tx.multiValueRegister<number>("tr-reg");
+			let vals = await reg.read();
+				let max = 0
+				for (let n of vals) {
+					if (n > max) {
+						max = n;
 					}
-					return max;
-				}).then(n => tx.update(
-					reg.set(n + 1)
-				)).then(_ => 
-					tx.commit()
-				)
-			}).then(_ => {
-				let reg = connection.multiValueRegister<number>("tr-reg");
-				return reg.read()
-			}).then(vals => {
-				assert.deepEqual(vals, [1]);
-			})
+				}
+			await tx.update(
+				reg.set(max + 1)
+			)
+			await tx.commit()
+
+			let reg2 = connection.multiValueRegister<number>("tr-reg");
+			let vals2 = await reg2.read()
+			assert.deepEqual(vals2, [1]);
 		})
 	});
 

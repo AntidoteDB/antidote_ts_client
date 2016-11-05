@@ -195,16 +195,14 @@ export class Connection extends CrdtFactory {
 	}
 
 	/** Starts a new transaction */
-	public startTransaction(): Promise<Transaction> {
+	public async startTransaction(): Promise<Transaction> {
 		let apbStartTransaction = MessageCodes.antidotePb.ApbStartTransaction;
 		let message: AntidotePB.ApbStartTransactionMessage = new apbStartTransaction(this.startTransactionPb());
-		let tx = this.connection.sendRequest(MessageCodes.apbStartTransaction, encode(message));
-		return tx.then((resp: AntidotePB.ApbStartTransactionResp) => {
-			if (resp.success) {
-				return new Transaction(this, resp.transaction_descriptor!);
-			}
-			return Promise.reject<any>(resp.errorcode);
-		})
+		let resp: AntidotePB.ApbStartTransactionResp = await this.connection.sendRequest(MessageCodes.apbStartTransaction, encode(message));
+		if (resp.success) {
+			return new Transaction(this, resp.transaction_descriptor!);
+		}
+		return Promise.reject<any>(resp.errorcode);
 	}
 
 
@@ -238,45 +236,42 @@ export class Connection extends CrdtFactory {
 	 * Reads several objects at once.
 	 * To read a single object, use the read method on that object.
 	 */
-	public read(objects: AntidoteObject[]): Promise<any[]> {
+	public async read(objects: AntidoteObject[]): Promise<any[]> {
 		let messageType = MessageCodes.antidotePb.ApbStaticReadObjects;
 		let message: AntidotePB.ApbStaticReadObjectsMessage = new messageType({
 			transaction: this.startTransactionPb(),
 			objects: objects.map(o => o.key)
 		});
-		let r = this.connection.sendRequest(MessageCodes.apbStaticReadObjects, encode(message));
-		return r.then((resp: AntidotePB.ApbStaticReadObjectsResp) => {
-			return this.completeTransaction(resp.committime!).then(cr => {
-				let readResp = resp.objects!;
-				if (readResp.success) {
-					let resVals: any[] = [];
+		let resp: AntidotePB.ApbStaticReadObjectsResp = await this.connection.sendRequest(MessageCodes.apbStaticReadObjects, encode(message));
+		let cr = await this.completeTransaction(resp.committime!);
+		let readResp = resp.objects!;
+		if (readResp.success) {
+			let resVals: any[] = [];
 
-					for (let i in objects) {
-						var obj = objects[i];
-						resVals.push(obj.interpretReadResponse(readResp.objects![i]))
-					}
+			for (let i in objects) {
+				var obj = objects[i];
+				resVals.push(obj.interpretReadResponse(readResp.objects![i]))
+			}
 
-					this.lastCommitTimestamp = cr.commitTime;
-					return Promise.resolve(resVals);
-				} else {
-					return Promise.reject<any[]>(readResp.errorcode)
-				}
-			})
-		})
+			this.lastCommitTimestamp = cr.commitTime;
+			return Promise.resolve(resVals);
+		} else {
+			return Promise.reject<any[]>(readResp.errorcode)
+		}
 	}
 
 	/**
 	 * Sends a single update operation or an array of update operations to Antidote.
 	 */
-	public update(updates: AntidotePB.ApbUpdateOp[]|AntidotePB.ApbUpdateOp): Promise<CommitResponse> {
+	public async update(updates: AntidotePB.ApbUpdateOp[]|AntidotePB.ApbUpdateOp): Promise<CommitResponse> {
 		let messageType = MessageCodes.antidotePb.ApbStaticUpdateObjects;
 		let updatesAr: AntidotePB.ApbUpdateOp[] = (updates instanceof Array) ? updates : [updates];
 		let message: AntidotePB.ApbStaticUpdateObjectsMessage = new messageType({
 			transaction: this.startTransactionPb(),
 			updates: updatesAr
 		});
-		let r = this.connection.sendRequest(MessageCodes.apbStaticUpdateObjects, encode(message));
-		return r.then(resp => this.completeTransaction(resp))
+		let resp = await this.connection.sendRequest(MessageCodes.apbStaticUpdateObjects, encode(message));
+		return this.completeTransaction(resp)
 	}
 
 	completeTransaction(resp: AntidotePB.ApbCommitResp): Promise<CommitResponse> {
@@ -344,48 +339,45 @@ export class Transaction extends CrdtFactory {
 	/** 
 	 * Reads several objects at once.
 	 */
-	public read(objects: AntidoteObject[]): Promise<any[]> {
+	public async read(objects: AntidoteObject[]): Promise<any[]> {
 		let apb = MessageCodes.antidotePb.ApbReadObjects;
 		let message = new apb({
 			boundobjects: objects.map(o => o.key),
 			transaction_descriptor: this.txId
 		});
-		let r = this.antidoteConnection.sendRequest(MessageCodes.apbReadObjects, encode(message));
-		return r.then((resp: AntidotePB.ApbReadObjectsResp) => {
-			if (resp.success) {
-				let resVals: any[] = [];
-				for (let i in objects) {
-					var obj = objects[i];
-					let objVal = obj.interpretReadResponse(resp.objects![i]);
-					resVals.push(objVal)
-				}
-				return Promise.resolve(resVals);
+		let resp: AntidotePB.ApbReadObjectsResp = await this.antidoteConnection.sendRequest(MessageCodes.apbReadObjects, encode(message));
+		if (resp.success) {
+			let resVals: any[] = [];
+			for (let i in objects) {
+				var obj = objects[i];
+				let objVal = obj.interpretReadResponse(resp.objects![i]);
+				resVals.push(objVal)
 			}
-			return Promise.reject<any[]>(resp.errorcode)
-		})
+			return resVals;
+		}
+		return Promise.reject<any[]>(resp.errorcode)
 	}
 
 	/**
 	 * Sends a single update operation or an array of update operations to Antidote.
 	 */
-	public update(updates: AntidotePB.ApbUpdateOp[]|AntidotePB.ApbUpdateOp): Promise<void> {
+	public async update(updates: AntidotePB.ApbUpdateOp[]|AntidotePB.ApbUpdateOp): Promise<void> {
 		let messageType = MessageCodes.antidotePb.ApbUpdateObjects;
 		let updatesAr: AntidotePB.ApbUpdateOp[] = (updates instanceof Array) ? updates : [updates];
 		let message = new messageType({
 			transaction_descriptor: this.txId,
 			updates: updatesAr
 		});
-		let r = this.antidoteConnection.sendRequest(MessageCodes.apbUpdateObjects, encode(message));
-		return r.then(resp => undefined);
+		await this.antidoteConnection.sendRequest(MessageCodes.apbUpdateObjects, encode(message));
 	}
 
-	public commit(): Promise<CommitResponse> {
+	public async commit(): Promise<CommitResponse> {
 		let apbCommitTransaction = MessageCodes.antidotePb.ApbCommitTransaction;
 		let message: AntidotePB.ApbCommitTransactionMessage = new apbCommitTransaction({
 			transaction_descriptor: this.txId
 		});
-		let r = this.antidoteConnection.sendRequest(MessageCodes.apbCommitTransaction, encode(message));
-		return r.then(resp => this.connection.completeTransaction(resp))
+		let resp = await this.antidoteConnection.sendRequest(MessageCodes.apbCommitTransaction, encode(message));
+		return this.connection.completeTransaction(resp)
 	}
 
 	public toString(): string {
@@ -443,10 +435,9 @@ export class CrdtCounter extends AntidoteObject {
 		})
 	}
 
-	public read(): Promise<number> {
-		return this.parent.read([this]).then(r => {
-			return r[0]
-		})
+	public async read(): Promise<number> {
+		let r = await this.parent.read([this])
+		return r[0]
 	}
 
 }
@@ -482,10 +473,9 @@ export class CrdtInteger extends AntidoteObject {
 		})
 	}
 
-	public read(): Promise<number> {
-		return this.parent.read([this]).then(r => {
-			return r[0]
-		})
+	public async read(): Promise<number> {
+		let r = await this.parent.read([this])
+		return r[0]
 	}
 
 }
@@ -513,10 +503,9 @@ export class CrdtRegister<T> extends AntidoteObject {
 		})
 	}
 
-	public read(): Promise<T> {
-		return this.parent.read([this]).then(r => {
-			return r[0]
-		})
+	public async read(): Promise<T> {
+		let r = await this.parent.read([this])
+		return r[0]
 	}
 
 }
@@ -542,10 +531,9 @@ export class CrdtMultiValueRegister<T> extends AntidoteObject {
 		})
 	}
 
-	public read(): Promise<T[]> {
-		return this.parent.read([this]).then(r => {
-			return r[0]
-		})
+	public async read(): Promise<T[]> {
+		let r = await this.parent.read([this])
+		return r[0]
 	}
 
 }
@@ -558,10 +546,9 @@ export class CrdtSet<T> extends AntidoteObjectWithReset {
 		});
 	}
 
-	public read(): Promise<T[]> {
-		return this.parent.read([this]).then(r => {
-			return r[0]
-		})
+	public async read(): Promise<T[]> {
+		let r = await this.parent.read([this])
+		return r[0]
 	}
 
 	/** 
@@ -713,26 +700,24 @@ export class CrdtMap extends CrdtFactory implements AntidoteObject {
 		return new CrdtMapValue(this.parent, vals);
 	}
 
-	public readMapValue(): Promise<CrdtMapValue> {
-		return this.parent.read([this]).then(r => {
-			return r[0]
-		})
+	public async readMapValue(): Promise<CrdtMapValue> {
+		let r = await this.parent.read([this])
+		return r[0]
 	}
 
 	getBucket(): string {
 		return "";
 	}
 
-	public read(objects: AntidoteObject[]): Promise<any[]> {
-		return this.parent.read([this]).then(r => {
-			let map: CrdtMapValue = r[0];
-			let values: any[] = [];
-			// filter out the actual keys
-			for (let obj of objects) {
-				values.push(map.get(obj.key.key!.toUTF8(), obj.key.type!));
-			}
-			return values; 
-		})
+	public async read(objects: AntidoteObject[]): Promise<any[]> {
+		let r = await this.parent.read([this])
+		let map: CrdtMapValue = r[0];
+		let values: any[] = [];
+		// filter out the actual keys
+		for (let obj of objects) {
+			values.push(map.get(obj.key.key!.toUTF8(), obj.key.type!));
+		}
+		return values; 
 	}
 
 	public jsToBinary(obj: any): ByteBuffer {

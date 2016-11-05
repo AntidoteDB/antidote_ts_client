@@ -9,25 +9,20 @@ var Long = require("long");
 
 let connection = connect(8087, "localhost");
 
-function testAntidote(): Promise<any> {
-	let txPromise = connection.startTransaction();
-	return txPromise.then(tx => {
-		let testKey = tx.counter("testKey");
-		tx.update(testKey.increment(1));
-		return testKey.read().then(counterValue => {
-			console.log(`counter value = ${counterValue}.`);
-			return tx.commit()
-		});
-	})
+async function testAntidote(): Promise<any> {
+	let tx = await connection.startTransaction();
+	let testKey = tx.counter("testKey");
+	tx.update(testKey.increment(1));
+	let counterValue = await testKey.read();
+	console.log(`counter value = ${counterValue}.`);
+	return tx.commit()
 }
 
-function testAntidote2(): Promise<any> {
+async function testAntidote2(): Promise<any> {
 	let counter = connection.counter("testKey");
-	return connection.update(counter.increment(1)).then(r => {
-		return counter.read();
-	}).then(counterValue => {
-		console.log(`counter value = ${counterValue}.`);
-	})
+	await connection.update(counter.increment(1))
+	let counterValue = await counter.read();
+	console.log(`counter value = ${counterValue}.`);
 }
 
 
@@ -51,7 +46,7 @@ function makeFriends(userA: User, userB: User): Promise<any> {
 	])
 }
 
-function friendshipExample(): Promise<any> {
+async function friendshipExample(): Promise<any> {
 	let alice: User = {id: "A", name: "Alice"};
 	let bob: User = {id: "B", name: "Bob"};
 	let charlie: User = {id: "C", name: "Charlie"};
@@ -64,26 +59,23 @@ function friendshipExample(): Promise<any> {
 	// ])
 
 	//reset state
-	return Promise.all([alice, bob, charlie].map(user => {
+	await Promise.all([alice, bob, charlie].map(async user => {
 		let set = friendSet(user.id)
-		return set.read().then(vals => {
-			return connection.update(set.removeAll(vals))
-		})
-	})).then(_ => Promise.all([
+		let vals = await set.read()
+		await connection.update(set.removeAll(vals))
+	}));
+	await Promise.all([
 		makeFriends(alice, bob),
 		makeFriends(bob, charlie)
-	])).then(_ => {
-		return connection.read([
+	])
+	let resp = await connection.read([
 			friendSet(alice.id),
 			friendSet(bob.id),
 			friendSet(charlie.id)
 		])
-	}).then(resp => {
-		console.log(`Alice is friends with ${JSON.stringify(resp[0])}`)
-		console.log(`Bob is friends with ${JSON.stringify(resp[1])}`)
-		console.log(`Charlie is friends with ${JSON.stringify(resp[2])}`)
-		return 0;
-	})
+	console.log(`Alice is friends with ${JSON.stringify(resp[0])}`)
+	console.log(`Bob is friends with ${JSON.stringify(resp[1])}`)
+	console.log(`Charlie is friends with ${JSON.stringify(resp[2])}`)
 }
 
 
