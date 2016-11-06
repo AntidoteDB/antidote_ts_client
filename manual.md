@@ -5,6 +5,10 @@ Run the following command to add it as a dependency to your project:
 
     npm install --save antidote_ts_client
 
+# Source Code
+
+The source code for this library and for this documentation is available on [GitHub](https://github.com/peterzeller/antidote_ts_client).
+
 # Usage
 
 You can import the library into your js application using `require`:
