@@ -23,10 +23,10 @@ export class AntidoteConnection {
 	constructor(port: number, host: string) {
 		this.port = port;
 		this.host = host;
-		this.connect();
+		this.reconnect();
 	}
 
-	private connect() {
+	private reconnect() {
 		if (this.socket) {
 			this.invalidateSocket(new Error("Reconnecting ..."));
 		}
@@ -183,7 +183,7 @@ export class AntidoteConnection {
 		return new Promise((resolve, reject) => {
 			if (!this.socket) {
 				// try to reconnect:
-				this.connect();
+				this.reconnect();
 			}
 			if (!this.socket) {
 				return Promise.reject("Could not connect to server.");

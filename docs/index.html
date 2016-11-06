@@ -74,9 +74,9 @@
 				<h1 id="usage">Usage</h1>
 				<p>You can import the library into your js application using <code>require</code>:</p>
 				<pre><code><span class="hljs-keyword">let</span> antidoteClient = <span class="hljs-built_in">require</span>(<span class="hljs-string">'antidote_ts_client'</span>)
-</code></pre><p>To connect to Antidote, use the <a href="classes/_antidoteconnection_.antidoteconnection.html#connect">connect</a> function, which takes the port and the hostname.</p>
+</code></pre><p>To connect to Antidote, use the <a href="modules/_antidote_.html#connect">connect</a> function, which takes the port and the hostname.</p>
 				<pre><code><span class="hljs-keyword">let</span> <span class="hljs-attr">antidote</span> = antidoteClient.connect(<span class="hljs-number">8087</span>, <span class="hljs-string">"localhost"</span>)
-</code></pre><p>The <a href="classes/_antidoteconnection_.antidoteconnection.html#connect">connect</a> function returns a <a href="interfaces/_antidote_.connection.html">Connection</a> object.</p>
+</code></pre><p>The <a href="modules/_antidote_.html#connect">connect</a> function returns a <a href="interfaces/_antidote_.connection.html">Connection</a> object.</p>
 				<h2 id="antidote-objects">Antidote-Objects</h2>
 				<p>Objects in the database are addressed using immutable references of type <a href="interfaces/_antidote_.antidoteobject.html">AntidoteObject</a>, which can be retrieved using methods on the connection object.
 					Each datatype supported by Antidote has its own method.
