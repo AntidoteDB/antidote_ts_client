@@ -2,10 +2,10 @@
   "name": "antidote_ts_client",
   "version": "0.0.5",
   "description": "An experimental Antidote client for nodejs, written in typescript",
-  "homepage": "https://github.com/peterzeller/antidote_ts_client_test",
+  "homepage": "https://github.com/peterzeller/antidote_ts_client",
   "repository": {
     "type": "git",
-    "url": "https://github.com/peterzeller/antidote_ts_client_test.git"
+    "url": "https://github.com/peterzeller/antidote_ts_client.git"
   },
   "main": "./dist/antidote.js",
   "typings": "./dist/antidote",
@@ -32,6 +32,7 @@
     "clean": "rimraf dist/*",
     "watch": "tsc --watch",
     "lint": "tslint --project tsconfig.json",
-    "prepublish": "npm run compile"
+    "prepublish": "npm run compile",
+    "typedoc": "typedoc --mode modules --out docs/reference src/antidote.ts --tsconfig tsconfig.json --readme none"
   }
 }

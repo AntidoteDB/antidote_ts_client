@@ -2,7 +2,7 @@ import * as assert from 'assert';
 /// <reference types="mocha" />
 import { AntidoteConnection } from "./antidoteConnection"
 // import '../proto/antidote_proto'
-import { Connection, Transaction, connect, key, CrdtSet, CrdtCounter } from "./antidote"
+import { Connection, Transaction, connect, CrdtSet, CrdtCounter } from "./antidote"
 import ByteBuffer = require("bytebuffer")
 import http = require('http');
 import fs = require('fs');
@@ -117,7 +117,7 @@ describe("antidote client", function () {
 				map.register("a").set("x"),
 				map.counter("b").increment(5)
 			])
-			let val = await map.readMapValue();
+			let val = await map.read();
 			let obj = val.toJsObject();
 			assert.deepEqual(obj, { a: "x", b: 5 });
 		});
@@ -131,7 +131,7 @@ describe("antidote client", function () {
 				map.register("a").set("x"),
 				map.counter("b").increment(5)
 			])
-			let val = await map.readMapValue();
+			let val = await map.read();
 			let obj = val.toJsObject();
 			assert.deepEqual(obj, { a: "x", b: 5 });
 		});
@@ -150,7 +150,7 @@ describe("antidote client", function () {
 				map.remove(map.register("a")),
 				map.removeAll([map.register("b"), map.register("c")])
 			])
-			let val = await map.readMapValue();
+			let val = await map.read();
 			let obj = val.toJsObject();
 			assert.deepEqual(obj, { d: "x", e: [1, 2, 3, 4], f: 5 });
 		});
@@ -176,6 +176,20 @@ describe("antidote client", function () {
 			let vals2 = await reg2.read()
 			assert.deepEqual(vals2, [1]);
 		})
+
+		it('can do batch-reads', async () => {
+			let a = connection.counter("batch-read-counter-a")
+			let b = connection.counter("batch-read-counter-b")
+			let c = connection.counter("batch-read-counter-c")
+			await connection.update([
+				a.increment(1),
+				b.increment(2),
+				c.increment(3)
+			]);
+			let vals = await connection.readBatch([a,b,c]); 
+			vals.sort(); // TODO remove this when order is fixed in Antidote
+			assert.deepEqual(vals, [1,2,3]);
+		});
 	});
 
 });

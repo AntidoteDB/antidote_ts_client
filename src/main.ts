@@ -1,6 +1,6 @@
 import {AntidoteConnection} from "./antidoteConnection"
 import '../proto/antidote_proto' 
-import {Connection, Transaction, connect, key, CrdtSet, CrdtCounter} from "./antidote" 
+import {Connection, Transaction, connect, CrdtSet, CrdtCounter} from "./antidote" 
 import ByteBuffer = require("bytebuffer")
 import http = require('http');
 import fs = require('fs');
@@ -68,7 +68,7 @@ async function friendshipExample(): Promise<any> {
 		makeFriends(alice, bob),
 		makeFriends(bob, charlie)
 	])
-	let resp = await connection.read([
+	let resp = await connection.readBatch([
 			friendSet(alice.id),
 			friendSet(bob.id),
 			friendSet(charlie.id)
