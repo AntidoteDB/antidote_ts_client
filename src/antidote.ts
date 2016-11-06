@@ -549,6 +549,8 @@ class TransactionImpl extends CrdtFactoryImpl implements Transaction {
  * 
  * For example, when a reference is created from a [[Transaction]] object, 
  * all reads on the object will be performed in the context of the transaction.
+ * 
+ * @param T the type returned when reading the object
  */
 export interface AntidoteObject<T> {
 	/** the parent factory */
@@ -587,6 +589,20 @@ abstract class AntidoteObjectImpl<T> implements AntidoteObject<T> {
 }
 
 
+/**
+ * A counter is a object that stores a single integer and can be incremented or decremented.
+ * 
+ * Example:
+ * 
+ * ```
+ * let counter = connection.counter("myCounter")
+ * await connection.update(
+ * 	counter.increment(3)
+ * );
+ * let val = await counter.read();
+ * ```
+ * 
+ */
 export interface CrdtCounter extends AntidoteObject<number> {
 	/** Creates an operation to increment the counter.
 	 * Negative numbers will decrement the value. 
@@ -620,7 +636,20 @@ class CrdtCounterImpl extends AntidoteObjectImpl<number> implements CrdtCounter 
 
 }
 
-
+/**
+ * An integer can be incremented and set to a specific value.
+ * 
+ * ```
+ * let num = connection.integer("myint")
+ * await connection.update(
+ * 	num.set(40)
+ * )
+ * await connection.update(
+ * 	num.increment(2)
+ * )
+ * let val = await num.read();
+ * ```
+*/
 export interface CrdtInteger extends AntidoteObject<number> {
 	/** Creates an operation to increment the integer.
 	 * Negative numbers will decrement the value. 
@@ -663,7 +692,22 @@ class CrdtIntegerImpl extends AntidoteObjectImpl<number> implements CrdtInteger 
 
 }
 
-
+/**
+ * A register stores a single value.
+ * It provides a [[set]] method to change the value.
+ * 
+ * Example:
+ * 
+ * ```
+ * let reg = connection.register<string[]>("mylwwreg")
+ * await connection.update(
+ * 	reg.set(["a", "b"])
+ * )
+ * let val = await reg.read();
+ * ```
+ * 
+ * @param T the type of the value stored in the register
+ */
 export interface CrdtRegister<T> extends AntidoteObject<T> {
 	/** Creates an operation, which sets the register to the provided value.
 	 * Negative numbers will decrement the value. 
@@ -679,7 +723,7 @@ class CrdtRegisterImpl<T> extends AntidoteObjectImpl<T> implements CrdtRegister<
 	}
 
 	/** Creates an operation, which sets the register to the provided value.
-	 * Negative numbers will decrement the value. 
+	 * 
 	 * Use [[Connection.update]] to send the update to the database. */
 	public set(value: T): AntidotePB.ApbUpdateOp {
 		let bin = this.parent.jsToBinary(value);
@@ -692,9 +736,27 @@ class CrdtRegisterImpl<T> extends AntidoteObjectImpl<T> implements CrdtRegister<
 
 }
 
+
+/**
+ * This register can be [[set]] to a single value, but reading the register returns a list of 
+ * all concurrently written values.
+ * 
+ * Example:
+ * 
+ * ```
+ * let reg = connection.multiValueRegister<number>("mymvreg")
+ * await connection.update(
+ * 	reg.set(15)
+ * )
+ * let val = await reg.read();
+ * // val is now [15]
+ * ```
+ * 
+ * @param T the type of the value stored in the register
+ */
 export interface CrdtMultiValueRegister<T> extends AntidoteObject<T[]> {
 	/** Creates an operation, which sets the register to the provided value.
-	 * Negative numbers will decrement the value. 
+	 * 
 	 * Use [[Connection.update]] to send the update to the database. */
 	set(value: T): AntidotePB.ApbUpdateOp;
 }
@@ -722,6 +784,26 @@ class CrdtMultiValueRegisterImpl<T> extends AntidoteObjectImpl<T[]> implements C
 
 }
 
+/**
+ * A set of elements.
+ * Elements can be added and removed.
+ * 
+ * Example:  
+ * ```
+ * let set = setType.create<string>("my-set")
+ * await connection.update(
+ * 	set.addAll(["a", "b", "c", "d", "e"])
+ * )
+ * await connection.update([
+ * 	set.remove("a"),
+ * 	set.removeAll(["b", "c"])
+ * ])
+ * let val = await set.read();
+ * // val is now ["d", "e"]
+ * ```
+ * 
+ * @param T the type of the elements stored in the set
+ */
 export interface CrdtSet<T> extends AntidoteObject<T[]> {
 	/** 
 	 * Creates an operation, which adds an element to the set. 
@@ -806,16 +888,38 @@ class CrdtSetImpl<T> extends AntidoteObjectImpl<T[]> implements CrdtSet<T> {
 	}
 }
 
+/**
+ * An object representing the value of a [[CrdtMap]].
+ */
 export interface CrdtMapValue {
+	/**
+	 * reads the entry with the given key and type
+	 */
 	get(key: string, type: AntidotePB.CRDT_type): any;
+
+	/** reads the counter value with the given key */
 	counterValue(key: string): number | undefined;
+	/** reads the set value with the given key */
 	setValue(key: string): any[] | undefined;
+	/** reads the register value with the given key */
 	registerValue(key: string): any;
+	/** reads the multi-value-register value with the given key */
 	mvRegisterValue(key: string): any[] | undefined;
+	/** reads the integer value with the given key */
 	integerValue(key: string): number | undefined ;
+	/** reads the gmap value with the given key */
 	gmapValue(key: string): CrdtMapValue | undefined;
+	/** reads the add-wins-map value with the given key */
 	awmapValue(key: string): CrdtMapValue | undefined;
+	/** reads the remove-wins-set value with the given key */
 	rwsetValue(key: string): any[] | undefined;
+	
+	/** 
+	 * Converts this CRDTMapValue into a JavaScript object.
+	 * The value of each embedded CRDT is stored under it's key.
+	 * 
+	 * Warning: If there are two entries with the same keys but different types, then only one of them survives.
+	 * */
 	toJsObject(): any;
 }
 
@@ -873,6 +977,33 @@ class CrdtMapValueImpl implements CrdtMapValue {
 	}
 }
 
+/**
+ * A map with embedded CRDTs. 
+ * Each map implements the [[CrdtFactory]] interface, so it can be used like a connection to create references to embedded objects.
+ * The [[remove]] and [[removeAll]] methods can be used to remove entries from the map.  
+ * 
+ * Example:
+ * 
+ * ```
+ * let map = connection.map("my-map2");
+ * await connection.update([
+ * 	map.register("a").set("x"),
+ * 	map.register("b").set("x"),
+ * 	map.register("c").set("x"),
+ * 	map.register("d").set("x"),
+ * 	map.set("e").addAll([1, 2, 3, 4]),
+ * 	map.counter("f").increment(5)
+ * ])
+ * await connection.update([
+ * 	map.remove(map.register("a")),
+ * 	map.removeAll([map.register("b"), map.register("c")])
+ * ])
+ * let val = await map.read();
+ * // convert CrdtMapValue to JavaScript object:
+ * let obj = val.toJsObject();
+ * // obj is now { d: "x", e: [1, 2, 3, 4], f: 5 }
+ * ```
+ */
 export interface CrdtMap extends AntidoteObject<CrdtMapValue>, CrdtFactory {
 
 	/**

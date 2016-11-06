@@ -33,6 +33,6 @@
     "watch": "tsc --watch",
     "lint": "tslint --project tsconfig.json",
     "prepublish": "npm run compile",
-    "typedoc": "typedoc --mode modules --out docs/reference src/antidote.ts --tsconfig tsconfig.json --readme none"
+    "typedoc": "typedoc --mode modules --out docs/ src/antidote.ts --tsconfig tsconfig.json --readme manual.md"
   }
 }
