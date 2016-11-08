@@ -9,7 +9,7 @@ Run the following command to add it as a dependency to your project:
 
 # Documentation
 
-Documentation is available at https://peterzeller.github.io/antidote_ts_client/
+Documentation is available at https://syncfree.github.io/antidote_ts_client/
 
 
 # Development / Contributing

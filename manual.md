@@ -7,7 +7,7 @@ Run the following command to add it as a dependency to your project:
 
 # Source Code
 
-The source code for this library and for this documentation is available on [GitHub](https://github.com/peterzeller/antidote_ts_client).
+The source code for this library and for this documentation is available on [GitHub](https://github.com/syncfree/antidote_ts_client).
 
 # Usage
 
