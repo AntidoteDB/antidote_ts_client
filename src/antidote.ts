@@ -54,6 +54,9 @@ export interface CrdtFactory {
 	/** returns a reference to a counter object */
 	counter(key: string): CrdtCounter;
 
+	/** returns a reference to a fat_counter object */
+	fatCounter(key: string): CrdtCounter;
+
 	/** returns a reference to a last-writer-wins register */
 	register<T>(key: string): CrdtRegister<T>;
 
@@ -71,6 +74,9 @@ export interface CrdtFactory {
 
 	/** returns a reference to an add-wins map */
 	map(key: string): CrdtMap;
+
+	/** returns a reference to a remove-resets map */
+	rrmap(key: string): CrdtMap;
 
 	/** returns a reference to a grow-only map */
 	gmap(key: string): CrdtMap;
@@ -91,6 +97,11 @@ abstract class CrdtFactoryImpl implements CrdtFactory {
 	/** returns a reference to a counter object */
 	public counter(key: string): CrdtCounter {
 		return new CrdtCounterImpl(this, key, this.getBucket(), AntidotePB.CRDT_type.COUNTER);
+	}
+
+	/** returns a reference to a fat-counter object */
+	public fatCounter(key: string): CrdtCounter {
+		return new CrdtCounterImpl(this, key, this.getBucket(), AntidotePB.CRDT_type.FATCOUNTER);
 	}
 
 	/** returns a reference to a last-writer-wins register */
@@ -121,6 +132,11 @@ abstract class CrdtFactoryImpl implements CrdtFactory {
 	/** returns a reference to an add-wins map */
 	public map(key: string): CrdtMap {
 		return new CrdtMapImpl(this, key, this.getBucket(), AntidotePB.CRDT_type.AWMAP);
+	}
+
+	/** returns a reference to an remove-resets map */
+	public rrmap(key: string): CrdtMap {
+		return new CrdtMapImpl(this, key, this.getBucket(), AntidotePB.CRDT_type.RRMAP);
 	}
 
 	/** returns a reference to a grow-only map */

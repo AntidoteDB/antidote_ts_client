@@ -1,7 +1,6 @@
 import * as assert from 'assert';
 /// <reference types="mocha" />
 import { AntidoteConnection } from "./antidoteConnection"
-// import '../proto/antidote_proto'
 import { Connection, Transaction, connect, CrdtSet, CrdtCounter } from "./antidote"
 import ByteBuffer = require("bytebuffer")
 import http = require('http');
@@ -22,10 +21,26 @@ describe("antidote client", function () {
 		connection.setTimeout(timeout);
 	});
 
+	let counterImpls = [
+		{name: "counter", create: (name: string) => connection.counter(name)},
+		{name: "fat-counter", create: (name: string) => connection.fatCounter(name)},
+	];
+	for (let impl of counterImpls) {
+		describe(impl.name, () => {
+			it('should count', async () => {
+				let counter = impl.create(`my${impl.name}`)
+				await connection.update(
+					counter.increment(3)
+				)
+				let val = await counter.read();
+				assert.equal(val, 3);
+			});
+		});
+	}
 
-	describe('counters', () => {
+	describe('fat-counters', () => {
 		it('should count', async () => {
-			let counter = connection.counter("myCounter")
+			let counter = connection.fatCounter("myFatCounter")
 			await connection.update(
 				counter.increment(3)
 			)
@@ -153,6 +168,39 @@ describe("antidote client", function () {
 			let val = await map.read();
 			let obj = val.toJsObject();
 			assert.deepEqual(obj, { d: "x", e: [1, 2, 3, 4], f: 5 });
+		});
+	});
+
+	describe('remove-resets map', () => {
+
+		it('should be possible to store things', async () => {
+			let map = connection.rrmap("my-rrmap1");
+			await connection.update([
+				map.register("a").set("x"),
+				map.counter("b").increment(5)
+			])
+			let val = await map.read();
+			let obj = val.toJsObject();
+			assert.deepEqual(obj, { a: "x", b: 5 });
+		});
+
+		it('should be possible to store and then remove things', async () => {
+			let map = connection.rrmap("my-rrmap2");
+			await connection.update([
+				map.multiValueRegister("a").set("x"),
+				map.multiValueRegister("b").set("x"),
+				map.multiValueRegister("c").set("x"),
+				map.multiValueRegister("d").set("x"),
+				map.set("e").addAll([1, 2, 3, 4]),
+				map.counter("f").increment(5)
+			])
+			await connection.update([
+				map.remove(map.multiValueRegister("a")),
+				map.removeAll([map.multiValueRegister("b"), map.multiValueRegister("c")])
+			])
+			let val = await map.read();
+			let obj = val.toJsObject();
+			assert.deepEqual(obj, { d: ["x"], e: [1, 2, 3, 4], f: 5 });
 		});
 	});
 
