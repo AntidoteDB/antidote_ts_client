@@ -622,6 +622,14 @@
                 {
                     "name": "RWSET",
                     "id": 10
+                },
+                {
+                    "name": "RRMAP",
+                    "id": 11
+                },
+                {
+                    "name": "FATCOUNTER",
+                    "id": 12
                 }
             ]
         }

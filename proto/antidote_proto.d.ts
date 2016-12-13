@@ -2028,6 +2028,8 @@ declare module AntidotePB {
 		GMAP = 8,
 		AWMAP = 9,
 		RWSET = 10,
+		RRMAP = 11,
+		FATCOUNTER = 12,
 		
 }
 }

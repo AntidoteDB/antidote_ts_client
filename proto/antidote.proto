@@ -13,6 +13,8 @@ enum CRDT_type {
     GMAP = 8;
     AWMAP = 9;
     RWSET = 10;
+    RRMAP = 11;
+    FATCOUNTER = 12;
 }
 
 // Riak Error response

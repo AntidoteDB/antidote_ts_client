@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "mocha": "^3.1.2",
-    "proto2ts": "2.0.0",
+    "proto2ts": "git://github.com/SINTEF-9012/Proto2TypeScript.git#d96cfd3dc7afcdbea86114cefca1a761fe0d59ca",
     "rimraf": "^2.5.4",
     "typescript": "^2.0.3"
   },
