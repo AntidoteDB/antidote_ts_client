@@ -183,7 +183,7 @@ export interface AntidoteSession extends CrdtFactory {
 	/**
 	 * Sends a single update operation or an array of update operations to Antidote.
 	 */
-	update(updates: AntidotePB.ApbUpdateOp[] | AntidotePB.ApbUpdateOp): Promise<void>;
+	update(updates: AntidotePB.ApbUpdateOp[] | AntidotePB.ApbUpdateOp): Promise<any>;
 }
 
 
@@ -462,7 +462,7 @@ export interface Transaction extends AntidoteSession {
 	/**
 	 * Commits the transaction.
 	 */
-	commit(): Promise<void>;
+	commit(): Promise<any>;
 }
 
 class TransactionImpl extends CrdtFactoryImpl implements Transaction {
