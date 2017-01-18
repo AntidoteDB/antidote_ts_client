@@ -103,6 +103,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-not-exported"><a href="_antidote_.connectionimpl.html#connection" class="tsd-kind-icon">connection</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-not-exported"><a href="_antidote_.connectionimpl.html#dataformat" class="tsd-kind-icon">data<wbr>Format</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-not-exported"><a href="_antidote_.connectionimpl.html#defaultbucket" class="tsd-kind-icon">default<wbr>Bucket</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-not-exported"><a href="_antidote_.connectionimpl.html#lastcommittimestamp" class="tsd-kind-icon">last<wbr>Commit<wbr>Timestamp</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-not-exported"><a href="_antidote_.connectionimpl.html#minsnapshottime" class="tsd-kind-icon">min<wbr>Snapshot<wbr>Time</a></li>
@@ -153,7 +154,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L302">antidote.ts:302</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L353">antidote.ts:353</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -175,9 +176,26 @@
 					<div class="tsd-signature tsd-kind-icon">connection<span class="tsd-signature-symbol">:</span> <a href="_antidoteconnection_.antidoteconnection.html" class="tsd-signature-type">AntidoteConnection</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L279">antidote.ts:279</a></li>
+							<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L324">antidote.ts:324</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
+					<a name="dataformat" class="tsd-anchor"></a>
+					<h3>data<wbr>Format</h3>
+					<div class="tsd-signature tsd-kind-icon">data<wbr>Format<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_antidote_.dataformat.html" class="tsd-signature-type">DataFormat</a><span class="tsd-signature-symbol"> =&nbsp;new MsgpackDataFormat()</span></div>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#dataformat">dataFormat</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L353">antidote.ts:353</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The DataFormat to use for decoding and encoding binary values.
+							The default is <a href="_antidote_.msgpackdataformat.html">MsgpackDataFormat</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
 					<a name="defaultbucket" class="tsd-anchor"></a>
@@ -186,7 +204,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#defaultbucket">defaultBucket</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L302">antidote.ts:302</a></li>
+							<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L347">antidote.ts:347</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -201,7 +219,7 @@
 					<div class="tsd-signature tsd-kind-icon">last<wbr>Commit<wbr>Timestamp<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ByteBuffer</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> =&nbsp;undefined</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L283">antidote.ts:283</a></li>
+							<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L328">antidote.ts:328</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -217,7 +235,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#minsnapshottime">minSnapshotTime</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L289">antidote.ts:289</a></li>
+							<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L334">antidote.ts:334</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -235,7 +253,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#monotonicsnapshots">monotonicSnapshots</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L297">antidote.ts:297</a></li>
+							<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L342">antidote.ts:342</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -261,7 +279,7 @@
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#binarytojs">binaryToJs</a></p>
 								<p>Overrides <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#binarytojs">binaryToJs</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L334">antidote.ts:334</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L380">antidote.ts:380</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -290,7 +308,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#childupdate">childUpdate</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L314">antidote.ts:314</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L365">antidote.ts:365</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -317,7 +335,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#close">close</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L441">antidote.ts:441</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L485">antidote.ts:485</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -339,7 +357,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L426">antidote.ts:426</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L470">antidote.ts:470</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -364,7 +382,7 @@
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#counter">counter</a></p>
 								<p>Inherited from <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#counter">counter</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L98">antidote.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L98">antidote.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -394,7 +412,7 @@
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#fatcounter">fatCounter</a></p>
 								<p>Inherited from <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#fatcounter">fatCounter</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L103">antidote.ts:103</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L103">antidote.ts:103</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -423,7 +441,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#getbucket">getBucket</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L310">antidote.ts:310</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L361">antidote.ts:361</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -441,7 +459,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#getlastcommittimestamp">getLastCommitTimestamp</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L360">antidote.ts:360</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L404">antidote.ts:404</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -468,7 +486,7 @@
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#gmap">gmap</a></p>
 								<p>Inherited from <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#gmap">gmap</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L143">antidote.ts:143</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L143">antidote.ts:143</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -498,7 +516,7 @@
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#integer">integer</a></p>
 								<p>Inherited from <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#integer">integer</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L118">antidote.ts:118</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L118">antidote.ts:118</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -528,7 +546,7 @@
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#jstobinary">jsToBinary</a></p>
 								<p>Overrides <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#jstobinary">jsToBinary</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L324">antidote.ts:324</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L375">antidote.ts:375</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -558,7 +576,7 @@
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#map">map</a></p>
 								<p>Inherited from <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#map">map</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L133">antidote.ts:133</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L133">antidote.ts:133</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -588,7 +606,7 @@
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#multivalueregister">multiValueRegister</a></p>
 								<p>Inherited from <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#multivalueregister">multiValueRegister</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L113">antidote.ts:113</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L113">antidote.ts:113</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -624,7 +642,7 @@
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#readbatch">readBatch</a></p>
 								<p>Overrides <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#readbatch">readBatch</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L387">antidote.ts:387</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L431">antidote.ts:431</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -654,7 +672,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#readresponsetovalue">readResponseToValue</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L150">antidote.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L150">antidote.ts:150</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -682,7 +700,7 @@
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#register">register</a></p>
 								<p>Inherited from <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#register">register</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L108">antidote.ts:108</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L108">antidote.ts:108</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -718,7 +736,7 @@
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#rrmap">rrmap</a></p>
 								<p>Inherited from <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#rrmap">rrmap</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L138">antidote.ts:138</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L138">antidote.ts:138</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -748,7 +766,7 @@
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#set">set</a></p>
 								<p>Inherited from <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#set">set</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L123">antidote.ts:123</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L123">antidote.ts:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -782,7 +800,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L365">antidote.ts:365</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L409">antidote.ts:409</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -806,7 +824,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#settimeout">setTimeout</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L341">antidote.ts:341</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L385">antidote.ts:385</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -836,7 +854,7 @@
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#set_removewins">set_removeWins</a></p>
 								<p>Inherited from <a href="_antidote_.crdtfactoryimpl.html">CrdtFactoryImpl</a>.<a href="_antidote_.crdtfactoryimpl.html#set_removewins">set_removeWins</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L128">antidote.ts:128</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L128">antidote.ts:128</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -871,7 +889,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#starttransaction">startTransaction</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L346">antidote.ts:346</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L390">antidote.ts:390</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -893,7 +911,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L376">antidote.ts:376</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L420">antidote.ts:420</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -917,7 +935,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_antidote_.connection.html">Connection</a>.<a href="../interfaces/_antidote_.connection.html#update">update</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/e7cafe3/src/antidote.ts#L415">antidote.ts:415</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/430758b/src/antidote.ts#L459">antidote.ts:459</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -975,6 +993,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
 								<a href="_antidote_.connectionimpl.html#connection" class="tsd-kind-icon">connection</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
+								<a href="_antidote_.connectionimpl.html#dataformat" class="tsd-kind-icon">data<wbr>Format</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
 								<a href="_antidote_.connectionimpl.html#defaultbucket" class="tsd-kind-icon">default<wbr>Bucket</a>
@@ -1088,6 +1109,9 @@
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
 						<a href="_antidote_.crdtsetimpl.html" class="tsd-kind-icon">Crdt<wbr>Set<wbr>Impl</a>
 					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="_antidote_.msgpackdataformat.html" class="tsd-kind-icon">Msgpack<wbr>Data<wbr>Format</a>
+					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_antidote_.transactionimpl.html" class="tsd-kind-icon">Transaction<wbr>Impl</a>
 					</li>
@@ -1126,6 +1150,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="../interfaces/_antidote_.crdtset.html" class="tsd-kind-icon">Crdt<wbr>Set</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_antidote_.dataformat.html" class="tsd-kind-icon">Data<wbr>Format</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/_antidote_.transaction.html" class="tsd-kind-icon">Transaction</a>

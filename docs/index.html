@@ -126,10 +126,21 @@ antidote.update([
 				<h2 id="serialization">Serialization</h2>
 				<p>When JavaScript objects are stored in Antidote, they have to be converted to binary data.
 				When reading the object, the binary data has to be converted back to JavaScript.</p>
-				<p>This is done using the <a href="interfaces/_antidote_.connection.html#jstobinary">Connection.jsToBinary</a> and <a href="interfaces/_antidote_.connection.html#binarytojs">Connection.binaryToJs</a> methods on the connection object.
+				<p>This is done using the <a href="interfaces/_antidote_.dataformat.html">DataFormat</a> stored in <a href="interfaces/_antidote_.connection.html#dataformat">Connection.dataFormat</a> of the connection object.
 					By default <a href="http://msgpack.org">MessagePack</a> is used.
-				The behavior can be adjusted by overriding the two methods.</p>
-				<h2 id="session-guarantees">Session guarantees</h2>
+				The behavior can be adjusted by implementing an own <a href="interfaces/_antidote_.dataformat.html">DataFormat</a> and setting the field.</p>
+				<p>For example the following code changes the format to use JSON:</p>
+				<pre><code>antidote.dataFormat = {
+    <span class="hljs-attr">jsToBinary</span>: <span class="hljs-function">(<span class="hljs-params">obj</span>) =&gt;</span> ByteBuffer.fromUTF8(<span class="hljs-built_in">JSON</span>.stringify(obj)),
+    <span class="hljs-attr">binaryToJs</span>: <span class="hljs-function">(<span class="hljs-params">byteBuffer: ByteBuffer</span>) =&gt;</span> {
+        <span class="hljs-keyword">if</span> (byteBuffer.remaining() == <span class="hljs-literal">null</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+        }
+        <span class="hljs-keyword">let</span> str = byteBuffer.readUTF8String(byteBuffer.remaining());
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">JSON</span>.parse(str);
+    }
+}
+</code></pre><h2 id="session-guarantees">Session guarantees</h2>
 				<p>To ensure session guarantees like &quot;read your writes&quot; Antidote uses vector clocks.
 					Each operation returns a vector clock indicating the time after the operation.
 				At each request to Antidote a vector clock can be given to force a minimum time for the snapshot used in the request.</p>
