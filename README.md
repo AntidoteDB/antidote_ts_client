@@ -13,6 +13,8 @@ Documentation is available at https://syncfree.github.io/antidote_ts_client/
 
 
 # Development / Contributing
+
+[![Build Status](https://travis-ci.org/SyncFree/antidote_ts_client.svg?branch=master)](https://travis-ci.org/SyncFree/antidote_ts_client)
   
 To build and compile the library execute:
 
