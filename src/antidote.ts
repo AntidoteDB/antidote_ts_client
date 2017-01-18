@@ -311,10 +311,10 @@ export class MsgpackDataFormat implements DataFormat {
 
 	/** Inverse of jsToBinary */
 	public binaryToJs(byteBuffer: ByteBuffer): any {
-		let buffer = new Buffer(byteBuffer.toArrayBuffer());
-		if (buffer.byteLength == 0) {
+		if (byteBuffer.remaining() <= 0) {
 			return null;
 		}
+		let buffer = new Buffer(byteBuffer.toArrayBuffer());
 		let decoded = msgpack.decode(buffer);
 		return decoded
 	}
