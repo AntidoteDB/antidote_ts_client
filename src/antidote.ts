@@ -250,6 +250,12 @@ export interface Connection extends AntidoteSession {
 	 */
 	defaultBucket: string;
 
+	/**
+	 * The DataFormat to use for decoding and encoding binary values.
+	 * The default is [[MsgpackDataFormat]].
+	 */
+	dataFormat: DataFormat;
+
 	/** Method to encode objects before they are written to the database */
 	jsToBinary(obj: any): ByteBuffer;
 
@@ -274,6 +280,45 @@ export interface Connection extends AntidoteSession {
 
 }
 
+/**
+ * A DataFormat tells Antidote how JavaScript values should be stored in
+ * the database (in Sets, Registers, Maps).
+ * A DataFormat has to implement two functions jsToBinary and binaryToJs to convert between binary data and JavaScript values.
+ *
+ * The default implementation is [[MsgpackDataFormat]].
+ */
+export interface DataFormat {
+	/** Method to encode objects before they are written to the database */
+	jsToBinary(obj: any): ByteBuffer;
+
+	/** Inverse of jsToBinary */
+	binaryToJs(byteBuffer: ByteBuffer): any;
+}
+
+/**
+ * A DataFormat, which encodes/decodes data with MessagePack (see http://msgpack.org)
+ */
+export class MsgpackDataFormat implements DataFormat {
+	/** Method to encode objects before they are written to the database */
+	public jsToBinary(obj: any): ByteBuffer {
+		// TODO there must be a better way to do this
+		let buffer: Buffer = msgpack.encode(obj);
+		let res = new ByteBuffer();
+		res.append(buffer);
+		res.flip();
+		return res;
+	}
+
+	/** Inverse of jsToBinary */
+	public binaryToJs(byteBuffer: ByteBuffer): any {
+		let buffer = new Buffer(byteBuffer.toArrayBuffer());
+		if (buffer.byteLength == 0) {
+			return null;
+		}
+		let decoded = msgpack.decode(buffer);
+		return decoded
+	}
+}
 
 class ConnectionImpl extends CrdtFactoryImpl implements Connection {
 	readonly connection: AntidoteConnection;
@@ -301,6 +346,12 @@ class ConnectionImpl extends CrdtFactoryImpl implements Connection {
 	 */
 	public defaultBucket = "default-bucket";
 
+	/**
+	 * The DataFormat to use for decoding and encoding binary values.
+	 * The default is [[MsgpackDataFormat]].
+	 */
+	public dataFormat: DataFormat = new MsgpackDataFormat();
+
 
 	constructor(conn: AntidoteConnection) {
 		super();
@@ -322,22 +373,12 @@ class ConnectionImpl extends CrdtFactoryImpl implements Connection {
 
 	/** Method to encode objects before they are written to the database */
 	public jsToBinary(obj: any): ByteBuffer {
-		// TODO there must be a better way to do this
-		let buffer: Buffer = msgpack.encode(obj);
-		let res = new ByteBuffer();
-		res.append(buffer);
-		res.flip();
-		return res;
+		return this.dataFormat.jsToBinary(obj);
 	}
 
 	/** Inverse of jsToBinary */
 	public binaryToJs(byteBuffer: ByteBuffer): any {
-		let buffer = new Buffer(byteBuffer.toArrayBuffer());
-		if (buffer.byteLength == 0) {
-			return null;
-		}
-		let decoded = msgpack.decode(buffer);
-		return decoded
+		return this.dataFormat.binaryToJs(byteBuffer);
 	}
 
 	/** Sets the timout for requests */

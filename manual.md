@@ -96,9 +96,25 @@ The default value is "default-bucket", but the field can be overwritten to use d
 When JavaScript objects are stored in Antidote, they have to be converted to binary data.
 When reading the object, the binary data has to be converted back to JavaScript.
 
-This is done using the [[Connection.jsToBinary]] and [[Connection.binaryToJs]] methods on the connection object.
+This is done using the [[DataFormat]] stored in [[Connection.dataFormat]] of the connection object.
 By default [MessagePack](http://msgpack.org) is used.
-The behavior can be adjusted by overriding the two methods.
+The behavior can be adjusted by implementing an own [[DataFormat]] and setting the field.
+
+For example the following code changes the format to use JSON:
+
+```
+antidote.dataFormat = {
+    jsToBinary: (obj) => ByteBuffer.fromUTF8(JSON.stringify(obj)),
+    binaryToJs: (byteBuffer: ByteBuffer) => {
+        if (byteBuffer.remaining() == null) {
+            return null;
+        }
+        let str = byteBuffer.readUTF8String(byteBuffer.remaining());
+        return JSON.parse(str);
+    }
+}
+```
+
 
 
 ## Session guarantees

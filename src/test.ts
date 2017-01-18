@@ -261,7 +261,29 @@ describe("antidote client", function () {
 			let vals = await connection.readBatch([x, y]);
 			assert.deepEqual(vals, [null, null]);
 		});
-	})
+	});
+
+	describe("message formats", () => {
+		it('can use custom formats', async () => {
+			let oldFormat = connection.dataFormat;
+			connection.dataFormat = {
+				jsToBinary: (obj) => ByteBuffer.fromUTF8(JSON.stringify(obj)),
+				binaryToJs: (byteBuffer: ByteBuffer) => {
+					if (byteBuffer.remaining() == null) {
+						return null;
+					}
+					let str = byteBuffer.readUTF8String(byteBuffer.remaining());
+					return JSON.parse(str);
+				}
+			}
+			let x = connection.register("json-register");
+			let obj = {a: 7, b: "hello"};
+			await connection.update(x.set(obj))
+			let obj2 = await x.read();
+			assert.deepEqual(obj2, obj);
+			connection.dataFormat = oldFormat;
+		});
+	});
 
 });
 
