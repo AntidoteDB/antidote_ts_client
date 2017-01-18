@@ -333,6 +333,9 @@ class ConnectionImpl extends CrdtFactoryImpl implements Connection {
 	/** Inverse of jsToBinary */
 	public binaryToJs(byteBuffer: ByteBuffer): any {
 		let buffer = new Buffer(byteBuffer.toArrayBuffer());
+		if (buffer.byteLength == 0) {
+			return null;
+		}
 		let decoded = msgpack.decode(buffer);
 		return decoded
 	}

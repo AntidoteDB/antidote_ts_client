@@ -234,11 +234,34 @@ describe("antidote client", function () {
 				b.increment(2),
 				c.increment(3)
 			]);
-			let vals = await connection.readBatch([a,b,c]); 
+			let vals = await connection.readBatch([a,b,c]);
 			vals.sort(); // TODO remove this when order is fixed in Antidote
 			assert.deepEqual(vals, [1,2,3]);
 		});
+
 	});
+
+	describe("corner cases", () => {
+		it('can read empty registers', async () => {
+			let x = connection.register("empty-register-1");
+			let val = await x.read();
+			assert.equal(val, null);
+		});
+
+		it('can write null', async () => {
+			let x = connection.register<any>("null-test-register");
+			await x.set(null);
+			let val = await x.read();
+			assert.equal(val, null);
+		});
+
+		it('can read empty registers in batch', async () => {
+			let x = connection.register("empty-register-2");
+			let y = connection.register("empty-register-3");
+			let vals = await connection.readBatch([x, y]);
+			assert.deepEqual(vals, [null, null]);
+		});
+	})
 
 });
 
