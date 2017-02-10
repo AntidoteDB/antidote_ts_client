@@ -523,6 +523,11 @@ export interface Transaction extends AntidoteSession {
 	 * Commits the transaction.
 	 */
 	commit(): Promise<any>;
+
+	/**
+	 * Aborts the transaction.
+	 */
+	abort(): Promise<void>;
 }
 
 class TransactionImpl extends CrdtFactoryImpl implements Transaction {
@@ -595,6 +600,14 @@ class TransactionImpl extends CrdtFactoryImpl implements Transaction {
 		});
 		let resp = await this.antidoteConnection.sendRequest(MessageCodes.apbCommitTransaction, encode(message));
 		return this.connection.completeTransaction(resp)
+	}
+
+	public async abort(): Promise<void> {
+		let apbAbortTransaction = MessageCodes.antidotePb.ApbAbortTransaction;
+		let message: AntidotePB.ApbCommitTransactionMessage = new apbAbortTransaction({
+			transaction_descriptor: this.txId
+		});
+		let resp = await this.antidoteConnection.sendRequest(MessageCodes.apbAbortTransaction, encode(message));
 	}
 
 	public toString(): string {

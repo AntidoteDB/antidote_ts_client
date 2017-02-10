@@ -225,6 +225,27 @@ describe("antidote client", function () {
 			assert.deepEqual(vals2, [1]);
 		})
 
+		it('can abort transaction', async () => {
+			let tx = await connection.startTransaction()
+			let reg = tx.multiValueRegister<number>("tr-reg2");
+			let vals = await reg.read();
+			let max = 0
+			for (let n of vals) {
+				if (n > max) {
+					max = n;
+				}
+			}
+			await tx.update(
+				reg.set(max + 1)
+			)
+			await tx.abort()
+
+			// no change:
+			let reg2 = connection.multiValueRegister<number>("tr-reg2");
+			let vals2 = await reg2.read()
+			assert.deepEqual(vals2, []);
+		})
+
 		it('can do batch-reads', async () => {
 			let a = connection.counter("batch-read-counter-a")
 			let b = connection.counter("batch-read-counter-b")
