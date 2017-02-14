@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AntidoteObject | antidote_ts_client</title>
+	<title>MsgpackDataFormat | antidote_ts_client</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -59,10 +59,10 @@
 					<a href="../modules/_antidote_.html">&quot;antidote&quot;</a>
 				</li>
 				<li>
-					<a href="_antidote_.antidoteobject.html">AntidoteObject</a>
+					<a href="_antidote_.msgpackdataformat.html">MsgpackDataFormat</a>
 				</li>
 			</ul>
-			<h1>Interface AntidoteObject&lt;T&gt;</h1>
+			<h1>Class MsgpackDataFormat</h1>
 		</div>
 	</div>
 </header>
@@ -72,63 +72,22 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>An AntidoteObject is a reference to an object in the database and is bound to
-						the <a href="_antidote_.crdtfactory.html">CrdtFactory</a> which created the reference.</p>
+						<p>A DataFormat, which encodes/decodes data with MessagePack (see <a href="http://msgpack.org">http://msgpack.org</a>)</p>
 					</div>
-					<p>For example, when a reference is created from a <a href="_antidote_.transaction.html">Transaction</a> object,
-					all reads on the object will be performed in the context of the transaction.</p>
 				</div>
-			</section>
-			<section class="tsd-panel tsd-type-parameters">
-				<h3>Type parameters</h3>
-				<ul class="tsd-type-parameters">
-					<li>
-						<h4>T</h4>
-						<div class="tsd-comment tsd-typography">
-							<div class="lead">
-								<p>the type returned when reading the object</p>
-							</div>
-						</div>
-					</li>
-				</ul>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">AntidoteObject</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="_antidote_.crdtcounter.html" class="tsd-signature-type">CrdtCounter</a>
-							</li>
-							<li>
-								<a href="_antidote_.crdtinteger.html" class="tsd-signature-type">CrdtInteger</a>
-							</li>
-							<li>
-								<a href="_antidote_.crdtregister.html" class="tsd-signature-type">CrdtRegister</a>
-							</li>
-							<li>
-								<a href="_antidote_.crdtmultivalueregister.html" class="tsd-signature-type">CrdtMultiValueRegister</a>
-							</li>
-							<li>
-								<a href="_antidote_.crdtset.html" class="tsd-signature-type">CrdtSet</a>
-							</li>
-							<li>
-								<a href="_antidote_.crdtmap.html" class="tsd-signature-type">CrdtMap</a>
-							</li>
-						</ul>
+						<span class="target">MsgpackDataFormat</span>
 					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel">
-				<h3>Implemented by</h3>
+				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../classes/_antidote_.antidoteobjectimpl.html" class="tsd-signature-type">AntidoteObjectImpl</a></li>
-					<li><a href="../classes/_antidote_.crdtcounterimpl.html" class="tsd-signature-type">CrdtCounterImpl</a></li>
-					<li><a href="../classes/_antidote_.crdtintegerimpl.html" class="tsd-signature-type">CrdtIntegerImpl</a></li>
-					<li><a href="../classes/_antidote_.crdtmultivalueregisterimpl.html" class="tsd-signature-type">CrdtMultiValueRegisterImpl</a></li>
-					<li><a href="../classes/_antidote_.crdtregisterimpl.html" class="tsd-signature-type">CrdtRegisterImpl</a></li>
-					<li><a href="../classes/_antidote_.crdtsetimpl.html" class="tsd-signature-type">CrdtSetImpl</a></li>
+					<li><a href="../interfaces/_antidote_.dataformat.html" class="tsd-signature-type">DataFormat</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -136,59 +95,72 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_antidote_.antidoteobject.html#parent" class="tsd-kind-icon">parent</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_antidote_.antidoteobject.html#read" class="tsd-kind-icon">read</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_antidote_.msgpackdataformat.html#binarytojs" class="tsd-kind-icon">binary<wbr>ToJs</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_antidote_.msgpackdataformat.html#jstobinary" class="tsd-kind-icon">js<wbr>ToBinary</a></li>
 							</ul>
 						</section>
-					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="parent" class="tsd-anchor"></a>
-					<h3>parent</h3>
-					<div class="tsd-signature tsd-kind-icon">parent<span class="tsd-signature-symbol">:</span> <a href="_antidote_.crdtfactory.html" class="tsd-signature-type">CrdtFactory</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/master/src/antidote.ts#L699">antidote.ts:699</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>the parent factory</p>
-						</div>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="read" class="tsd-anchor"></a>
-					<h3>read</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">read<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="binarytojs" class="tsd-anchor"></a>
+					<h3>binary<wbr>ToJs</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">binary<wbr>ToJs<span class="tsd-signature-symbol">(</span>byteBuffer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ByteBuffer</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_antidote_.dataformat.html">DataFormat</a>.<a href="../interfaces/_antidote_.dataformat.html#binarytojs">binaryToJs</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/master/src/antidote.ts#L704">antidote.ts:704</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/master/src/antidote.ts#L334">antidote.ts:334</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>reads the current value of the object</p>
+									<p>Inverse of jsToBinary</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>byteBuffer: <span class="tsd-signature-type">ByteBuffer</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="jstobinary" class="tsd-anchor"></a>
+					<h3>js<wbr>ToBinary</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">js<wbr>ToBinary<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ByteBuffer</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_antidote_.dataformat.html">DataFormat</a>.<a href="../interfaces/_antidote_.dataformat.html#jstobinary">jsToBinary</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/master/src/antidote.ts#L324">antidote.ts:324</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Method to encode objects before they are written to the database</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>obj: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ByteBuffer</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -220,94 +192,94 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
-						<a href="../classes/_antidote_.antidoteobjectimpl.html" class="tsd-kind-icon">Antidote<wbr>Object<wbr>Impl</a>
+						<a href="_antidote_.antidoteobjectimpl.html" class="tsd-kind-icon">Antidote<wbr>Object<wbr>Impl</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../classes/_antidote_.connectionimpl.html" class="tsd-kind-icon">Connection<wbr>Impl</a>
+						<a href="_antidote_.connectionimpl.html" class="tsd-kind-icon">Connection<wbr>Impl</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../classes/_antidote_.crdtcounterimpl.html" class="tsd-kind-icon">Crdt<wbr>Counter<wbr>Impl</a>
+						<a href="_antidote_.crdtcounterimpl.html" class="tsd-kind-icon">Crdt<wbr>Counter<wbr>Impl</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../classes/_antidote_.crdtfactoryimpl.html" class="tsd-kind-icon">Crdt<wbr>Factory<wbr>Impl</a>
+						<a href="_antidote_.crdtfactoryimpl.html" class="tsd-kind-icon">Crdt<wbr>Factory<wbr>Impl</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../classes/_antidote_.crdtintegerimpl.html" class="tsd-kind-icon">Crdt<wbr>Integer<wbr>Impl</a>
+						<a href="_antidote_.crdtintegerimpl.html" class="tsd-kind-icon">Crdt<wbr>Integer<wbr>Impl</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../classes/_antidote_.crdtmapimpl.html" class="tsd-kind-icon">Crdt<wbr>Map<wbr>Impl</a>
+						<a href="_antidote_.crdtmapimpl.html" class="tsd-kind-icon">Crdt<wbr>Map<wbr>Impl</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../classes/_antidote_.crdtmapvalueimpl.html" class="tsd-kind-icon">Crdt<wbr>Map<wbr>Value<wbr>Impl</a>
+						<a href="_antidote_.crdtmapvalueimpl.html" class="tsd-kind-icon">Crdt<wbr>Map<wbr>Value<wbr>Impl</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
-						<a href="../classes/_antidote_.crdtmultivalueregisterimpl.html" class="tsd-kind-icon">Crdt<wbr>Multi<wbr>Value<wbr>Register<wbr>Impl</a>
+						<a href="_antidote_.crdtmultivalueregisterimpl.html" class="tsd-kind-icon">Crdt<wbr>Multi<wbr>Value<wbr>Register<wbr>Impl</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
-						<a href="../classes/_antidote_.crdtregisterimpl.html" class="tsd-kind-icon">Crdt<wbr>Register<wbr>Impl</a>
+						<a href="_antidote_.crdtregisterimpl.html" class="tsd-kind-icon">Crdt<wbr>Register<wbr>Impl</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
-						<a href="../classes/_antidote_.crdtsetimpl.html" class="tsd-kind-icon">Crdt<wbr>Set<wbr>Impl</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_antidote_.msgpackdataformat.html" class="tsd-kind-icon">Msgpack<wbr>Data<wbr>Format</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../classes/_antidote_.transactionimpl.html" class="tsd-kind-icon">Transaction<wbr>Impl</a>
+						<a href="_antidote_.crdtsetimpl.html" class="tsd-kind-icon">Crdt<wbr>Set<wbr>Impl</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="_antidote_.antidoteobject.html" class="tsd-kind-icon">Antidote<wbr>Object</a>
+					<li class="current tsd-kind-class tsd-parent-kind-external-module">
+						<a href="_antidote_.msgpackdataformat.html" class="tsd-kind-icon">Msgpack<wbr>Data<wbr>Format</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_antidote_.antidoteobject.html#parent" class="tsd-kind-icon">parent</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_antidote_.msgpackdataformat.html#binarytojs" class="tsd-kind-icon">binary<wbr>ToJs</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_antidote_.antidoteobject.html#read" class="tsd-kind-icon">read</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_antidote_.msgpackdataformat.html#jstobinary" class="tsd-kind-icon">js<wbr>ToBinary</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_antidote_.transactionimpl.html" class="tsd-kind-icon">Transaction<wbr>Impl</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../interfaces/_antidote_.antidoteobject.html" class="tsd-kind-icon">Antidote<wbr>Object</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_antidote_.antidotesession.html" class="tsd-kind-icon">Antidote<wbr>Session</a>
+						<a href="../interfaces/_antidote_.antidotesession.html" class="tsd-kind-icon">Antidote<wbr>Session</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_antidote_.commitresponse.html" class="tsd-kind-icon">Commit<wbr>Response</a>
+						<a href="../interfaces/_antidote_.commitresponse.html" class="tsd-kind-icon">Commit<wbr>Response</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_antidote_.connection.html" class="tsd-kind-icon">Connection</a>
+						<a href="../interfaces/_antidote_.connection.html" class="tsd-kind-icon">Connection</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_antidote_.crdtcounter.html" class="tsd-kind-icon">Crdt<wbr>Counter</a>
+						<a href="../interfaces/_antidote_.crdtcounter.html" class="tsd-kind-icon">Crdt<wbr>Counter</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_antidote_.crdtfactory.html" class="tsd-kind-icon">Crdt<wbr>Factory</a>
+						<a href="../interfaces/_antidote_.crdtfactory.html" class="tsd-kind-icon">Crdt<wbr>Factory</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_antidote_.crdtinteger.html" class="tsd-kind-icon">Crdt<wbr>Integer</a>
+						<a href="../interfaces/_antidote_.crdtinteger.html" class="tsd-kind-icon">Crdt<wbr>Integer</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_antidote_.crdtmap.html" class="tsd-kind-icon">Crdt<wbr>Map</a>
+						<a href="../interfaces/_antidote_.crdtmap.html" class="tsd-kind-icon">Crdt<wbr>Map</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_antidote_.crdtmapvalue.html" class="tsd-kind-icon">Crdt<wbr>Map<wbr>Value</a>
+						<a href="../interfaces/_antidote_.crdtmapvalue.html" class="tsd-kind-icon">Crdt<wbr>Map<wbr>Value</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="_antidote_.crdtmultivalueregister.html" class="tsd-kind-icon">Crdt<wbr>Multi<wbr>Value<wbr>Register</a>
+						<a href="../interfaces/_antidote_.crdtmultivalueregister.html" class="tsd-kind-icon">Crdt<wbr>Multi<wbr>Value<wbr>Register</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="_antidote_.crdtregister.html" class="tsd-kind-icon">Crdt<wbr>Register</a>
+						<a href="../interfaces/_antidote_.crdtregister.html" class="tsd-kind-icon">Crdt<wbr>Register</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="_antidote_.crdtset.html" class="tsd-kind-icon">Crdt<wbr>Set</a>
+						<a href="../interfaces/_antidote_.crdtset.html" class="tsd-kind-icon">Crdt<wbr>Set</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_antidote_.dataformat.html" class="tsd-kind-icon">Data<wbr>Format</a>
+						<a href="../interfaces/_antidote_.dataformat.html" class="tsd-kind-icon">Data<wbr>Format</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_antidote_.transaction.html" class="tsd-kind-icon">Transaction</a>
+						<a href="../interfaces/_antidote_.transaction.html" class="tsd-kind-icon">Transaction</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="../modules/_antidote_.html#_debugprint" class="tsd-kind-icon">_debug<wbr>Print</a>

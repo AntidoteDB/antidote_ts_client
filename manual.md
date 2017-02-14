@@ -40,7 +40,9 @@ The result is returned as a `Promise`, so the `then` method can be used to execu
         // do something with the list of users
     }
 
-For reading multiple objects simultaneously, the Antidote [[Connection]] object provides a [[readBatch]] method, which takes a list of objects to read.
+For reading multiple objects simultaneously, the Antidote [[Connection]] object provides the [[AntidoteSession.readBatch|readBatch]] and a [[AntidoteSession.readObjectsBatch|readObjectsBatch]] methods.
+[[AntidoteSession.readBatch|readBatch]]  takes a list of objects to read and returns a list of read values.
+[[AntidoteSession.readObjectsBatch|readObjectsBatch]] does the same for an object with key-value pairs.
 
 ## Updating objects
 
