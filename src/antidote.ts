@@ -214,7 +214,7 @@ export interface AntidoteSession extends CrdtFactory {
 	 *
 	 * Hint: To read a single object, use the read method on that object.
 	 */
-	readObjectsBatch<T>(objects: {[K in keyof T] : AntidoteObject<T[K]>}): Promise<{ [K in keyof T] : T[K]}>;
+	readObjectsBatch<T>(objects: {[K in keyof T]: AntidoteObject<T[K]>}): Promise<{[K in keyof T]: T[K]}>;
 
 
 	/**
@@ -490,12 +490,12 @@ class ConnectionImpl extends CrdtFactoryImpl implements Connection {
 	 *
 	 * Hint: To read a single object, use the read method on that object.
 	 */
-	public async readObjectsBatch<T>(objects: {[K in keyof T] : AntidoteObject<T[K]>}): Promise<{ [K in keyof T] : T[K]}> {
+	public async readObjectsBatch<T>(objects: {[K in keyof T]: AntidoteObject<T[K]>}): Promise<{[K in keyof T]: T[K]}> {
 		let messageType = MessageCodes.antidotePb.ApbStaticReadObjects;
 		let keys: (keyof T)[] = Object.keys(objects) as any[];
 		let objectArray = keys.map(key => objects[key]);
 		let results = await this.readBatch(objectArray);
-		let resObj : any = {};
+		let resObj: any = {};
 		for (let i in keys) {
 			let key = keys[i];
 			let result = results[i];
@@ -612,7 +612,7 @@ class TransactionImpl extends CrdtFactoryImpl implements Transaction {
 	 * Reads several objects at once.
 	 */
 	public async readBatch(objects: AntidoteObject<any>[]): Promise<any[]> {
-		let objects2 = objects as AntidoteObjectImpl<any>[]; 
+		let objects2 = objects as AntidoteObjectImpl<any>[];
 		let apb = MessageCodes.antidotePb.ApbReadObjects;
 		let message = new apb({
 			boundobjects: objects2.map(o => o.key),
@@ -635,12 +635,12 @@ class TransactionImpl extends CrdtFactoryImpl implements Transaction {
 	/**
 	 * Reads several objects at once.
 	 */
-	public async readObjectsBatch<T>(objects: {[K in keyof T] : AntidoteObject<T[K]>}): Promise<{ [K in keyof T] : T[K]}> {
+	public async readObjectsBatch<T>(objects: {[K in keyof T]: AntidoteObject<T[K]>}): Promise<{[K in keyof T]: T[K]}> {
 		let messageType = MessageCodes.antidotePb.ApbStaticReadObjects;
 		let keys: (keyof T)[] = Object.keys(objects) as any[];
 		let objectArray = keys.map(key => objects[key]);
 		let results = await this.readBatch(objectArray);
-		let resObj : any = {};
+		let resObj: any = {};
 		for (let i in keys) {
 			let key = keys[i];
 			let result = results[i];
@@ -1048,14 +1048,14 @@ export interface CrdtMapValue {
 	/** reads the multi-value-register value with the given key */
 	mvRegisterValue(key: string): any[] | undefined;
 	/** reads the integer value with the given key */
-	integerValue(key: string): number | undefined ;
+	integerValue(key: string): number | undefined;
 	/** reads the gmap value with the given key */
 	gmapValue(key: string): CrdtMapValue | undefined;
 	/** reads the add-wins-map value with the given key */
 	awmapValue(key: string): CrdtMapValue | undefined;
 	/** reads the remove-wins-set value with the given key */
 	rwsetValue(key: string): any[] | undefined;
-	
+
 	/** 
 	 * Converts this CRDTMapValue into a JavaScript object.
 	 * The value of each embedded CRDT is stored under it's key.

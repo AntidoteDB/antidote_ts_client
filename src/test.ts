@@ -22,8 +22,8 @@ describe("antidote client", function () {
 	});
 
 	let counterImpls = [
-		{name: "counter", create: (name: string) => connection.counter(name)},
-		{name: "fat-counter", create: (name: string) => connection.fatCounter(name)},
+		{ name: "counter", create: (name: string) => connection.counter(name) },
+		{ name: "fat-counter", create: (name: string) => connection.fatCounter(name) },
 	];
 	for (let impl of counterImpls) {
 		describe(impl.name, () => {
@@ -255,9 +255,9 @@ describe("antidote client", function () {
 				b.increment(2),
 				c.increment(3)
 			]);
-			let vals = await connection.readBatch([a,b,c]);
+			let vals = await connection.readBatch([a, b, c]);
 			vals.sort(); // TODO remove this when order is fixed in Antidote
-			assert.deepEqual(vals, [1,2,3]);
+			assert.deepEqual(vals, [1, 2, 3]);
 		});
 
 		it('can do batch-reads object api', async () => {
@@ -272,7 +272,7 @@ describe("antidote client", function () {
 				a: objA,
 				b: objB
 			});
-			assert.deepEqual(vals, {a: 1, b: "hi"});
+			assert.deepEqual(vals, { a: 1, b: "hi" });
 		});
 
 	});
@@ -313,7 +313,7 @@ describe("antidote client", function () {
 				}
 			}
 			let x = connection.register("json-register");
-			let obj = {a: 7, b: "hello"};
+			let obj = { a: 7, b: "hello" };
 			await connection.update(x.set(obj))
 			let obj2 = await x.read();
 			assert.deepEqual(obj2, obj);

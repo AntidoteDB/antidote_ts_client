@@ -1,6 +1,6 @@
-import {AntidoteConnection} from "./antidoteConnection"
-import '../proto/antidote_proto' 
-import {Connection, Transaction, connect, CrdtSet, CrdtCounter} from "./antidote" 
+import { AntidoteConnection } from "./antidoteConnection"
+import '../proto/antidote_proto'
+import { Connection, Transaction, connect, CrdtSet, CrdtCounter } from "./antidote"
 import ByteBuffer = require("bytebuffer")
 import http = require('http');
 import fs = require('fs');
@@ -42,14 +42,14 @@ function makeFriends(userA: User, userB: User): Promise<any> {
 	let friendsOfB = friendSet(userB.id)
 	return connection.update([
 		friendsOfA.add(userB.id),
-		friendsOfB.add(userA.id)	
+		friendsOfB.add(userA.id)
 	])
 }
 
 async function friendshipExample(): Promise<any> {
-	let alice: User = {id: "A", name: "Alice"};
-	let bob: User = {id: "B", name: "Bob"};
-	let charlie: User = {id: "C", name: "Charlie"};
+	let alice: User = { id: "A", name: "Alice" };
+	let bob: User = { id: "B", name: "Bob" };
+	let charlie: User = { id: "C", name: "Charlie" };
 
 	// // TODO reset not yet supported by antidote
 	// connection.update([
@@ -69,10 +69,10 @@ async function friendshipExample(): Promise<any> {
 		makeFriends(bob, charlie)
 	])
 	let resp = await connection.readBatch([
-			friendSet(alice.id),
-			friendSet(bob.id),
-			friendSet(charlie.id)
-		])
+		friendSet(alice.id),
+		friendSet(bob.id),
+		friendSet(charlie.id)
+	])
 	console.log(`Alice is friends with ${JSON.stringify(resp[0])}`)
 	console.log(`Bob is friends with ${JSON.stringify(resp[1])}`)
 	console.log(`Charlie is friends with ${JSON.stringify(resp[2])}`)
