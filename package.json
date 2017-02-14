@@ -23,7 +23,8 @@
     "mocha": "^3.1.2",
     "proto2ts": "git://github.com/SINTEF-9012/Proto2TypeScript.git#d96cfd3dc7afcdbea86114cefca1a761fe0d59ca",
     "rimraf": "^2.5.4",
-    "typescript": "^2.0.3"
+    "typescript": "~2.1.6",
+    "typedoc": "0.5.5"
   },
   "scripts": {
     "compile": "tsc",
@@ -33,6 +34,7 @@
     "watch": "tsc --watch",
     "lint": "tslint --project tsconfig.json",
     "prepublish": "npm run compile",
-    "typedoc": "typedoc --mode modules --out docs/ src/antidote.ts --tsconfig tsconfig.json --readme manual.md && touch docs/.nojekyll"
+    "typedoc": "typedoc --mode modules --out docs/ src/antidote.ts --tsconfig tsconfig.json --readme manual.md && npm run postprocesstypedoc && touch docs/.nojekyll",
+    "postprocesstypedoc": "find docs/ -type f -iname '*.html' -exec sed -i 's/\\/blob\\/[a-z0-9]\\+\\//\\/blob\\/master\\//g' \"{}\" +;"
   }
 }
