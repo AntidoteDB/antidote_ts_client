@@ -190,11 +190,32 @@ abstract class CrdtFactoryImpl implements CrdtFactory {
  *  - [[Transaction]] for performing reads and updates within an interactive transaction. 
  */
 export interface AntidoteSession extends CrdtFactory {
-	/** 
-	 * Reads several objects at once.
-	 * To read a single object, use the read method on that object.
+	/**
+	 * Takes an array of objects and reads the value of all objects in one batch operation.
+	 * Returns a promise to an array of values in the same order.
+	 *
+	 * Hint: To read a single object, use the read method on that object.
 	 */
 	readBatch(objects: AntidoteObject<any>[]): Promise<any[]>;
+
+	/**
+	 * Reads several objects at once.
+	 * The objects are stored in an object.
+	 * Returns a new object with the read values stored under the same field in the object.
+	 *
+	 * 		let objA = connection.counter("batch-object-read counter a")
+	 *		let objB = connection.register<string>("batch-object-read register b")
+     *
+	 *		let vals = await connection.readObjectsBatch({
+	 *			a: objA,
+	 *			b: objB
+	 *		});
+	 *		// could return: {a: 1, b: "hi"}
+	 *
+	 * Hint: To read a single object, use the read method on that object.
+	 */
+	readObjectsBatch<T>(objects: {[K in keyof T] : AntidoteObject<T[K]>}): Promise<{ [K in keyof T] : T[K]}>;
+
 
 	/**
 	 * Sends a single update operation or an array of update operations to Antidote.
@@ -454,6 +475,36 @@ class ConnectionImpl extends CrdtFactoryImpl implements Connection {
 	}
 
 	/**
+	 * Reads several objects at once.
+	 * The objects are stored in an object.
+	 * Returns a new object with the read values stored under the same field in the object.
+	 *
+	 * 		let objA = connection.counter("batch-object-read counter a")
+	 *		let objB = connection.register<string>("batch-object-read register b")
+     *
+	 *		let vals = await connection.readObjectsBatch({
+	 *			a: objA,
+	 *			b: objB
+	 *		});
+	 *		// could return: {a: 1, b: "hi"}
+	 *
+	 * Hint: To read a single object, use the read method on that object.
+	 */
+	public async readObjectsBatch<T>(objects: {[K in keyof T] : AntidoteObject<T[K]>}): Promise<{ [K in keyof T] : T[K]}> {
+		let messageType = MessageCodes.antidotePb.ApbStaticReadObjects;
+		let keys: (keyof T)[] = Object.keys(objects) as any[];
+		let objectArray = keys.map(key => objects[key]);
+		let results = await this.readBatch(objectArray);
+		let resObj : any = {};
+		for (let i in keys) {
+			let key = keys[i];
+			let result = results[i];
+			resObj[key] = result;
+		}
+		return resObj;
+	}
+
+	/**
 	 * Sends a single update operation or an array of update operations to Antidote.
 	 */
 	public async update(updates: AntidotePB.ApbUpdateOp[] | AntidotePB.ApbUpdateOp): Promise<CommitResponse> {
@@ -578,6 +629,24 @@ class TransactionImpl extends CrdtFactoryImpl implements Transaction {
 			return resVals;
 		}
 		return Promise.reject<any[]>(resp.errorcode)
+	}
+
+
+	/**
+	 * Reads several objects at once.
+	 */
+	public async readObjectsBatch<T>(objects: {[K in keyof T] : AntidoteObject<T[K]>}): Promise<{ [K in keyof T] : T[K]}> {
+		let messageType = MessageCodes.antidotePb.ApbStaticReadObjects;
+		let keys: (keyof T)[] = Object.keys(objects) as any[];
+		let objectArray = keys.map(key => objects[key]);
+		let results = await this.readBatch(objectArray);
+		let resObj : any = {};
+		for (let i in keys) {
+			let key = keys[i];
+			let result = results[i];
+			resObj[key] = result;
+		}
+		return resObj;
 	}
 
 	/**

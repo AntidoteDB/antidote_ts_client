@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-/// <reference types="mocha" />
+import "mocha";
 import { AntidoteConnection } from "./antidoteConnection"
 import { Connection, Transaction, connect, CrdtSet, CrdtCounter } from "./antidote"
 import ByteBuffer = require("bytebuffer")
@@ -258,6 +258,21 @@ describe("antidote client", function () {
 			let vals = await connection.readBatch([a,b,c]);
 			vals.sort(); // TODO remove this when order is fixed in Antidote
 			assert.deepEqual(vals, [1,2,3]);
+		});
+
+		it('can do batch-reads object api', async () => {
+			let objA = connection.counter("batch-object-read counter a")
+			let objB = connection.register<string>("batch-object-read register b")
+			await connection.update([
+				objA.increment(1),
+				objB.set("hi")
+			]);
+
+			let vals = await connection.readObjectsBatch({
+				a: objA,
+				b: objB
+			});
+			assert.deepEqual(vals, {a: 1, b: "hi"});
 		});
 
 	});
