@@ -457,7 +457,7 @@ class ConnectionImpl extends CrdtFactoryImpl implements Connection {
 			objects: objects2.map(o => o.key)
 		});
 		let resp: AntidotePB.ApbStaticReadObjectsResp = await this.connection.sendRequest(MessageCodes.apbStaticReadObjects, encode(message));
-		let cr = await this.completeTransaction(resp.committime!);
+		let cr = this.completeTransaction(resp.committime!);
 		let readResp = resp.objects!;
 		if (readResp.success) {
 			let resVals: any[] = [];
@@ -518,16 +518,16 @@ class ConnectionImpl extends CrdtFactoryImpl implements Connection {
 		return this.completeTransaction(resp)
 	}
 
-	completeTransaction(resp: AntidotePB.ApbCommitResp): Promise<CommitResponse> {
+	completeTransaction(resp: AntidotePB.ApbCommitResp): CommitResponse {
 		if (resp.commit_time) {
 			this.lastCommitTimestamp = resp.commit_time;
 		}
 		if (resp.success) {
-			return Promise.resolve({
-				commitTime: resp.commit_time
-			});
+			return {
+				commitTime: resp.commit_time!
+			};
 		}
-		return Promise.reject<any>(resp.errorcode);
+		throw new Error(`Failed to commit transaction (Error code: ${resp.errorcode})`);
 	}
 
 	/**
