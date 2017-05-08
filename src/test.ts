@@ -260,6 +260,22 @@ describe("antidote client", function () {
 			assert.deepEqual(vals, [1, 2, 3]);
 		});
 
+		it('can do big batch-reads', async () => {
+			let registers = [];
+			for (let i=0; i<1000; i++) {
+				registers.push(connection.register(`batch-reg-${i}`))
+			}
+			let longStr = "a".repeat(165537);
+			await connection.update(
+				registers.map(r => r.set(longStr))
+			);
+			let vals = await connection.readBatch(registers);
+			assert.equal(vals.length, registers.length);
+			for (let i=0; i<1000; i++) {
+				assert.equal(vals[i], longStr);
+			}
+		});
+
 		it('can do batch-reads object api', async () => {
 			let objA = connection.counter("batch-object-read counter a")
 			let objB = connection.register<string>("batch-object-read register b")
