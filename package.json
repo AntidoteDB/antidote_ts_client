@@ -23,8 +23,9 @@
     "mocha": "3.2.0",
     "proto2ts": "git://github.com/SINTEF-9012/Proto2TypeScript.git#d96cfd3dc7afcdbea86114cefca1a761fe0d59ca",
     "rimraf": "2.6.1",
-    "typescript": "2.2.1",
-    "typedoc": "0.5.9"
+    "ts-node": "^3.0.4",
+    "typedoc": "0.5.9",
+    "typescript": "2.2.1"
   },
   "scripts": {
     "compile": "tsc",

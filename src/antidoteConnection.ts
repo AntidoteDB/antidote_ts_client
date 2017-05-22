@@ -189,11 +189,13 @@ export class AntidoteConnection {
 				return Promise.reject("Could not connect to server.");
 			}
 
+
 			let header = new Buffer(5);
 			header.writeInt32BE(encodedMessage.byteLength + 1, 0);
 			header.writeUInt8(messageCode, 4);
-			this.socket.write(header);
-			this.socket.write(encodedMessage);
+
+			let msg = Buffer.concat([header, Buffer.from(encodedMessage)]);
+			this.socket.write(msg);
 
 			this.requests.push({
 				resolve: resolve,
