@@ -35,6 +35,15 @@ describe("antidote client", function () {
 				let val = await counter.read();
 				assert.equal(val, 3);
 			});
+
+			it('should be able to decrement', async () => {
+				let counter = impl.create(`my${impl.name}_dec`)
+				await connection.update(
+					counter.increment(-1)
+				)
+				let val = await counter.read();
+				assert.equal(val, -1);
+			});
 		});
 	}
 
@@ -312,6 +321,46 @@ describe("antidote client", function () {
 			let y = connection.register("empty-register-3");
 			let vals = await connection.readBatch([x, y]);
 			assert.deepEqual(vals, [null, null]);
+		});
+	});
+
+	// example from antidote tutorial
+	describe("tutorial example", () => {
+		it('tutorial example', async () => {
+			let connection = connect(8087, "localhost")
+
+			let set = connection.set("set")
+			{ // Variant 1:
+				let tx = await connection.startTransaction()
+				await tx.update(set.remove("Java"))
+				await tx.update(set.add("Kotlin"))
+				await tx.commit()
+			}
+			{ // Variant 2: (faster: don't wait for update 1 to complete before sending update 2)
+				let tx = await connection.startTransaction()
+				let f1 = tx.update(set.remove("Java"))
+				let f2 = tx.update(set.add("Kotlin"))
+				await f1
+				await f2
+				await tx.commit()
+			}
+			{ // Variant 3: (fastest: use a static transaction / batch update)
+				await connection.update([
+					set.remove("Java"),
+					set.add("Kotlin")])
+			}
+
+			let tx = await connection.startTransaction()
+			let value = await set.read()
+			await tx.update(set.add("Java"))
+			await tx.commit()
+
+
+			connection.defaultBucket = "user_bucket"
+			let user1 = connection.set("michael")
+			await connection.update(user1.addAll(["Michel", "michel@blub.org"]))
+			let res = await user1.read()
+
 		});
 	});
 

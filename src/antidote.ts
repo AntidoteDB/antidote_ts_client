@@ -768,7 +768,7 @@ class CrdtCounterImpl extends AntidoteObjectImpl<number> implements CrdtCounter 
 	 * Negative numbers will decrement the value. 
 	 * Use [[[[Connection.update]]]] to send the update to the database. */
 	public increment(amount: number | Long): AntidotePB.ApbUpdateOp {
-		let amountL = (amount instanceof Long) ? amount : new Long(amount);
+		let amountL = (amount instanceof Long) ? amount : Long.fromNumber(amount);
 		return this.makeUpdate({
 			counterop: {
 				inc: amountL
@@ -813,7 +813,7 @@ class CrdtIntegerImpl extends AntidoteObjectImpl<number> implements CrdtInteger 
 	 * Negative numbers will decrement the value. 
 	 * Use [[Connection.update]] to send the update to the database. */
 	public increment(amount: number | Long): AntidotePB.ApbUpdateOp {
-		let amountL = (amount instanceof Long) ? amount : new Long(amount);
+		let amountL = (amount instanceof Long) ? amount : Long.fromNumber(amount);
 		return this.makeUpdate({
 			integerop: {
 				inc: amountL
@@ -824,7 +824,7 @@ class CrdtIntegerImpl extends AntidoteObjectImpl<number> implements CrdtInteger 
 	/** Creates an operation to set the intgeger to a specific value.
 	 * Use [[Connection.update]] to send the update to the database. */
 	public set(value: number | Long): AntidotePB.ApbUpdateOp {
-		let valueL = (value instanceof Long) ? value : new Long(value);
+		let valueL = (value instanceof Long) ? value : Long.fromNumber(value);
 		return this.makeUpdate({
 			integerop: {
 				set: valueL
