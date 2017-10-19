@@ -852,7 +852,6 @@ class CrdtIntegerImpl extends AntidoteObjectImpl<number> implements CrdtInteger 
  */
 export interface CrdtRegister<T> extends AntidoteObject<T> {
 	/** Creates an operation, which sets the register to the provided value.
-	 * Negative numbers will decrement the value. 
 	 * Use [[Connection.update]] to send the update to the database. */
 	set(value: T): AntidotePB.ApbUpdateOp;
 }
