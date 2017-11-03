@@ -187,7 +187,7 @@ abstract class CrdtFactoryImpl implements CrdtFactory {
  * There are two possible sessions:  
  * 
  *  - The [[Connection]] for reads and updates which are not part of interactive transactions.
- *  - [[Transaction]] for performing reads and updates within an interactive transaction. 
+ *  - [[Transaction]] for performing reads and updates within an interactive transaction.
  */
 export interface AntidoteSession extends CrdtFactory {
 	/**
@@ -219,6 +219,7 @@ export interface AntidoteSession extends CrdtFactory {
 
 	/**
 	 * Sends a single update operation or an array of update operations to Antidote.
+	 * If an array of updates is given, all updates in the array are executed atomically.
 	 */
 	update(updates: AntidotePB.ApbUpdateOp[] | AntidotePB.ApbUpdateOp): Promise<any>;
 }
