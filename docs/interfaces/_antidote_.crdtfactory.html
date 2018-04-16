@@ -112,9 +112,9 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_antidote_.crdtfactory.html#counter" class="tsd-kind-icon">counter</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_antidote_.crdtfactory.html#fatcounter" class="tsd-kind-icon">fat<wbr>Counter</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_antidote_.crdtfactory.html#flag_dw" class="tsd-kind-icon">flag_<wbr>dw</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_antidote_.crdtfactory.html#flag_ew" class="tsd-kind-icon">flag_<wbr>ew</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_antidote_.crdtfactory.html#gmap" class="tsd-kind-icon">gmap</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_antidote_.crdtfactory.html#integer" class="tsd-kind-icon">integer</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_antidote_.crdtfactory.html#map" class="tsd-kind-icon">map</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter"><a href="_antidote_.crdtfactory.html#multivalueregister" class="tsd-kind-icon">multi<wbr>Value<wbr>Register</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter"><a href="_antidote_.crdtfactory.html#register" class="tsd-kind-icon">register</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_antidote_.crdtfactory.html#rrmap" class="tsd-kind-icon">rrmap</a></li>
@@ -184,6 +184,62 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="flag_dw" class="tsd-anchor"></a>
+					<h3>flag_<wbr>dw</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">flag_<wbr>dw<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_antidote_.crdtflag.html" class="tsd-signature-type">CrdtFlag</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/master/src/antidote.ts#L70">antidote.ts:70</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>returns a reference to an disable-wins flag object</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>key: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_antidote_.crdtflag.html" class="tsd-signature-type">CrdtFlag</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="flag_ew" class="tsd-anchor"></a>
+					<h3>flag_<wbr>ew</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">flag_<wbr>ew<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_antidote_.crdtflag.html" class="tsd-signature-type">CrdtFlag</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/master/src/antidote.ts#L67">antidote.ts:67</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>returns a reference to an enable-wins flag object</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>key: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_antidote_.crdtflag.html" class="tsd-signature-type">CrdtFlag</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 					<a name="gmap" class="tsd-anchor"></a>
 					<h3>gmap</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -199,62 +255,6 @@
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>returns a reference to a grow-only map</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>key: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_antidote_.crdtmap.html" class="tsd-signature-type">CrdtMap</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="integer" class="tsd-anchor"></a>
-					<h3>integer</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">integer<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_antidote_.crdtinteger.html" class="tsd-signature-type">CrdtInteger</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/master/src/antidote.ts#L67">antidote.ts:67</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>returns a reference to an integer object</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>key: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_antidote_.crdtinteger.html" class="tsd-signature-type">CrdtInteger</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="map" class="tsd-anchor"></a>
-					<h3>map</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">map<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_antidote_.crdtmap.html" class="tsd-signature-type">CrdtMap</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/master/src/antidote.ts#L76">antidote.ts:76</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>returns a reference to an add-wins map</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -373,7 +373,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/master/src/antidote.ts#L70">antidote.ts:70</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/master/src/antidote.ts#L73">antidote.ts:73</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -407,7 +407,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/master/src/antidote.ts#L73">antidote.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/SyncFree/antidote_ts_client/blob/master/src/antidote.ts#L76">antidote.ts:76</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -471,7 +471,7 @@
 						<a href="../classes/_antidote_.crdtfactoryimpl.html" class="tsd-kind-icon">Crdt<wbr>Factory<wbr>Impl</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../classes/_antidote_.crdtintegerimpl.html" class="tsd-kind-icon">Crdt<wbr>Integer<wbr>Impl</a>
+						<a href="../classes/_antidote_.crdtflagimpl.html" class="tsd-kind-icon">Crdt<wbr>Flag<wbr>Impl</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="../classes/_antidote_.crdtmapimpl.html" class="tsd-kind-icon">Crdt<wbr>Map<wbr>Impl</a>
@@ -521,13 +521,13 @@
 								<a href="_antidote_.crdtfactory.html#fatcounter" class="tsd-kind-icon">fat<wbr>Counter</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="_antidote_.crdtfactory.html#flag_dw" class="tsd-kind-icon">flag_<wbr>dw</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="_antidote_.crdtfactory.html#flag_ew" class="tsd-kind-icon">flag_<wbr>ew</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="_antidote_.crdtfactory.html#gmap" class="tsd-kind-icon">gmap</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_antidote_.crdtfactory.html#integer" class="tsd-kind-icon">integer</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_antidote_.crdtfactory.html#map" class="tsd-kind-icon">map</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
 								<a href="_antidote_.crdtfactory.html#multivalueregister" class="tsd-kind-icon">multi<wbr>Value<wbr>Register</a>
@@ -549,7 +549,7 @@
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_antidote_.crdtinteger.html" class="tsd-kind-icon">Crdt<wbr>Integer</a>
+						<a href="_antidote_.crdtflag.html" class="tsd-kind-icon">Crdt<wbr>Flag</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_antidote_.crdtmap.html" class="tsd-kind-icon">Crdt<wbr>Map</a>
