@@ -169,10 +169,18 @@ abstract class CrdtFactoryImpl implements CrdtFactory {
 			case AntidotePB.CRDT_type.RWSET:
 				obj = this.set_removeWins("");
 				break;
+			case AntidotePB.CRDT_type.RRMAP:
+				obj = this.rrmap("");
+				break;
+			case AntidotePB.CRDT_type.FATCOUNTER:
+				obj = this.fatCounter("");
+				break;
 			case AntidotePB.CRDT_type.FLAG_EW:
 				obj = this.flag_ew("");
+				break;
 			case AntidotePB.CRDT_type.FLAG_DW:
 				obj = this.flag_dw("");
+				break;
 			default:
 				throw new Error(`unhandled type: ${type}`);
 		}

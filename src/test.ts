@@ -155,11 +155,12 @@ describe("antidote client", function () {
 			let map = connection.rrmap("my-rrmap1");
 			await connection.update([
 				map.register("a").set("x"),
-				map.counter("b").increment(5)
+				map.counter("b").increment(5),
+				map.rrmap("c").multiValueRegister("d").set("e")
 			])
 			let val = await map.read();
 			let obj = val.toJsObject();
-			assert.deepEqual(obj, { a: "x", b: 5 });
+			assert.deepEqual(obj, { a: "x", b: 5, c: {d: ["e"]}});
 		});
 
 		it('should be possible to store and then remove things', async () => {
