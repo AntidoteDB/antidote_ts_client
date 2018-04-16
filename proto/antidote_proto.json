@@ -127,34 +127,6 @@
             ]
         },
         {
-            "name": "ApbIntegerUpdate",
-            "fields": [
-                {
-                    "rule": "optional",
-                    "type": "sint64",
-                    "name": "inc",
-                    "id": 1
-                },
-                {
-                    "rule": "optional",
-                    "type": "sint64",
-                    "name": "set",
-                    "id": 2
-                }
-            ]
-        },
-        {
-            "name": "ApbGetIntegerResp",
-            "fields": [
-                {
-                    "rule": "required",
-                    "type": "sint64",
-                    "name": "value",
-                    "id": 1
-                }
-            ]
-        },
-        {
             "name": "ApbMapKey",
             "fields": [
                 {
@@ -230,6 +202,28 @@
                     "type": "ApbReadObjectResp",
                     "name": "value",
                     "id": 2
+                }
+            ]
+        },
+        {
+            "name": "ApbFlagUpdate",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "bool",
+                    "name": "value",
+                    "id": 1
+                }
+            ]
+        },
+        {
+            "name": "ApbGetFlagResp",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "bool",
+                    "name": "value",
+                    "id": 1
                 }
             ]
         },
@@ -351,12 +345,6 @@
                 },
                 {
                     "rule": "optional",
-                    "type": "ApbIntegerUpdate",
-                    "name": "integerop",
-                    "id": 4
-                },
-                {
-                    "rule": "optional",
                     "type": "ApbMapUpdate",
                     "name": "mapop",
                     "id": 5
@@ -366,6 +354,12 @@
                     "type": "ApbCrdtReset",
                     "name": "resetop",
                     "id": 6
+                },
+                {
+                    "rule": "optional",
+                    "type": "ApbFlagUpdate",
+                    "name": "flagop",
+                    "id": 7
                 }
             ]
         },
@@ -511,15 +505,15 @@
                 },
                 {
                     "rule": "optional",
-                    "type": "ApbGetIntegerResp",
-                    "name": "int",
-                    "id": 5
-                },
-                {
-                    "rule": "optional",
                     "type": "ApbGetMapResp",
                     "name": "map",
                     "id": 6
+                },
+                {
+                    "rule": "optional",
+                    "type": "ApbGetFlagResp",
+                    "name": "flag",
+                    "id": 7
                 }
             ]
         },
@@ -608,16 +602,8 @@
                     "id": 6
                 },
                 {
-                    "name": "INTEGER",
-                    "id": 7
-                },
-                {
                     "name": "GMAP",
                     "id": 8
-                },
-                {
-                    "name": "AWMAP",
-                    "id": 9
                 },
                 {
                     "name": "RWSET",
@@ -630,6 +616,14 @@
                 {
                     "name": "FATCOUNTER",
                     "id": 12
+                },
+                {
+                    "name": "FLAG_EW",
+                    "id": 13
+                },
+                {
+                    "name": "FLAG_DW",
+                    "id": 14
                 }
             ]
         }

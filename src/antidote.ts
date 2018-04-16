@@ -63,17 +63,17 @@ export interface CrdtFactory {
 	/** returns a reference to a multi-value register */
 	multiValueRegister<T>(key: string): CrdtMultiValueRegister<T>;
 
-	/** returns a reference to an integer object */
-	integer(key: string): CrdtInteger;
+	/** returns a reference to an enable-wins flag object */
+	flag_ew(key: string): CrdtFlag;
+
+	/** returns a reference to an disable-wins flag object */
+	flag_dw(key: string): CrdtFlag;
 
 	/** returns a reference to an add-wins set object */
 	set<T>(key: string): CrdtSet<T>;
 
 	/** returns a reference to a remove-wins set object */
 	set_removeWins<T>(key: string): CrdtSet<T>;
-
-	/** returns a reference to an add-wins map */
-	map(key: string): CrdtMap;
 
 	/** returns a reference to a remove-resets map */
 	rrmap(key: string): CrdtMap;
@@ -114,10 +114,16 @@ abstract class CrdtFactoryImpl implements CrdtFactory {
 		return new CrdtMultiValueRegisterImpl<T>(this, key, this.getBucket(), AntidotePB.CRDT_type.MVREG);
 	}
 
-	/** returns a reference to an integer object */
-	public integer(key: string): CrdtInteger {
-		return new CrdtIntegerImpl(this, key, this.getBucket(), AntidotePB.CRDT_type.INTEGER);
+	/** returns a reference to an enable-wins flag object */
+	public flag_ew(key: string): CrdtFlag {
+		return new CrdtFlagImpl(this, key, this.getBucket(), AntidotePB.CRDT_type.FLAG_EW);
 	}
+
+	/** returns a reference to an disable-wins flag object */
+	public flag_dw(key: string): CrdtFlag {
+		return new CrdtFlagImpl(this, key, this.getBucket(), AntidotePB.CRDT_type.FLAG_EW);
+	}
+
 
 	/** returns a reference to a add-wins set object */
 	public set<T>(key: string): CrdtSet<T> {
@@ -129,12 +135,7 @@ abstract class CrdtFactoryImpl implements CrdtFactory {
 		return new CrdtSetImpl<T>(this, key, this.getBucket(), AntidotePB.CRDT_type.RWSET);
 	}
 
-	/** returns a reference to an add-wins map */
-	public map(key: string): CrdtMap {
-		return new CrdtMapImpl(this, key, this.getBucket(), AntidotePB.CRDT_type.AWMAP);
-	}
-
-	/** returns a reference to an remove-resets map */
+	/** returns a reference to a remove-resets map */
 	public rrmap(key: string): CrdtMap {
 		return new CrdtMapImpl(this, key, this.getBucket(), AntidotePB.CRDT_type.RRMAP);
 	}
@@ -162,18 +163,16 @@ abstract class CrdtFactoryImpl implements CrdtFactory {
 			case AntidotePB.CRDT_type.MVREG:
 				obj = this.multiValueRegister("");
 				break;
-			case AntidotePB.CRDT_type.INTEGER:
-				obj = this.integer("");
-				break;
 			case AntidotePB.CRDT_type.GMAP:
 				obj = this.gmap("");
-				break;
-			case AntidotePB.CRDT_type.AWMAP:
-				obj = this.map("");
 				break;
 			case AntidotePB.CRDT_type.RWSET:
 				obj = this.set_removeWins("");
 				break;
+			case AntidotePB.CRDT_type.FLAG_EW:
+				obj = this.flag_ew("");
+			case AntidotePB.CRDT_type.FLAG_DW:
+				obj = this.flag_dw("");
 			default:
 				throw new Error(`unhandled type: ${type}`);
 		}
@@ -780,59 +779,37 @@ class CrdtCounterImpl extends AntidoteObjectImpl<number> implements CrdtCounter 
 }
 
 /**
- * An integer can be incremented and set to a specific value.
- * 
+ * A flag stores a boolean value, that can be changed
+ *
  * ```
- * let num = connection.integer("myint")
+ * let flag = connection.flag_ew("myflag")
  * await connection.update(
- * 	num.set(40)
+ * 	flag.set(true)
  * )
- * await connection.update(
- * 	num.increment(2)
- * )
- * let val = await num.read();
+ * let val = await flag.read();
  * ```
 */
-export interface CrdtInteger extends AntidoteObject<number> {
-	/** Creates an operation to increment the integer.
-	 * Negative numbers will decrement the value. 
+export interface CrdtFlag extends AntidoteObject<boolean> {
+	/** Creates an operation to set the flag to the given value.
 	 * Use [[Connection.update]] to send the update to the database. */
-	increment(amount: number | Long): AntidotePB.ApbUpdateOp;
-
-	/** Creates an operation to set the intgeger to a specific value.
-	 * Use [[Connection.update]] to send the update to the database. */
-	set(value: number | Long): AntidotePB.ApbUpdateOp;
+	set(value: boolean): AntidotePB.ApbUpdateOp;
 }
 
 
-class CrdtIntegerImpl extends AntidoteObjectImpl<number> implements CrdtInteger {
-	interpretReadResponse(readResponse: AntidotePB.ApbReadObjectResp): number {
-		return readResponse.int!.value!.toNumber();
+class CrdtFlagImpl extends AntidoteObjectImpl<boolean> implements CrdtFlag {
+	interpretReadResponse(readResponse: AntidotePB.ApbReadObjectResp): boolean {
+		return readResponse.flag!.value!;
 	}
 
-	/** Creates an operation to increment the integer.
-	 * Negative numbers will decrement the value. 
+	/** Creates an operation to set the flag to the given value.
 	 * Use [[Connection.update]] to send the update to the database. */
-	public increment(amount: number | Long): AntidotePB.ApbUpdateOp {
-		let amountL = (amount instanceof Long) ? amount : Long.fromNumber(amount);
+	public set(value: boolean): AntidotePB.ApbUpdateOp {
 		return this.makeUpdate({
-			integerop: {
-				inc: amountL
+			flagop: {
+				value: value
 			}
 		})
 	}
-
-	/** Creates an operation to set the intgeger to a specific value.
-	 * Use [[Connection.update]] to send the update to the database. */
-	public set(value: number | Long): AntidotePB.ApbUpdateOp {
-		let valueL = (value instanceof Long) ? value : Long.fromNumber(value);
-		return this.makeUpdate({
-			integerop: {
-				set: valueL
-			}
-		})
-	}
-
 }
 
 /**
@@ -1047,14 +1024,14 @@ export interface CrdtMapValue {
 	registerValue(key: string): any;
 	/** reads the multi-value-register value with the given key */
 	mvRegisterValue(key: string): any[] | undefined;
-	/** reads the integer value with the given key */
-	integerValue(key: string): number | undefined;
 	/** reads the gmap value with the given key */
 	gmapValue(key: string): CrdtMapValue | undefined;
-	/** reads the add-wins-map value with the given key */
-	awmapValue(key: string): CrdtMapValue | undefined;
 	/** reads the remove-wins-set value with the given key */
 	rwsetValue(key: string): any[] | undefined;
+	/** reads the flag_ew-value with the given key */
+	flag_ewValue(key: string): boolean;
+	/** reads the flag_dw-value with the given key */
+	flag_dwValue(key: string): boolean;
 
 	/** 
 	 * Converts this CRDTMapValue into a JavaScript object.
@@ -1092,17 +1069,17 @@ class CrdtMapValueImpl implements CrdtMapValue {
 	public mvRegisterValue(key: string): any[] | undefined {
 		return this.get(key, AntidotePB.CRDT_type.MVREG)
 	}
-	public integerValue(key: string): number | undefined {
-		return this.get(key, AntidotePB.CRDT_type.INTEGER)
-	}
 	public gmapValue(key: string): CrdtMapValue | undefined {
 		return this.get(key, AntidotePB.CRDT_type.GMAP)
 	}
-	public awmapValue(key: string): CrdtMapValue | undefined {
-		return this.get(key, AntidotePB.CRDT_type.AWMAP)
-	}
 	public rwsetValue(key: string): any[] | undefined {
 		return this.get(key, AntidotePB.CRDT_type.RWSET)
+	}
+	public flag_ewValue(key: string): boolean {
+		return this.get(key, AntidotePB.CRDT_type.FLAG_EW)
+	}
+	public flag_dwValue(key: string): boolean {
+		return this.get(key, AntidotePB.CRDT_type.FLAG_DW)
 	}
 
 	public toJsObject(): any {

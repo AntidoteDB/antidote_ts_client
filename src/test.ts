@@ -58,17 +58,18 @@ describe("antidote client", function () {
 		});
 	});
 
-	describe('integers', () => {
-		it('can be incremented and assigned to', async () => {
-			let num = connection.integer("myint")
+	describe('flags', () => {
+		it('can be set', async () => {
+			let flag = connection.flag_ew("my_flag_ew")
+			assert.equal(await flag.read() , false);
 			await connection.update(
-				num.set(40)
+				flag.set(true)
 			)
+			assert.equal(await flag.read() , true);
 			await connection.update(
-				num.increment(2)
+				flag.set(false)
 			)
-			let val = await num.read();
-			assert.equal(val, 42);
+			assert.equal(await flag.read() , false);
 		});
 	});
 
@@ -147,38 +148,6 @@ describe("antidote client", function () {
 		});
 	});
 
-	describe('add-wins map', () => {
-
-		it('should be possible to store things', async () => {
-			let map = connection.map("my-map1");
-			await connection.update([
-				map.register("a").set("x"),
-				map.counter("b").increment(5)
-			])
-			let val = await map.read();
-			let obj = val.toJsObject();
-			assert.deepEqual(obj, { a: "x", b: 5 });
-		});
-
-		it('should be possible to store and then remove things', async () => {
-			let map = connection.map("my-map2");
-			await connection.update([
-				map.register("a").set("x"),
-				map.register("b").set("x"),
-				map.register("c").set("x"),
-				map.register("d").set("x"),
-				map.set("e").addAll([1, 2, 3, 4]),
-				map.counter("f").increment(5)
-			])
-			await connection.update([
-				map.remove(map.register("a")),
-				map.removeAll([map.register("b"), map.register("c")])
-			])
-			let val = await map.read();
-			let obj = val.toJsObject();
-			assert.deepEqual(obj, { d: "x", e: [1, 2, 3, 4], f: 5 });
-		});
-	});
 
 	describe('remove-resets map', () => {
 

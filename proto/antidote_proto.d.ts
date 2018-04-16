@@ -26,13 +26,13 @@ declare module AntidotePB {
 		ApbRegUpdate: ApbRegUpdateBuilder;
 		ApbGetRegResp: ApbGetRegRespBuilder;
 		ApbGetMVRegResp: ApbGetMVRegRespBuilder;
-		ApbIntegerUpdate: ApbIntegerUpdateBuilder;
-		ApbGetIntegerResp: ApbGetIntegerRespBuilder;
 		ApbMapKey: ApbMapKeyBuilder;
 		ApbMapUpdate: ApbMapUpdateBuilder;
 		ApbMapNestedUpdate: ApbMapNestedUpdateBuilder;
 		ApbGetMapResp: ApbGetMapRespBuilder;
 		ApbMapEntry: ApbMapEntryBuilder;
+		ApbFlagUpdate: ApbFlagUpdateBuilder;
+		ApbGetFlagResp: ApbGetFlagRespBuilder;
 		ApbCrdtReset: ApbCrdtResetBuilder;
 		ApbOperationResp: ApbOperationRespBuilder;
 		ApbTxnProperties: ApbTxnPropertiesBuilder;
@@ -509,118 +509,6 @@ export interface ApbGetMVRegRespBuilder {
 
 declare module AntidotePB {
 
-	export interface ApbIntegerUpdate {
-
-		
-
-inc?: Long;
-		
-
-
-
-
-set?: Long;
-		
-
-
-
-
-}
-
-	export interface ApbIntegerUpdateMessage extends ApbIntegerUpdate {
-	add(key: string, value: any, noAssert?: boolean): ApbIntegerUpdateMessage;
-	calculate(): number;
-	encode64(): string;
-	encodeAB(): ArrayBuffer;
-	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
-	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
-	encodeHex(): string;
-	encodeJSON(): string;
-	encodeNB(): Buffer;
-	get(key: string, noAssert: boolean): any;
-	//set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbIntegerUpdateMessage;
-	toArrayBuffer(): ArrayBuffer;
-	toBase64(): string;
-	toBuffer(): Buffer;
-	toHex(): string;
-	toRaw(): any;
-	toString(): string;
-}
-
-export interface ApbIntegerUpdateBuilder {
-	new(data?: ApbIntegerUpdate): ApbIntegerUpdateMessage;
-	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbIntegerUpdateMessage;
-	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbIntegerUpdateMessage;
-	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbIntegerUpdateMessage;
-	decode(buffer: string, length?: number | string, enc?: string) : ApbIntegerUpdateMessage;
-	decode64(str: string) : ApbIntegerUpdateMessage;
-	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbIntegerUpdateMessage;
-	decodeDelimited(buffer: ByteBuffer, enc: string): ApbIntegerUpdateMessage;
-	decodeDelimited(buffer: Buffer, enc: string): ApbIntegerUpdateMessage;
-	decodeDelimited(buffer: string, enc: string): ApbIntegerUpdateMessage;
-	decodeHex(str: string): ApbIntegerUpdateMessage;
-	decodeJSON(str: string): ApbIntegerUpdateMessage;
-	
-}
-
-}
-
-
-declare module AntidotePB {
-
-	export interface ApbGetIntegerResp {
-
-		
-
-value: Long;
-		
-
-
-
-
-}
-
-	export interface ApbGetIntegerRespMessage extends ApbGetIntegerResp {
-	add(key: string, value: any, noAssert?: boolean): ApbGetIntegerRespMessage;
-	calculate(): number;
-	encode64(): string;
-	encodeAB(): ArrayBuffer;
-	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
-	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
-	encodeHex(): string;
-	encodeJSON(): string;
-	encodeNB(): Buffer;
-	get(key: string, noAssert: boolean): any;
-	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbGetIntegerRespMessage;
-	toArrayBuffer(): ArrayBuffer;
-	toBase64(): string;
-	toBuffer(): Buffer;
-	toHex(): string;
-	toRaw(): any;
-	toString(): string;
-}
-
-export interface ApbGetIntegerRespBuilder {
-	new(data?: ApbGetIntegerResp): ApbGetIntegerRespMessage;
-	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbGetIntegerRespMessage;
-	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbGetIntegerRespMessage;
-	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbGetIntegerRespMessage;
-	decode(buffer: string, length?: number | string, enc?: string) : ApbGetIntegerRespMessage;
-	decode64(str: string) : ApbGetIntegerRespMessage;
-	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbGetIntegerRespMessage;
-	decodeDelimited(buffer: ByteBuffer, enc: string): ApbGetIntegerRespMessage;
-	decodeDelimited(buffer: Buffer, enc: string): ApbGetIntegerRespMessage;
-	decodeDelimited(buffer: string, enc: string): ApbGetIntegerRespMessage;
-	decodeHex(str: string): ApbGetIntegerRespMessage;
-	decodeJSON(str: string): ApbGetIntegerRespMessage;
-	
-}
-
-}
-
-
-declare module AntidotePB {
-
 	export interface ApbMapKey {
 
 		
@@ -902,6 +790,112 @@ export interface ApbMapEntryBuilder {
 	decodeDelimited(buffer: string, enc: string): ApbMapEntryMessage;
 	decodeHex(str: string): ApbMapEntryMessage;
 	decodeJSON(str: string): ApbMapEntryMessage;
+	
+}
+
+}
+
+
+declare module AntidotePB {
+
+	export interface ApbFlagUpdate {
+
+		
+
+value: boolean;
+		
+
+
+
+
+}
+
+	export interface ApbFlagUpdateMessage extends ApbFlagUpdate {
+	add(key: string, value: any, noAssert?: boolean): ApbFlagUpdateMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
+	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbFlagUpdateMessage;
+	toArrayBuffer(): ArrayBuffer;
+	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
+	toString(): string;
+}
+
+export interface ApbFlagUpdateBuilder {
+	new(data?: ApbFlagUpdate): ApbFlagUpdateMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbFlagUpdateMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbFlagUpdateMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbFlagUpdateMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbFlagUpdateMessage;
+	decode64(str: string) : ApbFlagUpdateMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbFlagUpdateMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbFlagUpdateMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbFlagUpdateMessage;
+	decodeDelimited(buffer: string, enc: string): ApbFlagUpdateMessage;
+	decodeHex(str: string): ApbFlagUpdateMessage;
+	decodeJSON(str: string): ApbFlagUpdateMessage;
+	
+}
+
+}
+
+
+declare module AntidotePB {
+
+	export interface ApbGetFlagResp {
+
+		
+
+value: boolean;
+		
+
+
+
+
+}
+
+	export interface ApbGetFlagRespMessage extends ApbGetFlagResp {
+	add(key: string, value: any, noAssert?: boolean): ApbGetFlagRespMessage;
+	calculate(): number;
+	encode64(): string;
+	encodeAB(): ArrayBuffer;
+	encodeDelimited(buffer?: ByteBuffer, noVerify?: boolean): ByteBuffer;
+	encodeDelimited(buffer?: boolean, noVerify?: boolean): ByteBuffer;
+	encodeHex(): string;
+	encodeJSON(): string;
+	encodeNB(): Buffer;
+	get(key: string, noAssert: boolean): any;
+	set(keyOrObj: string, value: any | boolean, noAssert: boolean): ApbGetFlagRespMessage;
+	toArrayBuffer(): ArrayBuffer;
+	toBase64(): string;
+	toBuffer(): Buffer;
+	toHex(): string;
+	toRaw(): any;
+	toString(): string;
+}
+
+export interface ApbGetFlagRespBuilder {
+	new(data?: ApbGetFlagResp): ApbGetFlagRespMessage;
+	decode(buffer: ArrayBuffer, length?: number | string, enc?: string) : ApbGetFlagRespMessage;
+	decode(buffer: ByteBuffer, length?: number | string, enc?: string) : ApbGetFlagRespMessage;
+	decode(buffer: Buffer, length?: number | string, enc?: string) : ApbGetFlagRespMessage;
+	decode(buffer: string, length?: number | string, enc?: string) : ApbGetFlagRespMessage;
+	decode64(str: string) : ApbGetFlagRespMessage;
+	decodeDelimited(buffer: ArrayBuffer, enc: string): ApbGetFlagRespMessage;
+	decodeDelimited(buffer: ByteBuffer, enc: string): ApbGetFlagRespMessage;
+	decodeDelimited(buffer: Buffer, enc: string): ApbGetFlagRespMessage;
+	decodeDelimited(buffer: string, enc: string): ApbGetFlagRespMessage;
+	decodeHex(str: string): ApbGetFlagRespMessage;
+	decodeJSON(str: string): ApbGetFlagRespMessage;
 	
 }
 
@@ -1280,12 +1274,6 @@ regop?: ApbRegUpdate;
 
 
 
-integerop?: ApbIntegerUpdate;
-		
-
-
-
-
 mapop?: ApbMapUpdate;
 		
 
@@ -1293,6 +1281,12 @@ mapop?: ApbMapUpdate;
 
 
 resetop?: ApbCrdtReset;
+		
+
+
+
+
+flagop?: ApbFlagUpdate;
 		
 
 
@@ -1776,13 +1770,13 @@ mvreg?: ApbGetMVRegResp;
 
 
 
-int?: ApbGetIntegerResp;
+map?: ApbGetMapResp;
 		
 
 
 
 
-map?: ApbGetMapResp;
+flag?: ApbGetFlagResp;
 		
 
 
@@ -2024,12 +2018,12 @@ declare module AntidotePB {
 		ORSET = 4,
 		LWWREG = 5,
 		MVREG = 6,
-		INTEGER = 7,
 		GMAP = 8,
-		AWMAP = 9,
 		RWSET = 10,
 		RRMAP = 11,
 		FATCOUNTER = 12,
+		FLAG_EW = 13,
+		FLAG_DW = 14,
 		
 }
 }
