@@ -342,7 +342,7 @@ describe("antidote client", function () {
 					if (byteBuffer.remaining() == null) {
 						return null;
 					}
-					let str = byteBuffer.readUTF8String(byteBuffer.remaining());
+					let str = byteBuffer.readUTF8String(byteBuffer.remaining()) as string;
 					return JSON.parse(str);
 				}
 			}
