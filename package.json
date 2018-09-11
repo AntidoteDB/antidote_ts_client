@@ -1,6 +1,6 @@
 {
   "name": "antidote_ts_client",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "An experimental Antidote client for nodejs, written in typescript",
   "homepage": "https://github.com/AntidoteDB/antidote_ts_client",
   "repository": {
