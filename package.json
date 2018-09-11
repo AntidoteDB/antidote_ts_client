@@ -2,10 +2,10 @@
   "name": "antidote_ts_client",
   "version": "0.2.1",
   "description": "An experimental Antidote client for nodejs, written in typescript",
-  "homepage": "https://github.com/syncfree/antidote_ts_client",
+  "homepage": "https://github.com/AntidoteDB/antidote_ts_client",
   "repository": {
     "type": "git",
-    "url": "https://github.com/syncfree/antidote_ts_client.git"
+    "url": "https://github.com/AntidoteDB/antidote_ts_client.git"
   },
   "main": "./dist/antidote.js",
   "typings": "./dist/antidote",

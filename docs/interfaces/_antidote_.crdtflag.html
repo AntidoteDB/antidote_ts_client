@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>CrdtSet | antidote_ts_client</title>
+	<title>CrdtFlag | antidote_ts_client</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -59,10 +59,10 @@
 					<a href="../modules/_antidote_.html">&quot;antidote&quot;</a>
 				</li>
 				<li>
-					<a href="_antidote_.crdtset.html">CrdtSet</a>
+					<a href="_antidote_.crdtflag.html">CrdtFlag</a>
 				</li>
 			</ul>
-			<h1>Interface CrdtSet&lt;T&gt;</h1>
+			<h1>Interface CrdtFlag</h1>
 		</div>
 	</div>
 </header>
@@ -72,44 +72,24 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A set of elements.
-						Elements can be added and removed.</p>
+						<p>A flag stores a boolean value, that can be changed</p>
 					</div>
-					<p>Example:</p>
-					<pre><code><span class="hljs-keyword">let</span> <span class="hljs-keyword">set</span> = setType.create&lt;<span class="hljs-keyword">string</span>&gt;(<span class="hljs-string">"my-set"</span>)
+					<pre><code><span class="hljs-keyword">let</span> flag = connection.flag_ew(<span class="hljs-string">"myflag"</span>)
 <span class="hljs-keyword">await</span> connection.update(
-    <span class="hljs-keyword">set</span>.addAll([<span class="hljs-string">"a"</span>, <span class="hljs-string">"b"</span>, <span class="hljs-string">"c"</span>, <span class="hljs-string">"d"</span>, <span class="hljs-string">"e"</span>])
+    flag.<span class="hljs-keyword">set</span>(<span class="hljs-literal">true</span>)
 )
-<span class="hljs-keyword">await</span> connection.update([
-    <span class="hljs-keyword">set</span>.<span class="hljs-keyword">remove</span>(<span class="hljs-string">"a"</span>),
-    <span class="hljs-keyword">set</span>.removeAll([<span class="hljs-string">"b"</span>, <span class="hljs-string">"c"</span>])
-])
-<span class="hljs-keyword">let</span> val = <span class="hljs-keyword">await</span> <span class="hljs-keyword">set</span>.read();
-<span class="hljs-comment">// val is now ["d", "e"]</span>
+<span class="hljs-keyword">let</span> val = <span class="hljs-keyword">await</span> flag.read();
 </code></pre>
 				</div>
-			</section>
-			<section class="tsd-panel tsd-type-parameters">
-				<h3>Type parameters</h3>
-				<ul class="tsd-type-parameters">
-					<li>
-						<h4>T</h4>
-						<div class="tsd-comment tsd-typography">
-							<div class="lead">
-								<p>the type of the elements stored in the set</p>
-							</div>
-						</div>
-					</li>
-				</ul>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="_antidote_.antidoteobject.html" class="tsd-signature-type">AntidoteObject</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span>
+						<a href="_antidote_.antidoteobject.html" class="tsd-signature-type">AntidoteObject</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">CrdtSet</span>
+								<span class="target">CrdtFlag</span>
 							</li>
 						</ul>
 					</li>
@@ -118,7 +98,7 @@
 			<section class="tsd-panel">
 				<h3>Implemented by</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../classes/_antidote_.crdtsetimpl.html" class="tsd-signature-type">CrdtSetImpl</a></li>
+					<li><a href="../classes/_antidote_.crdtflagimpl.html" class="tsd-signature-type">CrdtFlagImpl</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -128,17 +108,14 @@
 						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_antidote_.crdtset.html#parent" class="tsd-kind-icon">parent</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_antidote_.crdtflag.html#parent" class="tsd-kind-icon">parent</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_antidote_.crdtset.html#add" class="tsd-kind-icon">add</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_antidote_.crdtset.html#addall" class="tsd-kind-icon">add<wbr>All</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_antidote_.crdtset.html#read" class="tsd-kind-icon">read</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_antidote_.crdtset.html#remove" class="tsd-kind-icon">remove</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_antidote_.crdtset.html#removeall" class="tsd-kind-icon">remove<wbr>All</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_antidote_.crdtflag.html#read" class="tsd-kind-icon">read</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_antidote_.crdtflag.html#set" class="tsd-kind-icon">set</a></li>
 							</ul>
 						</section>
 					</div>
@@ -165,69 +142,11 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="add" class="tsd-anchor"></a>
-					<h3>add</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">add<span class="tsd-signature-symbol">(</span>elem<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ApbUpdateOp</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/AntidoteDB/antidote_ts_client/blob/master/src/antidote.ts#L930">antidote.ts:930</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Creates an operation, which adds an element to the set.
-									Use <a href="_antidote_.connection.html#update">Connection.update</a> to send the update to the database.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>elem: <span class="tsd-signature-type">T</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ApbUpdateOp</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="addall" class="tsd-anchor"></a>
-					<h3>add<wbr>All</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>All<span class="tsd-signature-symbol">(</span>elems<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ApbUpdateOp</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/AntidoteDB/antidote_ts_client/blob/master/src/antidote.ts#L935">antidote.ts:935</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Creates an operation, which adds several elements to the set.
-									Use <a href="_antidote_.connection.html#update">Connection.update</a> to send the update to the database.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>elems: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ApbUpdateOp</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 					<a name="read" class="tsd-anchor"></a>
 					<h3>read</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">read<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">read<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -242,62 +161,33 @@
 									<p>reads the current value of the object</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="remove" class="tsd-anchor"></a>
-					<h3>remove</h3>
+					<a name="set" class="tsd-anchor"></a>
+					<h3>set</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">remove<span class="tsd-signature-symbol">(</span>elem<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ApbUpdateOp</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ApbUpdateOp</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AntidoteDB/antidote_ts_client/blob/master/src/antidote.ts#L940">antidote.ts:940</a></li>
+									<li>Defined in <a href="https://github.com/AntidoteDB/antidote_ts_client/blob/master/src/antidote.ts#L795">antidote.ts:795</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates an operation, which removes an element from the set.
+									<p>Creates an operation to set the flag to the given value.
 									Use <a href="_antidote_.connection.html#update">Connection.update</a> to send the update to the database.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>elem: <span class="tsd-signature-type">T</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ApbUpdateOp</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="removeall" class="tsd-anchor"></a>
-					<h3>remove<wbr>All</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">remove<wbr>All<span class="tsd-signature-symbol">(</span>elems<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ApbUpdateOp</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/AntidoteDB/antidote_ts_client/blob/master/src/antidote.ts#L945">antidote.ts:945</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Creates an operation, which removes several elements from the set.
-									Use <a href="_antidote_.connection.html#update">Connection.update</a> to send the update to the database.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>elems: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>value: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ApbUpdateOp</span></h4>
@@ -385,9 +275,24 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_antidote_.crdtfactory.html" class="tsd-kind-icon">Crdt<wbr>Factory</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_antidote_.crdtflag.html" class="tsd-kind-icon">Crdt<wbr>Flag</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_antidote_.crdtflag.html#parent" class="tsd-kind-icon">parent</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_antidote_.crdtflag.html#read" class="tsd-kind-icon">read</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="_antidote_.crdtflag.html#set" class="tsd-kind-icon">set</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_antidote_.crdtmap.html" class="tsd-kind-icon">Crdt<wbr>Map</a>
 					</li>
@@ -400,33 +305,9 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_antidote_.crdtregister.html" class="tsd-kind-icon">Crdt<wbr>Register</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_antidote_.crdtset.html" class="tsd-kind-icon">Crdt<wbr>Set</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_antidote_.crdtset.html#parent" class="tsd-kind-icon">parent</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_antidote_.crdtset.html#add" class="tsd-kind-icon">add</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_antidote_.crdtset.html#addall" class="tsd-kind-icon">add<wbr>All</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_antidote_.crdtset.html#read" class="tsd-kind-icon">read</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_antidote_.crdtset.html#remove" class="tsd-kind-icon">remove</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_antidote_.crdtset.html#removeall" class="tsd-kind-icon">remove<wbr>All</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_antidote_.dataformat.html" class="tsd-kind-icon">Data<wbr>Format</a>
 					</li>
