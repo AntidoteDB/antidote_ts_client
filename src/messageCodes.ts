@@ -62,7 +62,7 @@ export module MessageCodes {
 			case apbCommitTransaction:
 				return antidotePb.ApbCommitTransaction;
 			case apbStaticUpdateObjects:
-				return antidotePb.ApbUpdateObjects;
+				return antidotePb.ApbStaticUpdateObjects;
 			case apbStaticReadObjects:
 				return antidotePb.ApbStaticReadObjects;
 			case apbStartTransactionResp:
