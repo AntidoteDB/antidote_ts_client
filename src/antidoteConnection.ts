@@ -189,8 +189,9 @@ export class AntidoteConnection {
 				return Promise.reject("Could not connect to server.");
 			}
 
-
-			let header = new Buffer(5);
+			// Deprecated
+			// let header = new Buffer(5);
+			let header = Buffer.alloc(5);
 			header.writeInt32BE(encodedMessage.byteLength + 1, 0);
 			header.writeUInt8(messageCode, 4);
 
