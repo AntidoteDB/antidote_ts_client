@@ -18,7 +18,7 @@
     "@types/node": "6.0.45",
     "@types/protobufjs": "5.0.31",
     "msgpack-lite": "0.1.26",
-    "protobufjs": "5.0.1"
+    "protobufjs": "5.0.3"
   },
   "devDependencies": {
     "mocha": "3.2.0",
